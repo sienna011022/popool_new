@@ -1,4 +1,4 @@
-package kr.co.memberservice.infra.security;
+package kr.co.popool.bblmember.infra.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

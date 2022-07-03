@@ -1,8 +1,5 @@
-package kr.co.memberservice.infra.security;
+package kr.co.popool.bblmember.infra.security;
 
-import aj.org.objectweb.asm.Handle;
-import kr.co.memberservice.infra.security.jwt.JwtAuthenticationFilter;
-import kr.co.memberservice.infra.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -22,14 +18,10 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
-    private final JwtProvider jwtProvider;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
-    //To do...
-
     private static final String[] AUTH_ARR = {
-            //To do...
+            //TODO : 보안 예외 처리 주소
     };
 
     @Override
@@ -46,18 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 X
                 .and()
                     .authorizeRequests()
-                        //To do....
-                .and()
-                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
-                            , UsernamePasswordAuthenticationFilter.class);
-
-        //To do...
+                        //TODO : 시큐리티 요청
+                .and();
+//                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
+//                            , UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new UserDetailsServiceImpl())
-                .passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(new UserDetailsServiceImpl())
+//                .passwordEncoder(passwordEncoder());
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package kr.co.memberservice.error.exception;
+package kr.co.popool.bblmember.error.exception;
 
 public class BadRequestException extends BusinessLogicException{
     public BadRequestException(String message) {
