@@ -1,4 +1,4 @@
-package kr.co.memberservice.error.model;
+package kr.co.popool.bblmember.error.model;
 
 import kr.co.memberservice.error.exception.BadRequestException;
 import lombok.AllArgsConstructor;

@@ -1,2 +1,4 @@
-package kr.co.popool.bblmember.domain.dto;public class MemberDto {
+package kr.co.popool.bblmember.domain.dto;
+
+public class MemberDto {
 }

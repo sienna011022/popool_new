@@ -1,13 +1,12 @@
-package kr.co.memberservice.domain.entity;
+package kr.co.popool.bblmember.domain.entity;
 
-
-import kr.co.memberservice.domain.dto.MemberMstDto;
-import kr.co.memberservice.domain.shared.Address;
-import kr.co.memberservice.domain.shared.BaseEntity;
-import kr.co.memberservice.domain.shared.Phone;
-import kr.co.memberservice.domain.shared.enums.Gender;
-import kr.co.memberservice.domain.shared.enums.MemberRank;
-import kr.co.memberservice.domain.shared.enums.MemberRole;
+import kr.co.popool.bblmember.domain.dto.MemberMstDto;
+import kr.co.popool.bblmember.domain.shared.Address;
+import kr.co.popool.bblmember.domain.shared.BaseEntity;
+import kr.co.popool.bblmember.domain.shared.Phone;
+import kr.co.popool.bblmember.domain.shared.enums.Gender;
+import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
+import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

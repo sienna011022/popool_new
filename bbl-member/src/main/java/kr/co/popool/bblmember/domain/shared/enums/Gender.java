@@ -1,4 +1,4 @@
-package kr.co.memberservice.domain.shared.enums;
+package kr.co.popool.bblmember.domain.shared.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

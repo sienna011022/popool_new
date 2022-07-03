@@ -1,4 +1,4 @@
-package kr.co.memberservice.domain.shared;
+package kr.co.popool.bblmember.domain.shared;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

@@ -1,4 +1,4 @@
-package kr.co.memberservice.error.model;
+package kr.co.popool.bblmember.error.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

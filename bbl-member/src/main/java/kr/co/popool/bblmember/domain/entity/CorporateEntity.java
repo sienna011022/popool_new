@@ -1,7 +1,7 @@
-package kr.co.memberservice.domain.entity;
+package kr.co.popool.bblmember.domain.entity;
 
-import kr.co.memberservice.domain.dto.CorporateDto;
-import kr.co.memberservice.domain.shared.BaseEntity;
+import kr.co.popool.bblmember.domain.dto.CorporateDto;
+import kr.co.popool.bblmember.domain.shared.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

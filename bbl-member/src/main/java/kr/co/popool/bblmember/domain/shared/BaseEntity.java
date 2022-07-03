@@ -1,15 +1,12 @@
-package kr.co.memberservice.domain.shared;
+package kr.co.popool.bblmember.domain.shared;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import javax.persistence.*;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @MappedSuperclass   // 객체 입장에서 공통 매핑 정보가 필요할 때 사용

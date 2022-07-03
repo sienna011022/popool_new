@@ -1,4 +1,4 @@
-package kr.co.memberservice.error.model;
+package kr.co.popool.bblmember.error.model;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ public class ErrorResponse {
     private int status;
     private String message;
 
-    public static ErrorResponse of(ErrorCode errorCode){
+    public static ErrorResponse of(kr.co.memberservice.error.model.ErrorCode errorCode){
         return ErrorResponse.builder()
                 .status(errorCode.getStatus())
                 .message(errorCode.getMessage())
