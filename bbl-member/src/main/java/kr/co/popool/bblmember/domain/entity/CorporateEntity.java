@@ -18,8 +18,10 @@ public class CorporateEntity extends BaseEntity {
 
     @Column(name = "ceo_name", nullable = false, length = 100)
     private String ceoName;
+
     @Column(name = "business_number", unique = true, nullable = false, length = 100)
     private Long businessNumber;
+
     @Column(name = "business_name", unique = true, nullable = false, length = 100)
     private String businessName;
 
@@ -37,7 +39,7 @@ public class CorporateEntity extends BaseEntity {
     }
 
     public void updateCorporate(CorporateDto.UPDATE update){
-        //to do...
+        //TODO : 기업 회원 수정 메소드
     }
 }
 

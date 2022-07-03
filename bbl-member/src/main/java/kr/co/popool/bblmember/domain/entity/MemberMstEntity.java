@@ -23,14 +23,19 @@ public class MemberMstEntity extends BaseEntity {
 
     @Column(name = "identity", unique = true, nullable = false, length = 100)
     private String identity;
+
     @Column(name = "password", nullable = false, length = 100)
     private String password;
+
     @Column(name = "email", unique = true, length = 100)
     private String email;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
     @Column(name = "birth", nullable = false, length = 100)
     private String birth;
+
     @Column(name = "refresh_token", length = 600)
     private String refreshToken;
 
@@ -40,15 +45,18 @@ public class MemberMstEntity extends BaseEntity {
                     , column = @Column(name = "phone", unique = true, nullable = false))
     })
     private Phone phone;
+
     @Embedded
     private Address address;
 
     @Column(name = "gender")
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
+
     @Column(name = "member_role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
+
     @Column(name = "member_rank", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberRank memberRank;
@@ -68,7 +76,7 @@ public class MemberMstEntity extends BaseEntity {
     }
 
     public void updateMemberMst(MemberMstDto.UPDATE update){
-        //to do...
+        //TODO : 회원 정보 수정 메소드
     }
 
     public void updateRefreshToken(String refreshToken){

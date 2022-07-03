@@ -13,8 +13,10 @@ import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 @RequiredArgsConstructor
 public class MemberMstServiceImpl implements MemberMstService{
 
@@ -41,7 +43,7 @@ public class MemberMstServiceImpl implements MemberMstService{
 
         //TODO : 회원 가입 시, 회원 종류마다 다르게.
 
-        //TODO : 회원 권한은 ROLE_MEMBER만 가능하도록? (ROLE_ADMIN은 개발자들만 가능 해야 한다.)
+        //TODO : 회원 권한은 ROLE_MEMBER만 가능하도록? (ROLE_ADMIN은 개발자들만 가능해야 한다.)
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create.getIdentity())

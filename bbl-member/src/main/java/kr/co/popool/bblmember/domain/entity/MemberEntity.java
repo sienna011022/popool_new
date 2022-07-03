@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class MemberEntity extends BaseEntity {
 
     /*
-        To do...
+        TODO : 일반 회원 필드
      */
 
     @OneToOne
