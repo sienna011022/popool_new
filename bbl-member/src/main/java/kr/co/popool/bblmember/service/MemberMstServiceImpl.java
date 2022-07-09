@@ -1,6 +1,8 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
+import kr.co.popool.bblmember.domain.entity.CorporateEntity;
+import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.entity.MemberMstEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
@@ -10,7 +12,9 @@ import kr.co.popool.bblmember.error.exception.BadRequestException;
 import kr.co.popool.bblmember.error.exception.DuplicatedException;
 import kr.co.popool.bblmember.error.model.ErrorCode;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
+import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
+import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberMstServiceImpl implements MemberMstService{
 
     private final MemberMstRepository memberMstRepository;
+    private final MemberRepository memberRepository;
+    private final CorporateRepository corporateRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
     /**
-     * 회원가입
+     * 일반 회원가입
      * @param create 회원가입하기 위한 회원의 정보
      * @Exception DuplicatedException : 아이디가 이미 존재할 경우 회원가입을 진행할 수 없다는 예외.
      */
@@ -39,9 +45,7 @@ public class MemberMstServiceImpl implements MemberMstService{
 
         //TODO : 전화번호 중복 확인 ?
 
-        //TODO : 회원 가입 시, 회원 종류마다 다르게.
-
-        //TODO : 회원 권한은 ROLE_MEMBER만 가능하도록? (ROLE_ADMIN은 개발자들만 가능 해야 한다.)
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create.getIdentity())
@@ -54,9 +58,53 @@ public class MemberMstServiceImpl implements MemberMstService{
                 .memberRole(MemberRole.of(create.getMemberRole()))
                 .build();
 
-        MemberMstEntity memberMstEntity2 = memberMstRepository.save(memberMstEntity);
+        MemberEntity memberEntity = MemberEntity.builder()
+                .memberMstEntity(memberMstEntity)
+                .build();
 
-        //TODO : 기업 회원일 시, 추가 정보 입력이 있어야 한다.
+        memberMstRepository.save(memberMstEntity);
+        memberRepository.save(memberEntity);
+    }
+
+    /**
+     * 기업 회원가입
+     * @param create_corporate 회원가입하기 위한 회원의 정보
+     * @Exception DuplicatedException : 아이디가 이미 존재할 경우 회원가입을 진행할 수 없다는 예외.
+     */
+    @Override
+    public void corporateSignUp(MemberMstDto.CREATE_CORPORATE create_corporate) {
+
+        if(!checkIdentity(create_corporate.getIdentity())){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
+        }
+        if(!create_corporate.getPassword().equals(create_corporate.getCheckPassword())){
+            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        //TODO : 전화번호 중복 확인 ?
+
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
+
+        MemberMstEntity memberMstEntity = MemberMstEntity.builder()
+                .identity(create_corporate.getIdentity())
+                .password(passwordEncoder.encode(create_corporate.getPassword()))
+                .name(create_corporate.getName())
+                .birth(create_corporate.getBirth())
+                .phone(new Phone(create_corporate.getPhone()))
+                .gender(Gender.of(create_corporate.getGender()))
+                .memberRank(MemberRank.of(create_corporate.getMemberRank()))
+                .memberRole(MemberRole.of(create_corporate.getMemberRole()))
+                .build();
+
+        CorporateEntity corporateEntity = CorporateEntity.builder()
+                .ceoName(create_corporate.getCeoName())
+                .businessName(create_corporate.getBusinessName())
+                .businessNumber(create_corporate.getBusinessNumber())
+                .memberMstEntity(memberMstEntity)
+                .build();
+
+        memberMstRepository.save(memberMstEntity);
+        corporateRepository.save(corporateEntity);
     }
 
     /**
