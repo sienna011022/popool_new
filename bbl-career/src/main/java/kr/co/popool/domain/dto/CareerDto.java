@@ -18,6 +18,10 @@ public  class CareerDto {
     @NoArgsConstructor
     public static class CAREERINFO {
 
+        @ApiModelProperty(example = "member아이디")
+        @NotBlank(message = "평가를 원하는 member 아이디를 입력하세요")
+        private String identity;
+
         @ApiModelProperty(example = "평가등급")
         @Enumerated(EnumType.STRING)
         private ScoreGrade grade;
