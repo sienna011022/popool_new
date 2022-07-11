@@ -35,4 +35,8 @@ public class MemberEntity extends BaseEntity {
     public void disagree(){
         this.paymentAgree_yn = "N";
     }
+
+    public void update(MemberMstEntity memberMstEntity){
+        this.memberMstEntity = memberMstEntity;
+    }
 }

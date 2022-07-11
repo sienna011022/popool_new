@@ -74,8 +74,13 @@ public class MemberMstEntity extends BaseEntity {
         this.memberRank = memberRank;
     }
 
-    public void updateMemberMst(MemberMstDto.UPDATE update){
-        //to do...
+    public void updateMemberMst(MemberMstDto.UPDATE memberUpdate){
+        this.name = memberUpdate.getName();
+        this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
+        this.phone = new Phone(memberUpdate.getPhone());
+        this.email = memberUpdate.getEmail();
+        this.gender = Gender.of(memberUpdate.getGender());
+        this.birth = memberUpdate.getBirth();
     }
 
     public void updateRefreshToken(String refreshToken){
