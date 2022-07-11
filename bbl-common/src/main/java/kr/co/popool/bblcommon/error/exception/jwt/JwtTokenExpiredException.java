@@ -1,6 +1,7 @@
-package kr.co.popool.bblmember.error.exception.jwt;
+package kr.co.popool.bblcommon.error.exception.jwt;
 
-import kr.co.popool.bblmember.error.exception.BusinessLogicException;
+
+import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 
 public class JwtTokenExpiredException extends BusinessLogicException {
     public JwtTokenExpiredException() {
