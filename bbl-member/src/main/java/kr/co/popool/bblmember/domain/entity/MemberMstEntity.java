@@ -75,7 +75,7 @@ public class MemberMstEntity extends BaseEntity {
     }
 
     public void updateMemberMst(MemberMstDto.UPDATE update){
-        //to do...
+        //TODO : 회원 정보 수정 메소드
     }
 
     public void updateRefreshToken(String refreshToken){

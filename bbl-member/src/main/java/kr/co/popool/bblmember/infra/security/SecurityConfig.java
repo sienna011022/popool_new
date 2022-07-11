@@ -1,5 +1,7 @@
 package kr.co.popool.bblmember.infra.security;
 
+import kr.co.popool.bblmember.infra.security.jwt.JwtAuthenticationFilter;
+import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -18,6 +21,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtProvider jwtProvider;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     private static final String[] AUTH_ARR = {
@@ -37,17 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()       //csrf 보안 disable 처리
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 X
                 .and()
-                    .authorizeRequests()
-                        //TODO : 시큐리티 요청
-                .and();
-//                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
-//                            , UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(new UserDetailsServiceImpl())
-//                .passwordEncoder(passwordEncoder());
+                    .authorizeRequests() //TODO : 시큐리티 요청
+                .and()
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
+                            , UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
