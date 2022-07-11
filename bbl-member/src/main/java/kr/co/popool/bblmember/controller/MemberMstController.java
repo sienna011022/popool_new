@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberMstController {
 
