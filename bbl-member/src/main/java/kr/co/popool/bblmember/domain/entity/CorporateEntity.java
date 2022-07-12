@@ -38,8 +38,8 @@ public class CorporateEntity extends BaseEntity {
         this.memberMstEntity = memberMstEntity;
     }
 
-    public void updateCorporate(CorporateDto.UPDATE update){
-        //TODO : 기업 회원 정보 수정
+    public void update(MemberMstEntity memberMstEntity){
+        this.memberMstEntity = memberMstEntity;
     }
 }
 
