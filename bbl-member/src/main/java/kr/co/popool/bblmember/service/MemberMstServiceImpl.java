@@ -1,6 +1,7 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
+import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
@@ -141,6 +142,7 @@ public class MemberMstServiceImpl implements MemberMstService{
     }
 
     @Override
+    @Transactional
     public void update(MemberMstDto.UPDATE update) {
         MemberEntity memberEntity = MemberThreadLocal.get();
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
@@ -153,7 +155,7 @@ public class MemberMstServiceImpl implements MemberMstService{
             memberMstEntity = corporateEntity.getMemberMstEntity();
         }
         if(memberMstEntity == null){
-            throw new BadRequestException("수정할 회원정보가 없습니다. 재로그인 부탁드립니다.");
+            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
         }
 
         if(!checkPhone(new Phone(update.getPhone()))){
@@ -169,29 +171,71 @@ public class MemberMstServiceImpl implements MemberMstService{
 
     @Override
     @Transactional
-    public void updatePassword(String password) {
-
+    public void updatePassword(MemberMstDto.UPDATE_PASSWORD update_password) {
         MemberEntity memberEntity = MemberThreadLocal.get();
         CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        MemberMstEntity memberMstEntity = null;
 
         if(memberEntity != null){
-
+            memberMstEntity = memberEntity.getMemberMstEntity();
         }
         if(corporateEntity != null){
-
+            memberMstEntity = corporateEntity.getMemberMstEntity();
         }
+        if(memberMstEntity == null){
+            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
+        }
+        if(!passwordEncoder.matches(update_password.getOriginalPassword(), memberMstEntity.getPassword())){
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        }
+        if(!update_password.getNewPassword().equals(update_password.getNewCheckPassword())){
+            throw new BadRequestException("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        memberMstEntity.updatePassword(passwordEncoder.encode(update_password.getNewPassword()));
+        memberMstRepository.save(memberMstEntity);
     }
 
     @Override
     @Transactional
     public void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        MemberMstEntity memberMstEntity = null;
 
+        if(memberEntity != null){
+            memberMstEntity = memberEntity.getMemberMstEntity();
+        }
+        if(corporateEntity != null){
+            memberMstEntity = corporateEntity.getMemberMstEntity();
+        }
+        if(memberMstEntity == null){
+            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
+        }
+
+        memberMstEntity.updateAddress(update_address);
+        memberMstRepository.save(memberMstEntity);
     }
 
     @Override
     @Transactional
-    public void updatePhone(String phone) {
+    public void updatePhone(MemberMstDto.UPDATE_PHONE update_phone) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        MemberMstEntity memberMstEntity = null;
 
+        if(memberEntity != null){
+            memberMstEntity = memberEntity.getMemberMstEntity();
+        }
+        if(corporateEntity != null){
+            memberMstEntity = corporateEntity.getMemberMstEntity();
+        }
+        if(memberMstEntity == null){
+            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
+        }
+
+        memberMstEntity.updatePhone(update_phone);
+        memberMstRepository.save(memberMstEntity);
     }
 
     /**

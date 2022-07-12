@@ -88,4 +88,12 @@ public class MemberMstEntity extends BaseEntity {
     public void updatePassword(String password){
         this.password = password;
     }
+
+    public  void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address){
+        this.address = new Address(update_address.getZipCode(), update_address.getAddr1(), update_address.getAddr2());
+    }
+
+    public void updatePhone(MemberMstDto.UPDATE_PHONE update_phone){
+        this.phone = new Phone(update_phone.getNewPhoneNumber());
+    }
 }

@@ -16,9 +16,9 @@ public interface MemberMstService {
 
     //update
     void update(MemberMstDto.UPDATE update);
-    void updatePassword(String password);
+    void updatePassword(MemberMstDto.UPDATE_PASSWORD update_password);
     void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address);
-    void updatePhone(String phone);
+    void updatePhone(MemberMstDto.UPDATE_PHONE update_phone);
 
     //common
     Boolean checkIdentity(String identity);

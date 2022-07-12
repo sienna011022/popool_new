@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
@@ -168,6 +169,24 @@ public class MemberMstDto {
     @Builder
     @Getter
     @AllArgsConstructor
+    public static class UPDATE_PASSWORD {
+        @ApiModelProperty(example = "현재 비밀번호")
+        @NotBlank(message = "현재 비밀번호를 입력해주세요")
+        private String originalPassword;
+
+        @ApiModelProperty(example = "변경할 비밀번호")
+        @NotBlank(message = "변경할 비밀번호를 입력해주세요")
+        private String newPassword;
+
+        @ApiModelProperty(example = "변경 비밀번호 확인")
+        @NotBlank(message = "확인 비밀번호를 입력해주세요")
+        private String newCheckPassword;
+    }
+
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
     public static class UPDATE_ADDRESS {
         @ApiModelProperty(example = "12345")
         @NotBlank(message = "우편번호를 입력해주세요")
@@ -180,5 +199,14 @@ public class MemberMstDto {
         @ApiModelProperty(example = "101호")
         @NotBlank(message = "상세 주소를 입력해주세요")
         private String addr2;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class UPDATE_PHONE {
+        @ApiModelProperty(example = "010-XXXX-XXXX")
+        @NotBlank(message = "휴대폰 번호를 입력해주세요")
+        private String newPhoneNumber;
     }
 }
