@@ -4,9 +4,11 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
 import kr.co.popool.bblmember.service.MemberMstServiceImpl;
-import kr.co.popool.bblmember.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 

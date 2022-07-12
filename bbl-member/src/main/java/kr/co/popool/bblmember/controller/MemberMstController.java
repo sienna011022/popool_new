@@ -23,10 +23,31 @@ public class MemberMstController {
         return ResponseFormat.ok(memberMstService.login(login));
     }
 
-    @ApiOperation("일반 회원 정보 수정")
+    @ApiOperation("회원 정보 수정")
     @PutMapping("/update")
-    public ResponseFormat updateNormal(@RequestBody @Valid MemberMstDto.UPDATE update){
+    public ResponseFormat update(@RequestBody @Valid MemberMstDto.UPDATE update){
         memberMstService.update(update);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("비밀번호 수정")
+    @PutMapping("/update/password")
+    public ResponseFormat updatePassword(@RequestBody @Valid MemberMstDto.UPDATE_PASSWORD update){
+        memberMstService.updatePassword(update);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("주소 수정")
+    @PutMapping("/update/address")
+    public ResponseFormat updateAddress(@RequestBody @Valid MemberMstDto.UPDATE_ADDRESS update){
+        memberMstService.updateAddress(update);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("전화번호 수정")
+    @PutMapping("/update/phone")
+    public ResponseFormat updatePhone(@RequestBody @Valid MemberMstDto.UPDATE_PHONE update){
+        memberMstService.updatePhone(update);
         return ResponseFormat.ok();
     }
 
