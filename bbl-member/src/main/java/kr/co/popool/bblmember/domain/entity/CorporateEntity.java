@@ -37,9 +37,5 @@ public class CorporateEntity extends BaseEntity {
         this.businessName = businessName;
         this.memberMstEntity = memberMstEntity;
     }
-
-    public void update(MemberMstEntity memberMstEntity){
-        this.memberMstEntity = memberMstEntity;
-    }
 }
 

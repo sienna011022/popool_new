@@ -16,19 +16,11 @@ import javax.validation.Valid;
 public class CorporateController {
 
     private final MemberMstServiceImpl memberMstService;
-    private final CorporateServiceImpl corporateService;
 
     @ApiOperation("기업 회원가입")
     @PostMapping("/corporate/signUp")
     public ResponseFormat corporateSignUp(@RequestBody @Valid MemberMstDto.CREATE_CORPORATE create){
         memberMstService.corporateSignUp(create);
-        return ResponseFormat.ok();
-    }
-
-    @ApiOperation("기업 회원 정보 수정")
-    @PutMapping("/corporate/update")
-    public ResponseFormat updateCorporate(@RequestBody @Valid MemberMstDto.UPDATE corporateUpdate){
-        corporateService.update(corporateUpdate);
         return ResponseFormat.ok();
     }
 }

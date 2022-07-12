@@ -16,19 +16,11 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberMstServiceImpl memberMstService;
-    private final MemberServiceImpl memberService;
 
     @ApiOperation("일반 회원가입")
     @PostMapping("/normal/signUp")
     public ResponseFormat signUp(@RequestBody @Valid MemberMstDto.CREATE create){
         memberMstService.signUp(create);
-        return ResponseFormat.ok();
-    }
-
-    @ApiOperation("일반 회원 정보 수정")
-    @PutMapping("/normal/update")
-    public ResponseFormat updateNormal(@RequestBody @Valid MemberMstDto.UPDATE memberUpdate){
-        memberService.update(memberUpdate);
         return ResponseFormat.ok();
     }
 }

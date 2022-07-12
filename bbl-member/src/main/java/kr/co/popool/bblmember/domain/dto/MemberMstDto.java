@@ -164,4 +164,21 @@ public class MemberMstDto {
         private String phone;
 
     }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class UPDATE_ADDRESS {
+        @ApiModelProperty(example = "12345")
+        @NotBlank(message = "우편번호를 입력해주세요")
+        private String zipCode;
+
+        @ApiModelProperty(example = "서울특별시 강남구 선릉로 627")
+        @NotBlank(message = "기본 주소를 입력해주세요")
+        private String addr1;
+
+        @ApiModelProperty(example = "101호")
+        @NotBlank(message = "상세 주소를 입력해주세요")
+        private String addr2;
+    }
 }

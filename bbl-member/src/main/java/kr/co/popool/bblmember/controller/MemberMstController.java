@@ -23,6 +23,13 @@ public class MemberMstController {
         return ResponseFormat.ok(memberMstService.login(login));
     }
 
+    @ApiOperation("일반 회원 정보 수정")
+    @PutMapping("/update")
+    public ResponseFormat updateNormal(@RequestBody @Valid MemberMstDto.UPDATE update){
+        memberMstService.update(update);
+        return ResponseFormat.ok();
+    }
+
     @ApiOperation("아이디 중복 체크")
     @PostMapping("/{rank}/signUp/check")
     public ResponseFormat<Boolean> checkIdentity(
@@ -33,18 +40,14 @@ public class MemberMstController {
     }
 
     @ApiOperation("이메일 중복 체크")
-    @PostMapping("/{rank}/update/check")
-    public ResponseFormat<Boolean> checkEmail(
-            @PathVariable("rank") String rank,
-            @RequestParam("email") String email
-    ) {
+    @PostMapping("/update/check")
+    public ResponseFormat<Boolean> checkEmail(@RequestParam("email") String email) {
         return ResponseFormat.ok(memberMstService.checkEmail(email));
     }
 
-    @ApiOperation("전화번호 중복 체크")
-    @PostMapping("/{rank}/{api}/check")
+    @ApiOperation("전화번호 중복 체크, {api} => signUp or update")
+    @PostMapping("/{api}/check")
     public ResponseFormat<Boolean> checkPhone(
-            @PathVariable("rank") String rank,
             @PathVariable("api") String api,
             @RequestParam("phone") String phone
     ) {

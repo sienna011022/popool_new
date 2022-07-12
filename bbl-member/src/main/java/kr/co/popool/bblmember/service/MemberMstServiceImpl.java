@@ -11,6 +11,8 @@ import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
+import kr.co.popool.bblmember.infra.interceptor.CorporateThreadLocal;
+import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
@@ -136,6 +138,60 @@ public class MemberMstServiceImpl implements MemberMstService{
         memberMstEntity.updateRefreshToken(tokens[1]);
 
         return new MemberMstDto.TOKEN(tokens[0], tokens[1]);
+    }
+
+    @Override
+    public void update(MemberMstDto.UPDATE update) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        MemberMstEntity memberMstEntity = null;
+
+        if(memberEntity != null){
+            memberMstEntity = memberEntity.getMemberMstEntity();
+        }
+        if(corporateEntity != null){
+            memberMstEntity = corporateEntity.getMemberMstEntity();
+        }
+        if(memberMstEntity == null){
+            throw new BadRequestException("수정할 회원정보가 없습니다. 재로그인 부탁드립니다.");
+        }
+
+        if(!checkPhone(new Phone(update.getPhone()))){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        }
+        if(!checkEmail(update.getEmail())){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
+        }
+
+        memberMstEntity.updateMemberMst(update);
+        memberMstRepository.save(memberMstEntity);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String password) {
+
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        if(memberEntity != null){
+
+        }
+        if(corporateEntity != null){
+
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address) {
+
+    }
+
+    @Override
+    @Transactional
+    public void updatePhone(String phone) {
+
     }
 
     /**

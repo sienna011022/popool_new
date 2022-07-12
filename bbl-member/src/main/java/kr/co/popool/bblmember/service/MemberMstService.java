@@ -12,6 +12,14 @@ public interface MemberMstService {
     //login
     MemberMstDto.TOKEN login(MemberMstDto.LOGIN login);
 
+    //TODO : 조회 서비스
+
+    //update
+    void update(MemberMstDto.UPDATE update);
+    void updatePassword(String password);
+    void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address);
+    void updatePhone(String phone);
+
     //common
     Boolean checkIdentity(String identity);
     Boolean checkEmail(String email);
