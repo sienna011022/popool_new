@@ -39,13 +39,16 @@ public class MemberMstServiceImpl implements MemberMstService{
         if(!checkIdentity(create.getIdentity())){
             throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
         }
+
         if(!create.getPassword().equals(create.getCheckPassword())){
             throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
-        //TODO : 전화번호 중복 확인 ?
+        if(!checkPhone(new Phone(create.getPhone()))){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        }
 
-        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 NORMAR_MEMBER 자동 설정.
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create.getIdentity())
@@ -77,13 +80,16 @@ public class MemberMstServiceImpl implements MemberMstService{
         if(!checkIdentity(create_corporate.getIdentity())){
             throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
         }
+
         if(!create_corporate.getPassword().equals(create_corporate.getCheckPassword())){
             throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
-        //TODO : 전화번호 중복 확인 ?
+        if(!checkPhone(new Phone(create_corporate.getPhone()))){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        }
 
-        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 CORPORATE_MEMBER 자동 설정.
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create_corporate.getIdentity())
@@ -138,6 +144,26 @@ public class MemberMstServiceImpl implements MemberMstService{
     @Override
     public Boolean checkIdentity(String identity) {
         return !memberMstRepository.existsByIdentity(identity);
+    }
+
+    /**
+     * 이메일 중복 체크
+     * @param email : 중복 체크할 이메일
+     * @return : 중복된 이메일이 있다면 false, 없다면 true
+     */
+    @Override
+    public Boolean checkEmail(String email) {
+        return!memberMstRepository.existsByEmail(email);
+    }
+
+    /**
+     * 전화번호 중복 체크
+     * @param phone : 중복 체크할 전화번호
+     * @return : 중복된 전화번호가 있다면 false, 없다면 true
+     */
+    @Override
+    public Boolean checkPhone(Phone phone) {
+        return !memberMstRepository.existsByPhone(phone);
     }
 
     private String[] generateToken(MemberMstEntity memberMstEntity){

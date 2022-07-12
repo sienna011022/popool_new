@@ -147,10 +147,6 @@ public class MemberMstDto {
         @NotBlank(message = "이름을 입력해주세요.")
         private String name;
 
-        @ApiModelProperty(example = "YYYYmmDD")
-        @NotBlank(message = "생년월일을 입력해주세요.")
-        private String birth;
-
         @ApiModelProperty(example = "12345")
         @NotBlank(message = "우편번호를 입력해주세요")
         private String zipCode;
@@ -166,10 +162,6 @@ public class MemberMstDto {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요.")
         private String phone;
-
-        @ApiModelProperty(example = "MALE or FEMALE")
-        @NotBlank(message = "성별을 입력해주세요.")
-        private String gender;
 
     }
 }

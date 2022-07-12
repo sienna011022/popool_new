@@ -49,7 +49,7 @@ public class MemberMstEntity extends BaseEntity {
     @Embedded
     private Address address;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
@@ -79,8 +79,6 @@ public class MemberMstEntity extends BaseEntity {
         this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
         this.phone = new Phone(memberUpdate.getPhone());
         this.email = memberUpdate.getEmail();
-        this.gender = Gender.of(memberUpdate.getGender());
-        this.birth = memberUpdate.getBirth();
     }
 
     public void updateRefreshToken(String refreshToken){
