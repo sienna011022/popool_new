@@ -7,4 +7,7 @@ public interface MemberService {
     //create
     void signUp(MemberDto.CREATE create);
 
+    //update
+    void paymentAgreeUpdate();
+
 }

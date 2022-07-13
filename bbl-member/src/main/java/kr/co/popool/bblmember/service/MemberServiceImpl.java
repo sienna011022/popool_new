@@ -10,6 +10,7 @@ import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
+import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,4 +66,20 @@ public class MemberServiceImpl implements MemberService{
         memberMstRepository.save(memberMstEntity);
         memberRepository.save(memberEntity);
     }
+
+    @Override
+    public void paymentAgreeUpdate() {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+
+        if(memberEntity.getPaymentAgree_yn().equals("N")){
+            memberEntity.agree();
+        }
+        if (memberEntity.getPaymentAgree_yn().equals("Y")){
+            memberEntity.disagree();
+        }
+
+        memberEntity.updateUseMember(memberEntity.getId());
+        memberRepository.save(memberEntity);
+    }
+
 }
