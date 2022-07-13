@@ -1,4 +1,4 @@
-package kr.co.popool.bblmember.error.model;
+package kr.co.popool.bblcommon.error.model;
 
 import lombok.Getter;
 

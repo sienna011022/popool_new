@@ -1,7 +1,7 @@
-package kr.co.popool.bblmember.error.exception;
+package kr.co.popool.bblcommon.error.exception;
 
 
-import kr.co.popool.bblmember.error.model.ErrorCode;
+import kr.co.popool.bblcommon.error.model.ErrorCode;
 import lombok.Getter;
 
 @Getter

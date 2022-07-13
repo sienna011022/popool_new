@@ -64,7 +64,6 @@ public class MemberMstEntity extends BaseEntity {
     @Builder
     public MemberMstEntity(String identity, String password, String name, String birth
             , Phone phone, Gender gender, MemberRole memberRole, MemberRank memberRank) {
-
         this.identity = identity;
         this.password = password;
         this.name = name;

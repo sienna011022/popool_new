@@ -1,6 +1,6 @@
-package kr.co.popool.bblmember.error.model;
+package kr.co.popool.bblcommon.error.model;
 
-import kr.co.memberservice.error.exception.BadRequestException;
+import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

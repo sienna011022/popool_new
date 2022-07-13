@@ -21,7 +21,7 @@ public class CorporateEntity extends BaseEntity {
 
     @Column(name = "business_number", nullable = false, length = 100)
     private Long businessNumber;
-
+    
     @Column(name = "business_name", unique = true, nullable = false, length = 100)
     private String businessName;
 

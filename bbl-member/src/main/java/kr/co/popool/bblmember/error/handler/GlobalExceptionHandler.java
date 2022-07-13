@@ -1,7 +1,7 @@
 package kr.co.popool.bblmember.error.handler;
 
-import kr.co.popool.bblmember.error.exception.BusinessLogicException;
-import kr.co.popool.bblmember.error.model.ResponseFormat;
+import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
+import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

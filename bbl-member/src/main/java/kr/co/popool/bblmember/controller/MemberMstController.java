@@ -1,8 +1,8 @@
 package kr.co.popool.bblmember.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
-import kr.co.popool.bblmember.error.model.ResponseFormat;
 import kr.co.popool.bblmember.service.MemberMstServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

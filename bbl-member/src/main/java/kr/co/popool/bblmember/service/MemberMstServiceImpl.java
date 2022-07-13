@@ -1,5 +1,8 @@
 package kr.co.popool.bblmember.service;
 
+import kr.co.popool.bblcommon.error.exception.BadRequestException;
+import kr.co.popool.bblcommon.error.exception.DuplicatedException;
+import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
 import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
@@ -8,9 +11,6 @@ import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
-import kr.co.popool.bblmember.error.exception.BadRequestException;
-import kr.co.popool.bblmember.error.exception.DuplicatedException;
-import kr.co.popool.bblmember.error.model.ErrorCode;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
