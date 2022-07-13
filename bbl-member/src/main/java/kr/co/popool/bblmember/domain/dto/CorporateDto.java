@@ -5,12 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class CorporateDto {
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class CREATE{
-
-    }
 
     @Builder
     @Getter

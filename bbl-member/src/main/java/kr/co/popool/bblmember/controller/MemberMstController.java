@@ -16,10 +16,17 @@ public class MemberMstController {
 
     private final MemberMstServiceImpl memberMstService;
 
-    @ApiOperation("회원가입")
+    @ApiOperation("일반 회원가입")
     @PostMapping("/signUp")
     public ResponseFormat signUp(@RequestBody @Valid MemberMstDto.CREATE create){
         memberMstService.signUp(create);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("기업 회원가입")
+    @PostMapping("/corporate-signUp")
+    public ResponseFormat corporateSignUp(@RequestBody @Valid MemberMstDto.CREATE_CORPORATE create){
+        memberMstService.corporateSignUp(create);
         return ResponseFormat.ok();
     }
 
