@@ -1,7 +1,6 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberMstDto;
@@ -12,8 +11,6 @@ import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
-import kr.co.popool.bblmember.infra.interceptor.CorporateThreadLocal;
-import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
@@ -44,16 +41,19 @@ public class MemberMstServiceImpl implements MemberMstService{
         if(!checkIdentity(create.getIdentity())){
             throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
         }
-
         if(!create.getPassword().equals(create.getCheckPassword())){
             throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
-        if(!checkPhone(new Phone(create.getPhone()))){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
+        //TODO : 전화번호 중복 확인 ?
 
-        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 NORMAR_MEMBER 자동 설정.
+<<<<<<<<< Temporary merge branch 1
+        //TODO : 회원 가입 시, 회원 종류마다 다르게.
+
+        //TODO : 회원 권한은 ROLE_MEMBER만 가능하도록? (ROLE_ADMIN은 개발자들만 가능해야 한다.)
+=========
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
+>>>>>>>>> Temporary merge branch 2
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create.getIdentity())
@@ -85,16 +85,13 @@ public class MemberMstServiceImpl implements MemberMstService{
         if(!checkIdentity(create_corporate.getIdentity())){
             throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
         }
-
         if(!create_corporate.getPassword().equals(create_corporate.getCheckPassword())){
             throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
-        if(!checkPhone(new Phone(create_corporate.getPhone()))){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
+        //TODO : 전화번호 중복 확인 ?
 
-        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 CORPORATE_MEMBER 자동 설정.
+        //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정
 
         MemberMstEntity memberMstEntity = MemberMstEntity.builder()
                 .identity(create_corporate.getIdentity())
@@ -141,103 +138,6 @@ public class MemberMstServiceImpl implements MemberMstService{
         return new MemberMstDto.TOKEN(tokens[0], tokens[1]);
     }
 
-    @Override
-    @Transactional
-    public void update(MemberMstDto.UPDATE update) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        MemberMstEntity memberMstEntity = null;
-
-        if(memberEntity != null){
-            memberMstEntity = memberEntity.getMemberMstEntity();
-        }
-        if(corporateEntity != null){
-            memberMstEntity = corporateEntity.getMemberMstEntity();
-        }
-        if(memberMstEntity == null){
-            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
-        }
-
-        if(!checkPhone(new Phone(update.getPhone()))){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
-        if(!checkEmail(update.getEmail())){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
-        }
-
-        memberMstEntity.updateMemberMst(update);
-        memberMstRepository.save(memberMstEntity);
-    }
-
-    @Override
-    @Transactional
-    public void updatePassword(MemberMstDto.UPDATE_PASSWORD update_password) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        MemberMstEntity memberMstEntity = null;
-
-        if(memberEntity != null){
-            memberMstEntity = memberEntity.getMemberMstEntity();
-        }
-        if(corporateEntity != null){
-            memberMstEntity = corporateEntity.getMemberMstEntity();
-        }
-        if(memberMstEntity == null){
-            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
-        }
-        if(!passwordEncoder.matches(update_password.getOriginalPassword(), memberMstEntity.getPassword())){
-            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
-        if(!update_password.getNewPassword().equals(update_password.getNewCheckPassword())){
-            throw new BadRequestException("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        }
-
-        memberMstEntity.updatePassword(passwordEncoder.encode(update_password.getNewPassword()));
-        memberMstRepository.save(memberMstEntity);
-    }
-
-    @Override
-    @Transactional
-    public void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        MemberMstEntity memberMstEntity = null;
-
-        if(memberEntity != null){
-            memberMstEntity = memberEntity.getMemberMstEntity();
-        }
-        if(corporateEntity != null){
-            memberMstEntity = corporateEntity.getMemberMstEntity();
-        }
-        if(memberMstEntity == null){
-            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
-        }
-
-        memberMstEntity.updateAddress(update_address);
-        memberMstRepository.save(memberMstEntity);
-    }
-
-    @Override
-    @Transactional
-    public void updatePhone(MemberMstDto.UPDATE_PHONE update_phone) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-        CorporateEntity corporateEntity = CorporateThreadLocal.get();
-        MemberMstEntity memberMstEntity = null;
-
-        if(memberEntity != null){
-            memberMstEntity = memberEntity.getMemberMstEntity();
-        }
-        if(corporateEntity != null){
-            memberMstEntity = corporateEntity.getMemberMstEntity();
-        }
-        if(memberMstEntity == null){
-            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
-        }
-
-        memberMstEntity.updatePhone(update_phone);
-        memberMstRepository.save(memberMstEntity);
-    }
-
     /**
      * 아이디 중복 체크
      * @param identity : 중복 체크할 아이디
@@ -246,26 +146,6 @@ public class MemberMstServiceImpl implements MemberMstService{
     @Override
     public Boolean checkIdentity(String identity) {
         return !memberMstRepository.existsByIdentity(identity);
-    }
-
-    /**
-     * 이메일 중복 체크
-     * @param email : 중복 체크할 이메일
-     * @return : 중복된 이메일이 있다면 false, 없다면 true
-     */
-    @Override
-    public Boolean checkEmail(String email) {
-        return!memberMstRepository.existsByEmail(email);
-    }
-
-    /**
-     * 전화번호 중복 체크
-     * @param phone : 중복 체크할 전화번호
-     * @return : 중복된 전화번호가 있다면 false, 없다면 true
-     */
-    @Override
-    public Boolean checkPhone(Phone phone) {
-        return !memberMstRepository.existsByPhone(phone);
     }
 
     private String[] generateToken(MemberMstEntity memberMstEntity){

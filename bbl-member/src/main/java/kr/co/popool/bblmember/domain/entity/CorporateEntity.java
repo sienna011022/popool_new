@@ -18,11 +18,17 @@ public class CorporateEntity extends BaseEntity {
 
     @Column(name = "ceo_name", nullable = false, length = 100)
     private String ceoName;
+<<<<<<<<< Temporary merge branch 1
 
-    @Column(name = "business_number", nullable = false, length = 100)
+    @Column(name = "business_number", unique = true, nullable = false, length = 100)
     private Long businessNumber;
 
+    @Column(name = "business_name", unique = true, nullable = false, length = 100)
+=========
+    @Column(name = "business_number", nullable = false, length = 100)
+    private Long businessNumber;
     @Column(name = "business_name", nullable = false, length = 100)
+>>>>>>>>> Temporary merge branch 2
     private String businessName;
 
     @OneToOne
@@ -36,6 +42,14 @@ public class CorporateEntity extends BaseEntity {
         this.businessNumber = businessNumber;
         this.businessName = businessName;
         this.memberMstEntity = memberMstEntity;
+    }
+
+    public void updateCorporate(CorporateDto.UPDATE update){
+<<<<<<<<< Temporary merge branch 1
+        //TODO : 기업 회원 수정 메소드
+=========
+        //TODO : 기업 회원 정보 수정
+>>>>>>>>> Temporary merge branch 2
     }
 }
 
