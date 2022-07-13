@@ -26,4 +26,13 @@ public class CorporateController {
         corporateService.corporateSignUp(create);
         return ResponseFormat.ok();
     }
+
+    @ApiOperation("기업 정보 수정")
+    @PostMapping("/update/corporate")
+    public ResponseFormat corporateUpdate(@RequestBody @Valid CorporateDto.UPDATE_CORPORATE update_corporate){
+        corporateService.corporateUpdate(update_corporate);
+        return ResponseFormat.ok();
+    }
+
+
 }

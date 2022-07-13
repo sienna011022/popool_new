@@ -9,15 +9,10 @@ import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.entity.MemberMstEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
-import kr.co.popool.bblmember.domain.shared.enums.Gender;
-import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
-import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.interceptor.CorporateThreadLocal;
 import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
-import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
-import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,6 +74,7 @@ public class MemberMstServiceImpl implements MemberMstService{
         }
 
         memberMstEntity.updateMemberMst(update);
+        memberMstEntity.updateUseMember(memberMstEntity.getId());
         memberMstRepository.save(memberMstEntity);
     }
 
@@ -106,6 +102,7 @@ public class MemberMstServiceImpl implements MemberMstService{
         }
 
         memberMstEntity.updatePassword(passwordEncoder.encode(update_password.getNewPassword()));
+        memberMstEntity.updateUseMember(memberMstEntity.getId());
         memberMstRepository.save(memberMstEntity);
     }
 
@@ -127,6 +124,7 @@ public class MemberMstServiceImpl implements MemberMstService{
         }
 
         memberMstEntity.updateAddress(update_address);
+        memberMstEntity.updateUseMember(memberMstEntity.getId());
         memberMstRepository.save(memberMstEntity);
     }
 
@@ -148,6 +146,7 @@ public class MemberMstServiceImpl implements MemberMstService{
         }
 
         memberMstEntity.updatePhone(update_phone);
+        memberMstEntity.updateUseMember(memberMstEntity.getId());
         memberMstRepository.save(memberMstEntity);
     }
 

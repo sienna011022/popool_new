@@ -65,4 +65,21 @@ public class CorporateDto {
         private String memberRank;
     }
 
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class UPDATE_CORPORATE{
+        @ApiModelProperty(example = "변경할 대표 성함")
+        @NotBlank(message = "기업 대표 성함을 입력해주세요.")
+        private String ceoName;
+
+        @ApiModelProperty(example = "변경할 사업자번호")
+        @NotBlank(message = "사업자 번호를 입력해주세요.")
+        private Long businessNumber;
+
+        @ApiModelProperty(example = "변경할 사업자명")
+        @NotBlank(message = "사업자명을 입력해주세요.")
+        private String businessName;
+    }
+
 }

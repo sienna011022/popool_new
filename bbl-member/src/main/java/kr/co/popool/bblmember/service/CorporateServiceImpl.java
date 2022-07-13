@@ -4,13 +4,13 @@ import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
-import kr.co.popool.bblmember.domain.dto.MemberMstDto;
 import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberMstEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
+import kr.co.popool.bblmember.infra.interceptor.CorporateThreadLocal;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberMstRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +67,16 @@ public class CorporateServiceImpl implements CorporateService{
                 .build();
 
         memberMstRepository.save(memberMstEntity);
+        corporateRepository.save(corporateEntity);
+    }
+
+    @Override
+    public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+
+        corporateEntity.corporateUpdate(update_corporate);
+
+        corporateEntity.updateUseMember(corporateEntity.getId());
         corporateRepository.save(corporateEntity);
     }
 

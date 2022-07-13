@@ -37,4 +37,10 @@ public class CorporateEntity extends BaseEntity {
         this.businessName = businessName;
         this.memberMstEntity = memberMstEntity;
     }
+
+    public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate){
+        this.ceoName = update_corporate.getCeoName();
+        this.businessName = update_corporate.getBusinessName();
+        this.businessNumber = update_corporate.getBusinessNumber();
+    }
 }
