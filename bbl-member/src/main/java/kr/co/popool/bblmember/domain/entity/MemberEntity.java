@@ -16,14 +16,9 @@ import javax.persistence.*;
 @Getter
 public class MemberEntity extends BaseEntity {
 
-<<<<<<<<< Temporary merge branch 1
-    /*
-        TODO : 일반 회원 필드
-     */
-=========
     @Column(name = "payment_agree", nullable = false, length = 1)
     private String paymentAgree_yn = "N";
->>>>>>>>> Temporary merge branch 2
+
 
     @OneToOne
     @JoinColumn(name = "member_mst_id")

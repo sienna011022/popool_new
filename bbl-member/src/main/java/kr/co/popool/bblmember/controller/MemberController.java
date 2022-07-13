@@ -2,8 +2,8 @@ package kr.co.popool.bblmember.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.bblmember.domain.dto.MemberMstDto;
-import kr.co.popool.bblmember.service.MemberMstServiceImpl;
+import kr.co.popool.bblmember.domain.dto.MemberDto;
+import kr.co.popool.bblmember.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +17,12 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberMstServiceImpl memberMstService;
+    private final MemberServiceImpl memberService;
 
     @ApiOperation("일반 회원가입")
     @PostMapping("/normal/signUp")
-    public ResponseFormat signUp(@RequestBody @Valid MemberMstDto.CREATE create){
-        memberMstService.signUp(create);
+    public ResponseFormat signUp(@RequestBody @Valid MemberDto.CREATE create){
+        memberService.signUp(create);
         return ResponseFormat.ok();
     }
 }
