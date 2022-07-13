@@ -9,36 +9,35 @@ import javax.persistence.*;
 @Getter
 @Entity
 @ToString
-@Setter
+@AttributeOverride(name = "id", column = @Column(name = "score_id"))
 public class ScoreEntity extends BaseEntity {
 
-
     @ManyToOne
-    @JoinColumn(name = "career_identity")
-    private CareerEntity careerIdentity;
+    @JoinColumn(name = "career_id")
+    private CareerEntity careerEntity;
 
-    @Column(name = "evaluator_id", nullable = true, length = 100)
+    @Column(name = "evaluator_id", nullable = false, length = 100)
     private String evaluatorId;
 
-    @Column(name = "attendance", nullable = true, length = 100)
+    @Column(name = "attendance", nullable = false, length = 100)
     private int attendance;
 
-    @Column(name = "sincerity", nullable = true, length = 100)
+    @Column(name = "sincerity", nullable = false, length = 100)
     private int sincerity;
 
-    @Column(name = "positiveness", nullable = true, length = 100)
+    @Column(name = "positiveness", nullable = false, length = 100)
     private int positiveness;
 
-    @Column(name = "technical", nullable = true, length = 100)
+    @Column(name = "technical", nullable = false, length = 100)
     private int technical;
 
-    @Column(name = "cooperative", nullable = true, length = 100)
+    @Column(name = "cooperative", nullable = false, length = 100)
     private int cooperative;
 
 
     @Builder
-    public ScoreEntity(CareerEntity careerIdentity, String evaluatorId, int attendance, int sincerity, int positiveness, int technical, int cooperative) {
-        this.careerIdentity = careerIdentity;
+    public ScoreEntity(CareerEntity careerEntity, String evaluatorId, int attendance, int sincerity, int positiveness, int technical, int cooperative) {
+        this.careerEntity = careerEntity;
         this.evaluatorId = evaluatorId;
         this.attendance = attendance;
         this.sincerity = sincerity;

@@ -1,1 +1,3 @@
 rootProject.name = 'popool'
+include 'bbl-member'
+
