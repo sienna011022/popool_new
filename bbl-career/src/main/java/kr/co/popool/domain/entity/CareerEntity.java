@@ -1,7 +1,6 @@
 package kr.co.popool.domain.entity;
 import kr.co.popool.domain.shared.BaseEntity;
 import lombok.*;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;

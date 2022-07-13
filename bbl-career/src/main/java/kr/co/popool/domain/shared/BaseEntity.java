@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 @EntityListeners(AuditingEntityListener.class) // 공통적으로 가지고 있는 필드나 컬럼들을 시간에 대해서 자동으로 값을 넣어주는 기능
 @EqualsAndHashCode(of="id", callSuper = false)
 @Getter
+
 public class BaseEntity {
 
     @Id
