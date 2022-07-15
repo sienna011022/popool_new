@@ -57,6 +57,20 @@ public class CareerServiceImpl implements CareerService {
             }
 
     }
+    @Override
+    @Transactional
+    public CareerEntity update(Long id, CareerDto.UPDATE careerDto) {
+        //TODO:수정 예외 처리
+
+        log.info("career id:{},career:{}",id,careerDto.toString());
+
+        Optional<CareerEntity> careerEntity = careerRepository.findById(id);
+        careerEntity.get().updateCareer(careerDto);
+
+        CareerEntity updated = careerRepository.save(careerEntity.get());
+        return updated;
+    }
+
 
 
 

@@ -46,5 +46,13 @@ public class CareerController {
                 ResponseFormat.fail("등록 실패");
     }
 
+    //인사 수정 - PATCH
+    @PatchMapping("/{id}")
+    public ResponseFormat updateCareer(@PathVariable Long id, @RequestBody CareerDto.UPDATE careerDto){
+        CareerEntity updated = careerService.update(id,careerDto);
+        return (updated != null) ?  ResponseFormat.ok(updated) :
+                ResponseFormat.fail("수정 실패");
+    }
+
 }
 

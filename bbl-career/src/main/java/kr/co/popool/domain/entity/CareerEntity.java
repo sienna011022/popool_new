@@ -44,6 +44,12 @@ public class CareerEntity extends BaseEntity {
         this.context = context;
 
     }
+    public void updateCareer(CareerDto.UPDATE careerUpdate){
+        this.name = careerUpdate.getName();
+        this.period = careerUpdate.getPeriod();
+        this.context = careerUpdate.getContext();
+        this.historyId = careerUpdate.getHistoryId();
 
+    }
 
 }

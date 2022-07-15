@@ -16,5 +16,7 @@ public interface CareerService {
 
     CareerEntity newCareer(CareerDto.CREATE newCareer);
 
+    CareerEntity update(Long id, CareerDto.UPDATE careerDto);
+
 
 }

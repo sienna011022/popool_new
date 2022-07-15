@@ -79,6 +79,37 @@ public  class CareerDto {
 
 
     }
+    @Builder
+    @ToString
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UPDATE {
+
+        @ApiModelProperty(example = "member 아이디")
+        @NotBlank(message = "본인의 아이디를 입력하세요")
+        private String identity;
+
+        @ApiModelProperty(example = "이름")
+        @NotBlank(message = "이름를 입력해주세요.")
+        private String name;
+
+        @ApiModelProperty(example = "재직 기간")
+        @NotBlank(message = "재직 기간을 입력해주세요")
+        private String period;
+
+        @ApiModelProperty(example = "간단한 자기 소개")
+        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+        private String context;
+
+        @ApiModelProperty(example = "블록체인 아이디")
+        @NotBlank(message = "블록체인")
+        private String historyId;
+
+
+
+    }
+
 
 
 
