@@ -1,14 +1,12 @@
 package kr.co.popool.domain.entity;
 import kr.co.popool.domain.shared.BaseEntity;
 import lombok.*;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tbl_career")
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "identity", "history_id" }) },name = "tbl_career")
 @Getter
 @ToString
 @Entity
