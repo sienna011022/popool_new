@@ -11,6 +11,10 @@ import java.util.Optional;
 public interface CareerService {
 
     List<CareerEntity> showAll();
+
     Optional<CareerEntity> show(Long id);
+
     CareerEntity newCareer(CareerDto.CREATE newCareer);
+
+
 }

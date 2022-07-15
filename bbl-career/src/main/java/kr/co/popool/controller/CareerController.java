@@ -1,5 +1,6 @@
 package kr.co.popool.controller;
 
+import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.service.CareerServiceImpl;
@@ -38,11 +39,12 @@ public class CareerController {
 
     //인사 등록 - POST
     @PostMapping()
-    public ResponseEntity<CareerEntity> createCareer(@RequestBody @Valid CareerDto.CREATE careerDto){
+    public ResponseFormat createCareer(@RequestBody @Valid CareerDto.CREATE careerDto){
         CareerEntity created = careerService.newCareer(careerDto);
         return(created != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(created) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                ResponseFormat.ok(created) :
+                ResponseFormat.fail("등록 실패");
     }
+
 }
 

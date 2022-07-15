@@ -34,6 +34,11 @@ public  class CareerDto {
         @NotBlank(message = "재직 기간을 입력해주세요")
         private String period;
 
+
+        @ApiModelProperty(example = "간단한 자기 소개")
+        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+        private String context;
+
         @ApiModelProperty(example = "블록체인 아이디")
         @NotBlank(message = "블록체인")
         private String historyId;
@@ -61,6 +66,12 @@ public  class CareerDto {
         @NotBlank(message = "재직 기간을 입력해주세요")
         private String period;
 
+
+        @ApiModelProperty(example = "간단한 자기 소개")
+        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+        private String context;
+
+
         @ApiModelProperty(example = "블록체인 아이디")
         @NotBlank(message = "블록체인")
         private String historyId;
@@ -68,6 +79,7 @@ public  class CareerDto {
 
 
     }
+
 
 
 }
