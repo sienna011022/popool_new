@@ -23,6 +23,12 @@ public class MemberMstController {
         return ResponseFormat.ok(memberMstService.login(login));
     }
 
+    @ApiOperation("자신 회원 정보 조회")
+    @GetMapping()
+    public ResponseFormat<MemberMstDto.READ> get(){
+        return ResponseFormat.ok(memberMstService.get());
+    }
+
     @ApiOperation("회원 정보 수정")
     @PutMapping("/update")
     public ResponseFormat update(@RequestBody @Valid MemberMstDto.UPDATE update){

@@ -50,6 +50,41 @@ public class MemberMstServiceImpl implements MemberMstService{
     }
 
     @Override
+    public MemberMstDto.READ get() {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        CorporateEntity corporateEntity = CorporateThreadLocal.get();
+        MemberMstEntity memberMstEntity = null;
+        if(memberEntity != null){
+            memberMstEntity = memberEntity.getMemberMstEntity();
+        }
+        if(corporateEntity != null){
+            memberMstEntity = corporateEntity.getMemberMstEntity();
+        }
+        if(memberMstEntity == null){
+            throw new BusinessLogicException(ErrorCode.RE_LOGIN);
+        }
+
+        MemberMstDto.READ read = MemberMstDto.READ.builder()
+                .id(memberMstEntity.getId())
+                .identity(memberMstEntity.getIdentity())
+                .name(memberMstEntity.getName())
+                .address(memberMstEntity.getAddress())
+                .birth(memberMstEntity.getBirth())
+                .email(memberMstEntity.getEmail())
+                .phone(memberMstEntity.getPhone())
+                .gender(memberMstEntity.getGender())
+                .memberRank(memberMstEntity.getMemberRank())
+                .create_at(memberMstEntity.getCreated_at())
+                .build();
+
+        return read;
+    }
+
+    /**
+     * 개인 정보 수정
+     * @param update : 변경할 데이터
+     */
+    @Override
     @Transactional
     public void update(MemberMstDto.UPDATE update) {
         MemberEntity memberEntity = MemberThreadLocal.get();
@@ -78,6 +113,10 @@ public class MemberMstServiceImpl implements MemberMstService{
         memberMstRepository.save(memberMstEntity);
     }
 
+    /**
+     * 비밀번호 수정
+     * @param update_password : 변경할 데이터
+     */
     @Override
     @Transactional
     public void updatePassword(MemberMstDto.UPDATE_PASSWORD update_password) {
@@ -106,6 +145,10 @@ public class MemberMstServiceImpl implements MemberMstService{
         memberMstRepository.save(memberMstEntity);
     }
 
+    /**
+     * 주소 수정
+     * @param update_address : 변경할 데이터
+     */
     @Override
     @Transactional
     public void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address) {
@@ -128,6 +171,10 @@ public class MemberMstServiceImpl implements MemberMstService{
         memberMstRepository.save(memberMstEntity);
     }
 
+    /**
+     * 전화번호 수정
+     * @param update_phone : 변경할 데이터
+     */
     @Override
     @Transactional
     public void updatePhone(MemberMstDto.UPDATE_PHONE update_phone) {

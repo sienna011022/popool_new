@@ -8,7 +8,8 @@ public interface MemberMstService {
     //login
     MemberMstDto.TOKEN login(MemberMstDto.LOGIN login);
 
-    //TODO : 조회 서비스
+    //get
+    MemberMstDto.READ get();
 
     //update
     void update(MemberMstDto.UPDATE update);

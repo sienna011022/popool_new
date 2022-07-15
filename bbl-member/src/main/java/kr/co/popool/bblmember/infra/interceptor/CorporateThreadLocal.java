@@ -10,8 +10,8 @@ public class CorporateThreadLocal {
         corporateThreadLocal = new ThreadLocal<>();
     }
 
-    public static void set(CorporateEntity corporateEntity){
-        corporateThreadLocal.set(corporateEntity);
+    public static void set(CorporateEntity memberEntity){
+        corporateThreadLocal.set(memberEntity);
     }
 
     public static void remove(){

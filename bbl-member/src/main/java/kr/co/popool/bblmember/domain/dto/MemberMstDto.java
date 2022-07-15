@@ -1,6 +1,10 @@
 package kr.co.popool.bblmember.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popool.bblmember.domain.shared.Address;
+import kr.co.popool.bblmember.domain.shared.Phone;
+import kr.co.popool.bblmember.domain.shared.enums.Gender;
+import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 
 public class MemberMstDto {
 
@@ -109,5 +114,30 @@ public class MemberMstDto {
         @ApiModelProperty(example = "010-XXXX-XXXX")
         @NotBlank(message = "휴대폰 번호를 입력해주세요")
         private String newPhoneNumber;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class READ {
+
+        @ApiModelProperty(example = "1")
+        private Long id;
+        @ApiModelProperty(example = "사용자 아이디")
+        private String identity;
+        @ApiModelProperty(example = "홍길동")
+        private String name;
+        private Address address;
+        private Phone phone;
+        @ApiModelProperty(example = "example@email.com")
+        private String email;
+        @ApiModelProperty(example = "MALE or FEMALE")
+        private Gender gender;
+        @ApiModelProperty(example = "YYmmDD")
+        private String birth;
+        @ApiModelProperty(example = "NORMAL or CORPORATE")
+        private MemberRank memberRank;
+        @ApiModelProperty(example = "2022-01-01")
+        private Timestamp create_at;
     }
 }
