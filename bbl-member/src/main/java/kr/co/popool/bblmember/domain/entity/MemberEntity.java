@@ -19,7 +19,6 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "payment_agree", nullable = false, length = 1)
     private String paymentAgree_yn = "N";
 
-
     @OneToOne
     @JoinColumn(name = "member_mst_id")
     private MemberMstEntity memberMstEntity;

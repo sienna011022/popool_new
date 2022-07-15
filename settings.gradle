@@ -1,4 +1,4 @@
 rootProject.name = 'popool'
 include 'bbl-member'
 include 'bbl-common'
-
+include 'bbl-career'
