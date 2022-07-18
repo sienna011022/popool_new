@@ -8,9 +8,14 @@ import kr.co.popool.repository.CareerRepository;
 import kr.co.popool.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j //로깅을 위함
@@ -18,6 +23,32 @@ import java.util.Optional;
 public class ScoreServiceImpl implements ScoreService {
     private final CareerRepository careerRepository;
     private final ScoreRepository scoreRepository;
+    private final ModelMapper modelMapper;
+
+    public List<ScoreDto.SCOREINFO> showScores(Long identity) {
+
+        List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerId(identity);
+
+        if (scoreEntityList.isEmpty()) {
+            throw new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다");
+        }
+
+        List<ScoreDto.SCOREINFO> ScoreList = new ArrayList<>();
+
+        for (ScoreEntity list : scoreEntityList) {
+            ScoreDto.SCOREINFO score = ScoreDto.SCOREINFO.builder()
+                    .evaluatorId(list.getEvaluatorId())
+                    .attendance(list.getAttendance())
+                    .sincerity(list.getSincerity())
+                    .positiveness(list.getSincerity())
+                    .technical(list.getTechnical())
+                    .cooperative(list.getCooperative())
+                    .build();
+            ScoreList.add(score);
+        }
+
+        return ScoreList;
+}
 
     @Override
     public ScoreDto.SCOREINFO createScore(Long id, ScoreDto.SCOREINFO newScore) {

@@ -5,7 +5,11 @@ import kr.co.popool.service.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -15,6 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class ScoreController {
 
         private final ScoreServiceImpl scoreService;
+
+        @GetMapping()
+        public ResponseFormat scores(@PathVariable Long id){
+            List<ScoreDto.SCOREINFO> scoreDtoList = scoreService.showScores(id);
+            return ResponseFormat.ok(scoreDtoList);
+        }
 
         @PostMapping()
         public ResponseFormat create(@PathVariable Long id, @RequestBody ScoreDto.SCOREINFO newScoreDto) {
