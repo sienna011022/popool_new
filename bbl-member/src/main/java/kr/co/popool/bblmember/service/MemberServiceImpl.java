@@ -5,7 +5,6 @@ import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
-import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
