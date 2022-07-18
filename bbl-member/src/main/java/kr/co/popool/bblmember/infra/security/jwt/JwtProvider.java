@@ -4,14 +4,10 @@ import io.jsonwebtoken.*;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.bblcommon.error.exception.UnauthorizedException;
 import kr.co.popool.bblcommon.error.exception.UserDefineException;
-import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
-import kr.co.popool.bblmember.domain.entity.MemberMstEntity;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenInvalidException;
-import kr.co.popool.bblmember.repository.CorporateRepository;
-import kr.co.popool.bblmember.repository.MemberMstRepository;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +37,7 @@ public class JwtProvider {
     private final long ACCESS_EXPIRE = 1000 * 60 * 30;              //30분
     private final long REFRESH_EXPIRE = 1000 * 60 * 60 * 24 * 14;   //2주
 
-    private final MemberMstRepository memberMstRepository;
     private final MemberRepository memberRepository;
-    private final CorporateRepository corporateRepository;
 
     /**
      * 시크릿 키를 Base64로 인코딩을 하는 메소드.
@@ -119,13 +113,13 @@ public class JwtProvider {
      * @return 사용자의 새로운 AccessToken
      */
     public String createAccessToken(String refreshToken){
-        MemberMstEntity memberMstEntity = findMemberMstByToken(refreshToken);
+        MemberEntity memberEntity = findMemberByToken(refreshToken);
 
-        if(!memberMstEntity.getRefreshToken().equals(refreshToken))
+        if(!memberEntity.getRefreshToken().equals(refreshToken))
             throw new UnauthorizedException();
 
-        return createAccessToken(memberMstEntity.getIdentity()
-                , memberMstEntity.getMemberRole(), memberMstEntity.getName());
+        return createAccessToken(memberEntity.getIdentity()
+                , memberEntity.getMemberRole(), memberEntity.getName());
     }
 
     /**
@@ -204,39 +198,13 @@ public class JwtProvider {
     }
 
     /**
-     * 토큰을 통해 MemberEntity 객체를 가져오는 메서드
-     * @param token : 토큰
-     * @return : jwt 토큰을 통해 찾은 MemberEntity 객체
-     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
-     */
-    public Optional<MemberEntity> findMemberByToken(String token){
-        MemberMstEntity memberMstEntity = memberMstRepository.findByIdentity(findIdentityByToken(token))
-                .orElseThrow(() -> new NotFoundException("MemberMstEntity"));
-
-        return memberRepository.findByMemberMstEntity(memberMstEntity);
-    }
-
-    /**
-     * 토큰을 통해 CorporateEntity 객체를 가져오는 메서드
-     * @param token : 토큰
-     * @return : jwt 토큰을 통해 찾은 CorporateEntity 객체
-     * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
-     */
-    public Optional<CorporateEntity> findCorporateByToken(String token){
-        MemberMstEntity memberMstEntity = memberMstRepository.findByIdentity(findIdentityByToken(token))
-                .orElseThrow(() -> new NotFoundException("MemberMstEntity"));
-
-        return corporateRepository.findByMemberMstEntity(memberMstEntity);
-    }
-
-    /**
      * 토큰을 통해 MemberMstEntity 객체를 가져오는 메서드
      * @param token : 토큰
      * @return : jwt 토큰을 통해 찾은 MemberMstEntity 객체
      * @Exception UserNotFoundException : 해당 회원을 찾을 수 없는 경우 발생하는 예외
      */
-    public MemberMstEntity findMemberMstByToken(String token){
-        return memberMstRepository.findByIdentity(findIdentityByToken(token))
+    public MemberEntity findMemberByToken(String token){
+        return memberRepository.findByIdentity(findIdentityByToken(token))
                 .orElseThrow(() -> new NotFoundException("MemberMstEntity"));
     }
 

@@ -1,6 +1,5 @@
 package kr.co.popool.bblmember.infra.interceptor;
 
-import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +24,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Optional<MemberEntity> memberEntity = jwtProvider.findMemberByToken(token);
-        Optional<CorporateEntity> corporateEntity = jwtProvider.findCorporateByToken(token);
-
-        if(memberEntity.isPresent()) {
-            MemberThreadLocal.set(memberEntity.get());
-        }
-        if(corporateEntity.isPresent()){
-            CorporateThreadLocal.set(corporateEntity.get());
-        }
+        MemberEntity memberEntity = jwtProvider.findMemberByToken(token);
+        MemberThreadLocal.set(memberEntity);
 
         return true;
     }
@@ -42,11 +34,9 @@ public class AuthInterceptor implements HandlerInterceptor {
     public void postHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response
             , @NotNull Object handler, ModelAndView modelAndView) {
 
-        if(MemberThreadLocal.get() != null){
-            MemberThreadLocal.remove();
+        if(MemberThreadLocal.get() == null){
+            return;
         }
-        if(CorporateThreadLocal.get() != null){
-            CorporateThreadLocal.remove();
-        }
+        MemberThreadLocal.remove();
     }
 }

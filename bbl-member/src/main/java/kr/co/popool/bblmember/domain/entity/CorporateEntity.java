@@ -25,17 +25,12 @@ public class CorporateEntity extends BaseEntity {
     @Column(name = "business_name", nullable = false, length = 100)
     private String businessName;
 
-    @OneToOne
-    @JoinColumn(name = "mst_id")
-    private MemberMstEntity memberMstEntity;
 
     @Builder
-    public CorporateEntity(String ceoName, Long businessNumber
-            , String businessName, MemberMstEntity memberMstEntity) {
+    public CorporateEntity(String ceoName, Long businessNumber, String businessName) {
         this.ceoName = ceoName;
         this.businessNumber = businessNumber;
         this.businessName = businessName;
-        this.memberMstEntity = memberMstEntity;
     }
 
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate){

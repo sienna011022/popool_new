@@ -1,5 +1,6 @@
 package kr.co.popool.bblmember.infra.interceptor;
 
+
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 
 public class MemberThreadLocal  {
