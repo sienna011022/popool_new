@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tbl_member_mst")
+@Table(name = "tbl_member")
 @Getter
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -69,20 +69,6 @@ public class MemberEntity extends BaseEntity {
     private CorporateEntity corporateEntity;
 
     @Builder
-    public MemberEntity(String identity, String password, String name, String birth
-            , Phone phone, Gender gender, MemberRole memberRole, MemberRank memberRank) {
-        this.identity = identity;
-        this.password = password;
-        this.name = name;
-        this.birth = birth;
-        this.phone = phone;
-        this.gender = gender;
-        this.memberRole = memberRole;
-        this.memberRank = memberRank;
-        this.corporateEntity = null;
-    }
-
-    @Builder
     public MemberEntity(String identity,
                         String password,
                         String name,
@@ -103,7 +89,7 @@ public class MemberEntity extends BaseEntity {
         this.corporateEntity = corporateEntity;
     }
 
-    public void updateMemberMst(MemberDto.UPDATE memberUpdate){
+    public void updateMember(MemberDto.UPDATE memberUpdate){
         this.name = memberUpdate.getName();
         this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
         this.phone = new Phone(memberUpdate.getPhone());

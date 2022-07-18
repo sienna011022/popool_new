@@ -8,10 +8,8 @@ public interface MemberService {
     //login
     MemberDto.TOKEN login(MemberDto.LOGIN login);
 
-    //common
-    boolean checkIdentity(String identity);
-    boolean checkEmail(String email);
-    boolean checkPhone(Phone phone);
+    //create
+    void signUp(MemberDto.CREATE create);
 
     //update
     void update(MemberDto.UPDATE update);
@@ -20,9 +18,12 @@ public interface MemberService {
     void updatePhone(MemberDto.UPDATE_PHONE update_phone);
     void paymentAgreeUpdate();
 
-
     //get
     MemberDto.READ get();
     boolean getAddress();
 
+    //common
+    boolean checkIdentity(String identity);
+    boolean checkEmail(String email);
+    boolean checkPhone(Phone phone);
 }

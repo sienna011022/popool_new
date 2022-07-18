@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 public class AuthInterceptor implements HandlerInterceptor {
 

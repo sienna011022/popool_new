@@ -47,6 +47,11 @@ public class CorporateServiceImpl implements CorporateService{
         }
 
         //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 CORPORATE_MEMBER 자동 설정.
+        CorporateEntity corporateEntity = CorporateEntity.builder()
+                .ceoName(create_corporate.getCeoName())
+                .businessName(create_corporate.getBusinessName())
+                .businessNumber(create_corporate.getBusinessNumber())
+                .build();
 
         MemberEntity memberEntity = MemberEntity.builder()
                 .identity(create_corporate.getIdentity())
@@ -57,16 +62,11 @@ public class CorporateServiceImpl implements CorporateService{
                 .gender(Gender.of(create_corporate.getGender()))
                 .memberRank(MemberRank.of(create_corporate.getMemberRank()))
                 .memberRole(MemberRole.of(create_corporate.getMemberRole()))
+                .corporateEntity(corporateEntity)
                 .build();
 
-        CorporateEntity corporateEntity = CorporateEntity.builder()
-                .ceoName(create_corporate.getCeoName())
-                .businessName(create_corporate.getBusinessName())
-                .businessNumber(create_corporate.getBusinessNumber())
-                .build();
-
-        memberRepository.save(memberEntity);
         corporateRepository.save(corporateEntity);
+        memberRepository.save(memberEntity);
     }
 
     @Override

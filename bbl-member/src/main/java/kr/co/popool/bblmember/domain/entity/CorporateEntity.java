@@ -25,7 +25,6 @@ public class CorporateEntity extends BaseEntity {
     @Column(name = "business_name", nullable = false, length = 100)
     private String businessName;
 
-
     @Builder
     public CorporateEntity(String ceoName, Long businessNumber, String businessName) {
         this.ceoName = ceoName;

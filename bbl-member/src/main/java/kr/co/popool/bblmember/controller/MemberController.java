@@ -2,6 +2,7 @@ package kr.co.popool.bblmember.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
+import kr.co.popool.bblmember.domain.dto.CorporateDto;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.service.MemberServiceImpl;
@@ -23,10 +24,11 @@ public class MemberController {
         return ResponseFormat.ok(memberService.login(login));
     }
 
-    @ApiOperation("자신 회원 정보 조회")
-    @GetMapping()
-    public ResponseFormat<MemberDto.READ> get(){
-        return ResponseFormat.ok(memberService.get());
+    @ApiOperation("일반 회원가입")
+    @PostMapping("/members/signUp")
+    public ResponseFormat corporateSignUp(@RequestBody @Valid MemberDto.CREATE create){
+        memberService.signUp(create);
+        return ResponseFormat.ok();
     }
 
     @ApiOperation("회원 정보 수정")
@@ -57,11 +59,17 @@ public class MemberController {
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("일반 회원 자동 결제 여부 수정")
+    @ApiOperation("회원 자동 결제 여부 수정")
     @PutMapping("/update/member")
     public ResponseFormat paymentAgreeUpdate(){
         memberService.paymentAgreeUpdate();
         return ResponseFormat.ok();
+    }
+
+    @ApiOperation("자신 회원 정보 조회")
+    @GetMapping()
+    public ResponseFormat<MemberDto.READ> get(){
+        return ResponseFormat.ok(memberService.get());
     }
 
     @ApiOperation("아이디 중복 체크")

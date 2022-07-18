@@ -5,8 +5,12 @@ import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
+import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
+import kr.co.popool.bblmember.domain.shared.enums.Gender;
+import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
+import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberRepository;
@@ -47,29 +51,32 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto.READ get() {
-        MemberEntity memberEntity = MemberThreadLocal.get();
+    public void signUp(MemberDto.CREATE create) {
+        if(!checkIdentity(create.getIdentity())){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
+        }
 
-        MemberDto.READ read = MemberDto.READ.builder()
-                .id(memberEntity.getId())
-                .identity(memberEntity.getIdentity())
-                .name(memberEntity.getName())
-                .address(memberEntity.getAddress())
-                .birth(memberEntity.getBirth())
-                .email(memberEntity.getEmail())
-                .phone(memberEntity.getPhone())
-                .gender(memberEntity.getGender())
-                .memberRank(memberEntity.getMemberRank())
-                .create_at(memberEntity.getCreated_at())
+        if(!create.getPassword().equals(create.getCheckPassword())){
+            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        if(!checkPhone(new Phone(create.getPhone()))){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        }
+
+        MemberEntity memberEntity = MemberEntity.builder()
+                .identity(create.getIdentity())
+                .password(passwordEncoder.encode(create.getPassword()))
+                .name(create.getName())
+                .birth(create.getBirth())
+                .phone(new Phone(create.getPhone()))
+                .gender(Gender.of(create.getGender()))
+                .memberRank(MemberRank.of(create.getMemberRank()))
+                .memberRole(MemberRole.of(create.getMemberRole()))
+                .corporateEntity(null)
                 .build();
 
-        return read;
-    }
-
-    //TODO
-    @Override
-    public boolean getAddress() {
-        return false;
+        memberRepository.save(memberEntity);
     }
 
     /**
@@ -88,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
             throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
         }
 
-        memberEntity.updateMemberMst(update);
+        memberEntity.updateMember(update);
         memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
@@ -157,6 +164,31 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+    @Override
+    public MemberDto.READ get() {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+
+        MemberDto.READ read = MemberDto.READ.builder()
+                .id(memberEntity.getId())
+                .identity(memberEntity.getIdentity())
+                .name(memberEntity.getName())
+                .address(memberEntity.getAddress())
+                .birth(memberEntity.getBirth())
+                .email(memberEntity.getEmail())
+                .phone(memberEntity.getPhone())
+                .gender(memberEntity.getGender())
+                .memberRank(memberEntity.getMemberRank())
+                .create_at(memberEntity.getCreated_at())
+                .build();
+
+        return read;
+    }
+
+    //TODO
+    @Override
+    public boolean getAddress() {
+        return false;
+    }
 
     /**
      * 아이디 중복 체크
