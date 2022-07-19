@@ -9,12 +9,12 @@ import javax.persistence.*;
 
 @ToString
 @Getter
-@Entity
+@NoArgsConstructor
 @Table(name = "tbl_item_mst")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @AttributeOverride(name = "id", column = @Column(name = "item_id"))
-@NoArgsConstructor
+@Entity
 public abstract class ItemMstEntity extends BaseEntity {
 
     @Column(nullable = false)

@@ -11,9 +11,9 @@ import javax.persistence.Entity;
 
 @ToString
 @Getter
+@NoArgsConstructor
 @DiscriminatorValue("C")
 @Entity
-@NoArgsConstructor
 public class CouponEntity extends ItemMstEntity {
 
     @Column(nullable = true)

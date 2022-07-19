@@ -20,7 +20,7 @@ public enum CouponPeriod {
     public static CouponPeriod of(String period_str) {
 
         return Arrays.stream(CouponPeriod.values())
-                .filter(c -> c.toString().equalsIgnoreCase(period_str))
+                .filter(c -> c.getPeriod_str().equalsIgnoreCase(period_str))
                 .findAny().orElseThrow(() -> new RuntimeException("해당 기간의 쿠폰 항목을 찾을 수 없습니다."));
     }
 }
