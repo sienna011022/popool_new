@@ -91,7 +91,7 @@ public class CorporateServiceImpl implements CorporateService{
     /**
      * 기업 정보 조회
      * @return : 기업 정보
-     * @Exception : 기업 회원이 아닙니다.
+     * @Exception WRONG_CORPORATE: 기업 회원이 아닙니다.
      */
     @Override
     public CorporateDto.READ_CORPORATE getCorporate() {

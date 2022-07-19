@@ -3,6 +3,7 @@ package kr.co.popool.bblmember.service;
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
+import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
@@ -188,6 +189,20 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         return read;
+    }
+
+    /**
+     * 아이디 찾기
+     * @param read_id : 아이디를 찾기 위한 이름, 전화번호, 생년월일을 포함한 객체
+     * @return : 찾은 아이디
+     * @Exception NotFoundException : 해당 회원이 없을 경우 발생하는 에러.
+     */
+    @Override
+    public String findIdentity(MemberDto.READ_ID read_id) {
+        return memberRepository
+                .findByNameAndPhoneAndBirth(read_id.getName(), new Phone(read_id.getPhone()), read_id.getBirth())
+                .orElseThrow(() -> new NotFoundException("MemberEntity"))
+                .getIdentity();
     }
 
     /**

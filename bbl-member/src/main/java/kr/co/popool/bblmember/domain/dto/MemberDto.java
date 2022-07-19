@@ -189,4 +189,20 @@ public class MemberDto {
         @ApiModelProperty(example = "2022-01-01")
         private Timestamp create_at;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class READ_ID{
+        @ApiModelProperty("홍길동")
+        @NotBlank(message = "이름을 입력하세요.")
+        private String name;
+
+        @ApiModelProperty(example = "010-XXXX-XXXX")
+        @NotBlank(message = "휴대폰 번호을 입력해주세요.")
+        private String phone;
+
+        @ApiModelProperty(example = "YYmmDD")
+        @NotBlank(message = "생년월일을 입력해주세요.")
+        private String birth;
+    }
 }
