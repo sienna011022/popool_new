@@ -200,6 +200,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 자동 결제 동의 여부 조회
+     * @return 동의라면 true 미동의라면 false
+     */
+    @Override
+    public boolean getPaymentAgree() {
+        return MemberThreadLocal.get().getPaymentAgree_yn() == "Y";
+    }
+
+    /**
      * 아이디 중복 체크
      * @param identity : 중복 체크할 아이디
      * @return : 중복된 아이디가 있다면 false, 없다면 true

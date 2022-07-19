@@ -72,6 +72,18 @@ public class MemberController {
         return ResponseFormat.ok(memberService.get());
     }
 
+    @ApiOperation("주소 등록 여부 조회")
+    @GetMapping("/address")
+    public ResponseFormat<Boolean> getAddress(){
+        return ResponseFormat.ok(memberService.getAddress());
+    }
+
+    @ApiOperation("자동 결제 동의 여부 조회")
+    @GetMapping("/payment")
+    public ResponseFormat<Boolean> getPaymentAgree(){
+        return ResponseFormat.ok(memberService.getPaymentAgree());
+    }
+
     @ApiOperation("아이디 중복 체크")
     @PostMapping("/{rank}/signUp/check")
     public ResponseFormat<Boolean> checkIdentity(

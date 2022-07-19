@@ -21,6 +21,7 @@ public interface MemberService {
     //get
     MemberDto.READ get();
     boolean getAddress();
+    boolean getPaymentAgree();
 
     //common
     boolean checkIdentity(String identity);
