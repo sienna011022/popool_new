@@ -7,10 +7,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tbl_score")
 @Getter
 @Entity
 @ToString
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "evaluator_identity"}) },name = "tbl_score")
 @AttributeOverride(name = "id", column = @Column(name = "score_id"))
 public class ScoreEntity extends BaseEntity {
 

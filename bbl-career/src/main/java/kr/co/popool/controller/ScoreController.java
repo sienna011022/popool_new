@@ -15,26 +15,26 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @PropertySource("classpath:/application.properties")
-@RequestMapping(value="/careers/{id}/scores")
+@RequestMapping(value="/careers/{memberIdentity}/scores")
 public class ScoreController {
 
         private final ScoreServiceImpl scoreService;
 
         @GetMapping()
-        public ResponseFormat show(@PathVariable Long id){
-            List<ScoreDto.SCOREINFO> scoreDtoList = scoreService.showScores(id);
+        public ResponseFormat show(@PathVariable String memberIdentity){
+            List<ScoreDto.SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
             return ResponseFormat.ok(scoreDtoList);
         }
 
         @PostMapping()
-        public ResponseFormat create(@PathVariable Long id, @RequestBody ScoreDto.SCOREINFO newScoreDto) {
-            scoreService.createScore(id,newScoreDto);
+        public ResponseFormat create( @RequestBody ScoreDto.SCOREINFO newScoreDto) {
+            scoreService.createScore(newScoreDto);
             return ResponseFormat.ok();
         }
 
-        @PatchMapping("/{scoreId}")
-        public ResponseFormat update(@PathVariable Long scoreId, @RequestBody ScoreDto.UPDATE updateScoreDto) {
-            scoreService.updateScore(scoreId,updateScoreDto);
+        @PatchMapping("/{evaluatorIdentity}")
+        public ResponseFormat update( @RequestBody ScoreDto.UPDATE updateScoreDto) {
+            scoreService.updateScore(updateScoreDto);
             return ResponseFormat.ok();
         }
 
