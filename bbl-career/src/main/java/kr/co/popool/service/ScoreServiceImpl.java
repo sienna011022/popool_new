@@ -33,7 +33,7 @@ public class ScoreServiceImpl implements ScoreService {
 
         for (ScoreEntity list : scoreEntityList) {
             ScoreDto.SCOREINFO score = ScoreDto.SCOREINFO.builder()
-                    .evaluatorId(list.getEvaluatorId())
+                    .evaluatorId(list.getEvaluatorIdentity())
                     .attendance(list.getAttendance())
                     .sincerity(list.getSincerity())
                     .positiveness(list.getSincerity())
@@ -56,7 +56,7 @@ public class ScoreServiceImpl implements ScoreService {
 
         ScoreEntity scoreEntity = ScoreEntity.builder()
                 .careerEntity(careerEntity.get())
-                .evaluatorId(newScore.getEvaluatorId())
+                .evaluatorIdentity(newScore.getEvaluatorId())
                 .attendance(newScore.getAttendance())
                 .sincerity(newScore.getSincerity())
                 .positiveness(newScore.getSincerity())

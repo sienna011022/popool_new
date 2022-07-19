@@ -28,8 +28,8 @@ public class CareerServiceImpl implements CareerService {
         return careerRepository.findAll();
     }
 
-    public Optional<CareerEntity> show(Long id) {
-        return careerRepository.findById(id);
+    public Optional<CareerEntity> show(String memberIdentity) {
+        return careerRepository.findByMemberIdentity(memberIdentity);
     }
 
     @Override
@@ -37,15 +37,13 @@ public class CareerServiceImpl implements CareerService {
     public CareerEntity newCareer(CareerDto.CREATE newCareer) {
 
         CareerEntity careerEntity = CareerEntity.builder()
-                .identity(newCareer.getIdentity())
+                .memberIdentity(newCareer.getMemberIdentity())
                 .name(newCareer.getName())
+                .context(newCareer.getContext())
                 .period(newCareer.getPeriod())
                 .historyId(newCareer.getHistoryId())
                 .build();
 
-        if (careerEntity.getIdentity() == null) {
-            throw new BadRequestException("본인의 아이디를 입력해주세요");
-        }
 
             try {
                 CareerEntity created = careerRepository.save(careerEntity);
@@ -59,12 +57,12 @@ public class CareerServiceImpl implements CareerService {
     }
     @Override
     @Transactional
-    public CareerEntity update(Long id, CareerDto.UPDATE careerDto) {
+    public CareerEntity update(String memberIdentity, CareerDto.UPDATE careerDto) {
         //TODO:수정 예외 처리
 
-        log.info("career id:{},career:{}",id,careerDto.toString());
+        log.info("member id:{},career:{}",memberIdentity,careerDto.toString());
 
-        Optional<CareerEntity> careerEntity = careerRepository.findById(id);
+        Optional<CareerEntity> careerEntity = careerRepository.findByMemberIdentity(memberIdentity);
         careerEntity.get().updateCareer(careerDto);
 
         CareerEntity updated = careerRepository.save(careerEntity.get());

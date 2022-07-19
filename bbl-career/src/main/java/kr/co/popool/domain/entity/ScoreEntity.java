@@ -18,8 +18,8 @@ public class ScoreEntity extends BaseEntity {
     @JoinColumn(name = "career_id")
     private CareerEntity careerEntity;
 
-    @Column(name = "evaluator_id", nullable = false, length = 100)
-    private String evaluatorId;
+    @Column(name = "evaluator_identity", nullable = false, length = 100)
+    private String evaluatorIdentity;
 
     @Column(name = "attendance", nullable = false, length = 100)
     private int attendance;
@@ -38,9 +38,9 @@ public class ScoreEntity extends BaseEntity {
 
 
     @Builder
-    public ScoreEntity(CareerEntity careerEntity, String evaluatorId, int attendance, int sincerity, int positiveness, int technical, int cooperative) {
+    public ScoreEntity(CareerEntity careerEntity, String evaluatorIdentity, int attendance, int sincerity, int positiveness, int technical, int cooperative) {
         this.careerEntity = careerEntity;
-        this.evaluatorId = evaluatorId;
+        this.evaluatorIdentity = evaluatorIdentity;
         this.attendance = attendance;
         this.sincerity = sincerity;
         this.positiveness = positiveness;

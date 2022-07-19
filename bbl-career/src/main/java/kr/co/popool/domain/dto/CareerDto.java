@@ -20,7 +20,7 @@ public  class CareerDto {
 
         @ApiModelProperty(example = "member아이디")
         @NotBlank(message = "평가를 원하는 member 아이디를 입력하세요")
-        private String identity;
+        private String memberIdentity;
 
         @ApiModelProperty(example = "평가등급")
         @Enumerated(EnumType.STRING)
@@ -56,7 +56,7 @@ public  class CareerDto {
 
         @ApiModelProperty(example = "member 아이디")
         @NotBlank(message = "본인의 아이디를 입력하세요")
-        private String identity;
+        private String memberIdentity;
 
         @ApiModelProperty(example = "이름")
         @NotBlank(message = "이름를 입력해주세요.")
@@ -88,7 +88,7 @@ public  class CareerDto {
 
         @ApiModelProperty(example = "member 아이디")
         @NotBlank(message = "본인의 아이디를 입력하세요")
-        private String identity;
+        private String memberIdentity;
 
         @ApiModelProperty(example = "이름")
         @NotBlank(message = "이름를 입력해주세요.")
