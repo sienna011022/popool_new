@@ -43,10 +43,6 @@ public class CareerServiceImpl implements CareerService {
                 .historyId(newCareer.getHistoryId())
                 .build();
 
-        if (careerEntity.getIdentity() == null) {
-            throw new BadRequestException("본인의 아이디를 입력해주세요");
-        }
-
             try {
                 CareerEntity created = careerRepository.save(careerEntity);
                 return created;
