@@ -148,6 +148,9 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+    /**
+     * 결제 동의 여부 수정
+     */
     @Override
     public void paymentAgreeUpdate() {
         MemberEntity memberEntity = MemberThreadLocal.get();
@@ -163,6 +166,10 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
+    /**
+     * 자기 자신 정보 조회
+     * @return : 자신의 정보
+     */
     @Override
     public MemberDto.READ get() {
         MemberEntity memberEntity = MemberThreadLocal.get();
@@ -183,10 +190,13 @@ public class MemberServiceImpl implements MemberService {
         return read;
     }
 
-    //TODO
+    /**
+     * 주소 등록 여부
+     * @return 주소 등록 안되어있으면 false 되어 있으면 true
+     */
     @Override
     public boolean getAddress() {
-        return false;
+        return MemberThreadLocal.get().getAddress() != null;
     }
 
     /**
