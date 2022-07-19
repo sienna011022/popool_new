@@ -74,12 +74,18 @@ public class CorporateServiceImpl implements CorporateService{
 
     @Override
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
-        CorporateEntity corporateEntity = MemberThreadLocal.get().getCorporateEntity();
 
-        corporateEntity.corporateUpdate(update_corporate);
+        Optional<CorporateEntity> corporateEntity
+                = memberRepository.findByCorporate(MemberThreadLocal.get().getCorporateEntity());
 
-        corporateEntity.updateUseMember(corporateEntity.getId());
-        corporateRepository.save(corporateEntity);
+        if(!corporateEntity.isPresent()){
+            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
+        }
+
+        CorporateEntity corporate = corporateEntity.get();
+        corporate.corporateUpdate(update_corporate);
+        corporate.updateUseMember(corporate.getId());
+        corporateRepository.save(corporate);
     }
 
     /**
@@ -93,7 +99,7 @@ public class CorporateServiceImpl implements CorporateService{
         Optional<CorporateEntity> corporateEntity
                 = memberRepository.findByCorporate(MemberThreadLocal.get().getCorporateEntity());
 
-        if(corporateEntity.isPresent()){
+        if(!corporateEntity.isPresent()){
             throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
         }
 
