@@ -1,6 +1,7 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
+import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
@@ -16,6 +17,8 @@ import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -77,6 +80,30 @@ public class CorporateServiceImpl implements CorporateService{
 
         corporateEntity.updateUseMember(corporateEntity.getId());
         corporateRepository.save(corporateEntity);
+    }
+
+    /**
+     * 기업 정보 조회
+     * @return : 기업 정보
+     * @Exception : 기업 회원이 아닙니다.
+     */
+    @Override
+    public CorporateDto.READ_CORPORATE getCorporate() {
+
+        Optional<CorporateEntity> corporateEntity
+                = memberRepository.findByCorporate(MemberThreadLocal.get().getCorporateEntity());
+
+        if(corporateEntity.isPresent()){
+            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
+        }
+
+        CorporateDto.READ_CORPORATE read_corporate = CorporateDto.READ_CORPORATE.builder()
+                .businessName(corporateEntity.get().getBusinessName())
+                .businessNumber(corporateEntity.get().getBusinessNumber())
+                .ceoName(corporateEntity.get().getCeoName())
+                .build();
+
+        return read_corporate;
     }
 
 }

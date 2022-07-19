@@ -30,5 +30,9 @@ public class CorporateController {
         return ResponseFormat.ok();
     }
 
-
+    @ApiOperation("기업 정보 조회")
+    @GetMapping("/corporate")
+    public ResponseFormat<CorporateDto.READ_CORPORATE> getCorporate(){
+        return ResponseFormat.ok(corporateService.getCorporate());
+    }
 }

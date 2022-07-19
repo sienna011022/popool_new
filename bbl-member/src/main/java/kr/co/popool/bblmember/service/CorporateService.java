@@ -10,4 +10,7 @@ public interface CorporateService {
     //update
     void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate);
 
+    //get
+    CorporateDto.READ_CORPORATE getCorporate();
+
 }
