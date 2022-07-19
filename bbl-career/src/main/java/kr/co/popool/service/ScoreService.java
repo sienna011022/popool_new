@@ -8,5 +8,7 @@ import java.util.List;
 public interface ScoreService {
 
     List<ScoreDto.SCOREINFO> showScores(Long id);
-    ScoreDto.SCOREINFO createScore(Long careerId, ScoreDto.SCOREINFO newScore);
+    void createScore(Long careerId, ScoreDto.SCOREINFO newScore);
+
+    void updateScore(Long scoreId, ScoreDto.UPDATE updateScoreDto);
 }

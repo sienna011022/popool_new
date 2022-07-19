@@ -21,17 +21,21 @@ public class ScoreController {
         private final ScoreServiceImpl scoreService;
 
         @GetMapping()
-        public ResponseFormat scores(@PathVariable Long id){
+        public ResponseFormat show(@PathVariable Long id){
             List<ScoreDto.SCOREINFO> scoreDtoList = scoreService.showScores(id);
             return ResponseFormat.ok(scoreDtoList);
         }
 
         @PostMapping()
         public ResponseFormat create(@PathVariable Long id, @RequestBody ScoreDto.SCOREINFO newScoreDto) {
-            ScoreDto.SCOREINFO created = scoreService.createScore(id,newScoreDto);
-            return ResponseFormat.ok(created);
+            scoreService.createScore(id,newScoreDto);
+            return ResponseFormat.ok();
+        }
 
-
+        @PatchMapping("/{scoreId}")
+        public ResponseFormat update(@PathVariable Long scoreId, @RequestBody ScoreDto.UPDATE updateScoreDto) {
+            scoreService.updateScore(scoreId,updateScoreDto);
+            return ResponseFormat.ok();
         }
 
 }

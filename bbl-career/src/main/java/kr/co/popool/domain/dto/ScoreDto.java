@@ -50,8 +50,34 @@ public class ScoreDto {
         private int cooperative;
     }
 
+    @Builder
+    @ToString
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UPDATE {
 
+        @ApiModelProperty(example = "근태")
+        @NotBlank(message = "근태점수를 입력하세요")
+        private int attendance;
+
+        @ApiModelProperty(example = "성실성")
+        @NotBlank(message = "성실성 점수를 입력하세요")
+        private int sincerity;
+
+        @ApiModelProperty(example = "적극성")
+        @NotBlank(message = "적극성 점수를 입력하세요")
+        private int positiveness;
+
+        @ApiModelProperty(example = "기술스킬")
+        @NotBlank(message = "기술 점수를 입력하세요")
+        private int technical;
+
+        @ApiModelProperty(example = "협업 능력")
+        @NotBlank(message = "협업능력 점수를 입력하세요")
+        private int cooperative;
+
+    }
 }
-
 
 

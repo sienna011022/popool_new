@@ -1,5 +1,7 @@
 package kr.co.popool.domain.entity;
 
+import kr.co.popool.domain.dto.CareerDto;
+import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.shared.BaseEntity;
 import lombok.*;
 import javax.persistence.*;
@@ -46,5 +48,12 @@ public class ScoreEntity extends BaseEntity {
         this.cooperative = cooperative;
     }
 
+    public void updateScore(ScoreDto.UPDATE updateScoreDto){
+        this.attendance = updateScoreDto.getAttendance();
+        this.sincerity = updateScoreDto.getSincerity();
+        this.positiveness = updateScoreDto.getPositiveness();
+        this.technical = updateScoreDto.getTechnical();
+        this.cooperative = updateScoreDto.getCooperative();
 
+    }
 }

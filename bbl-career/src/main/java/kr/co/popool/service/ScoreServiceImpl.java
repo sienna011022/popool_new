@@ -8,14 +8,11 @@ import kr.co.popool.repository.CareerRepository;
 import kr.co.popool.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j //로깅을 위함
@@ -23,7 +20,6 @@ import java.util.stream.Collectors;
 public class ScoreServiceImpl implements ScoreService {
     private final CareerRepository careerRepository;
     private final ScoreRepository scoreRepository;
-    private final ModelMapper modelMapper;
 
     public List<ScoreDto.SCOREINFO> showScores(Long identity) {
 
@@ -51,7 +47,7 @@ public class ScoreServiceImpl implements ScoreService {
 }
 
     @Override
-    public ScoreDto.SCOREINFO createScore(Long id, ScoreDto.SCOREINFO newScore) {
+    public void createScore(Long id, ScoreDto.SCOREINFO newScore) {
 
         Optional<CareerEntity> careerEntity = careerRepository.findById(id);
         if (!careerEntity.isPresent()) {
@@ -68,24 +64,24 @@ public class ScoreServiceImpl implements ScoreService {
                 .cooperative(newScore.getCooperative())
                 .build();
 
-        ScoreEntity createdScore = scoreRepository.save(scoreEntity);
-        ScoreDto.SCOREINFO newScoreDto = createScoreDto(createdScore);
+        scoreRepository.save(scoreEntity);
 
-        return newScoreDto;
 
     }
 
-    public static ScoreDto.SCOREINFO createScoreDto(ScoreEntity scoreEntity) {
-        return new ScoreDto.SCOREINFO(
-                scoreEntity.getCareerEntity().getId(),
-                scoreEntity.getEvaluatorId(),
-                scoreEntity.getAttendance(),
-                scoreEntity.getSincerity(),
-                scoreEntity.getPositiveness(),
-                scoreEntity.getTechnical(),
-                scoreEntity.getCooperative()
-        );
+    @Override
+    public void updateScore(Long scoreId, ScoreDto.UPDATE updateScoreDto) {
+
+        log.info("등록한 평가의 아이디:{},career:{}",scoreId,updateScoreDto.toString());
+
+        Optional<ScoreEntity> scoreEntity = scoreRepository.findById(scoreId);
+        scoreEntity.get().updateScore(updateScoreDto);
+
+        scoreRepository.save(scoreEntity.get());
+
     }
+
 }
+
 
 
