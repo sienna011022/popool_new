@@ -19,6 +19,7 @@ public class InventoryEntity extends BaseEntity {
     @Column(nullable = false)
     private int remainCouponCnt;
 
+    //TODO: TIMESTAMP로 변경
     @Column(nullable = false)
     private LocalDate endPeriodDate;
 
@@ -55,6 +56,8 @@ public class InventoryEntity extends BaseEntity {
         }
     }
 
+    //TODO: if 없이 코딩하기
+    //TODO: COMMON 모듈 ERROR 정의
     //== subscription ==//
     public void doSubscription() {
         if (this.isSubscription)
