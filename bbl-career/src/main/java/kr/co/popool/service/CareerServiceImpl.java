@@ -44,7 +44,6 @@ public class CareerServiceImpl implements CareerService {
                 .historyId(newCareer.getHistoryId())
                 .build();
 
-
             try {
                 CareerEntity created = careerRepository.save(careerEntity);
                 return created;

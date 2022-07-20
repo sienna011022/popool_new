@@ -31,7 +31,7 @@ public class BaseEntity {
     protected Timestamp updated_at = null;
 
     @Column(name = "use_member")
-    protected Long use_Member;
+    protected Long use_Member = null;
 
     public void deleted() {
         this.del_yn = "Y";
@@ -39,5 +39,9 @@ public class BaseEntity {
 
     public void reCreated(){
         this.del_yn = "N";
+    }
+
+    public void updateUseMember(Long use_Member){
+        this.use_Member = use_Member;
     }
 }

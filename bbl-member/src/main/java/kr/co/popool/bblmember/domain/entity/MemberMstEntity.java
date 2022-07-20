@@ -49,7 +49,7 @@ public class MemberMstEntity extends BaseEntity {
     @Embedded
     private Address address;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
@@ -74,8 +74,11 @@ public class MemberMstEntity extends BaseEntity {
         this.memberRank = memberRank;
     }
 
-    public void updateMemberMst(MemberMstDto.UPDATE update){
-        //TODO : 회원 정보 수정 메소드
+    public void updateMemberMst(MemberMstDto.UPDATE memberUpdate){
+        this.name = memberUpdate.getName();
+        this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
+        this.phone = new Phone(memberUpdate.getPhone());
+        this.email = memberUpdate.getEmail();
     }
 
     public void updateRefreshToken(String refreshToken){
@@ -84,5 +87,13 @@ public class MemberMstEntity extends BaseEntity {
 
     public void updatePassword(String password){
         this.password = password;
+    }
+
+    public  void updateAddress(MemberMstDto.UPDATE_ADDRESS update_address){
+        this.address = new Address(update_address.getZipCode(), update_address.getAddr1(), update_address.getAddr2());
+    }
+
+    public void updatePhone(MemberMstDto.UPDATE_PHONE update_phone){
+        this.phone = new Phone(update_phone.getNewPhoneNumber());
     }
 }
