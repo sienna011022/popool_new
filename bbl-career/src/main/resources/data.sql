@@ -4,6 +4,8 @@ INSERT INTO tbl_career(member_identity,grade,name,context,period,history_id) VAL
 
 
 
+
 INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('3','evaluator1',5,5,5,5,5);
 INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('2','evaluator2',5,5,5,5,5);
 INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('1','evaluator3',5,5,5,5,5);
+

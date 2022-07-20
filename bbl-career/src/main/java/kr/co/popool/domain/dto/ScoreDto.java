@@ -79,7 +79,7 @@ public class ScoreDto {
 
         @JsonProperty("evaluator_identity")
         @ApiModelProperty(example = "인사")
-        @NotBlank(message = "본인 아이디를 입력하세요요")
+        @NotBlank(message = "본인 아이디를 입력하세요")
         private String evaluatorIdentity;
 
     }
