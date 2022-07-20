@@ -3,6 +3,7 @@ package kr.co.popool.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popool.domain.entity.ScoreEntity;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ public class ScoreDto {
         @JsonProperty("identity")
         @ApiModelProperty(example = "인사")
         @NotBlank(message = "평가를 원하는 인사 아이디를 입력하세요")
-        private String identity;
+        private Long identity;
 
         @JsonProperty("evaluator_id")
         @ApiModelProperty(example = "인사")
@@ -48,6 +49,7 @@ public class ScoreDto {
         @NotBlank(message = "협업능력 점수를 입력하세요")
         private int cooperative;
     }
+
 
 }
 
