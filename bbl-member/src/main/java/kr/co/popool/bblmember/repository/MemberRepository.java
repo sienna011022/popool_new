@@ -14,7 +14,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
     //find
     Optional<MemberEntity> findByIdentity(String identity);
-    Optional<CorporateEntity> findByCorporate(CorporateEntity corporateEntity);
+    Optional<CorporateEntity> findByCorporateEntity(CorporateEntity corporateEntity);
     Optional<MemberEntity> findByNameAndPhoneAndBirth(String name, Phone phone, String birth);
 
     //exists

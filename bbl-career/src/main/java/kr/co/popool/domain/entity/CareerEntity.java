@@ -1,6 +1,7 @@
 package kr.co.popool.domain.entity;
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.shared.BaseEntity;
+import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,8 +19,9 @@ public class CareerEntity extends BaseEntity {
     @Column(name = "identity", nullable = false, length = 100)
     private String identity;
 
-    @Column(name = "grade", nullable = true, length = 100)
-    private String grade;
+    @Column(name = "grade")
+    @Enumerated(value = EnumType.STRING)
+    private ScoreGrade grade;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -27,7 +29,7 @@ public class CareerEntity extends BaseEntity {
     @Column(name = "period", nullable = false, length = 100)
     private String period;
 
-    @Column(name = "context", nullable = true, length = 1000)
+    @Column(name = "context", nullable = true, length = 500)
     private String context;
 
     @Column(name = "history_id", nullable = true, length = 100)
@@ -35,7 +37,7 @@ public class CareerEntity extends BaseEntity {
 
 
     @Builder
-    public CareerEntity(String identity,String grade, String name, String period, String context,String historyId) {
+    public CareerEntity(String identity,ScoreGrade grade, String name, String period, String context,String historyId) {
         this.identity = identity;
         this.grade = grade;
         this.name = name;
