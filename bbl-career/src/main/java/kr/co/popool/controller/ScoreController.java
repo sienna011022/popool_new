@@ -28,7 +28,7 @@ public class ScoreController {
         }
         @ApiOperation("평가 내역 등록")
         @PostMapping()
-        public ResponseFormat create( @RequestBody ScoreDto.SCOREINFO newScoreDto) {
+        public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
             scoreService.createScore(newScoreDto);
             return ResponseFormat.ok();
         }

@@ -9,6 +9,7 @@ import kr.co.popool.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +24,10 @@ public class ScoreServiceImpl implements ScoreService {
 
     public List<ScoreDto.SHOWSCORE> showScores(String memberIdentity) {
 
-        Optional<CareerEntity> careerEntity = careerRepository.findByMemberIdentity(memberIdentity);
+        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+                .orElseThrow(() -> new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다"));;
 
-        List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity.get());
-
-        if (scoreEntityList.isEmpty()) {
-            throw new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다");
-        }
+        List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity);
 
         List<ScoreDto.SHOWSCORE> ScoreList = new ArrayList<>();
 
@@ -49,6 +47,7 @@ public class ScoreServiceImpl implements ScoreService {
 }
 
     @Override
+    @Transactional
     public void createScore(ScoreDto.SCOREINFO newScore) {
 
         CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
@@ -70,6 +69,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
+    @Transactional
     public void updateScore(ScoreDto.UPDATE updateScoreDto) {
 
         log.info("등록한 평가자의 아이디:{},career:{}",updateScoreDto.getEvaluatorIdentity(),updateScoreDto.toString());
