@@ -1,4 +1,4 @@
-package kr.co.popool.bblmember.domain.shared;
+package kr.co.popool.bblpayment.domain.shared;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class BaseEntity {
     protected Timestamp updated_at = null;
 
     @Column(name = "use_member")
-    protected Long use_Member = null;
+    protected Long use_Member;
 
     public void deleted() {
         this.del_yn = "Y";
@@ -39,9 +39,5 @@ public class BaseEntity {
 
     public void reCreated(){
         this.del_yn = "N";
-    }
-
-    public void updateUseMember(Long use_Member){
-        this.use_Member = use_Member;
     }
 }
