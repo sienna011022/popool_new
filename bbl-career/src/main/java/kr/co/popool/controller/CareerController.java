@@ -27,14 +27,16 @@ public class CareerController {
 
     @ApiOperation("전체 인사 내역 조회")
     @GetMapping()
-    public List<CareerDto.CAREERINFO> showAll(){
-        return careerService.showAll();
+    public ResponseFormat showAll(){
+        List<CareerDto.CAREERINFO> careerInfoList = careerService.showAll();
+        return ResponseFormat.ok(careerInfoList);
     }
 
     @ApiOperation("개인 인사 내역 조회")
     @GetMapping("/{memberIdentity}")
-    public CareerDto.CAREERINFO show(@PathVariable String memberIdentity){
-        return careerService.show(memberIdentity);
+    public ResponseFormat show(@PathVariable String memberIdentity){
+        CareerDto.CAREERINFO careerInfo = careerService.show(memberIdentity);
+        return ResponseFormat.ok(careerInfo);
     }
 
     @ApiOperation("개인 인사 내역 등록")
