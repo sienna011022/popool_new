@@ -96,7 +96,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         memberEntity.updateMember(update);
-        memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
 
@@ -117,7 +116,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         memberEntity.updatePassword(passwordEncoder.encode(update_password.getNewPassword()));
-        memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
 
@@ -131,7 +129,6 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
         memberEntity.updateAddress(update_address);
-        memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
 
@@ -145,7 +142,6 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
         memberEntity.updatePhone(update_phone);
-        memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
 
@@ -163,7 +159,6 @@ public class MemberServiceImpl implements MemberService {
             memberEntity.disagree();
         }
 
-        memberEntity.updateUseMember(memberEntity.getId());
         memberRepository.save(memberEntity);
     }
 

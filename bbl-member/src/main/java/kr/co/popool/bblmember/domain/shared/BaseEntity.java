@@ -3,6 +3,7 @@ package kr.co.popool.bblmember.domain.shared;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,6 +31,7 @@ public class BaseEntity {
     @Column(name = "updated_at", nullable = false)
     protected Timestamp updated_at = null;
 
+    @LastModifiedBy
     @Column(name = "use_member")
     protected Long use_Member = null;
 
@@ -39,9 +41,5 @@ public class BaseEntity {
 
     public void reCreated(){
         this.del_yn = "N";
-    }
-
-    public void updateUseMember(Long use_Member){
-        this.use_Member = use_Member;
     }
 }
