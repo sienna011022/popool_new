@@ -195,7 +195,6 @@ public class MemberServiceImpl implements MemberService {
         return read;
     }
 
-    /**
      * 아이디 찾기
      * @param read_id : 아이디를 찾기 위한 이름, 전화번호, 생년월일을 포함한 객체
      * @return : 찾은 아이디
