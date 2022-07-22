@@ -18,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CorporateServiceImpl implements CorporateService{
@@ -72,6 +70,10 @@ public class CorporateServiceImpl implements CorporateService{
         memberRepository.save(memberEntity);
     }
 
+    /**
+     * 기업 정보 수정
+     * @param update_corporate : 변경할 데이터
+     */
     @Override
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
 
@@ -101,5 +103,4 @@ public class CorporateServiceImpl implements CorporateService{
 
         return read_corporate;
     }
-
 }

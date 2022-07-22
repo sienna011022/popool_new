@@ -44,12 +44,21 @@ public class MemberServiceImpl implements MemberService {
             throw new BadRequestException("아이디나 비밀번호를 다시 확인해주세요");
         }
 
+        if(memberEntity.getDel_yn().equals("Y")){
+            throw new BadRequestException("탈퇴한 회원입니다.");
+        }
+
         String[] tokens = generateToken(memberEntity);
         memberEntity.updateRefreshToken(tokens[1]);
 
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
 
+    /**
+     * 일반 회원가입
+     * @param create 회원가입하기위한 회원의 정보
+     * @Exception DuplicatedException : 아이디가 이미 존재할 경우 회원가입을 진행할 수 없다는 예외.
+     */
     @Override
     public void signUp(MemberDto.CREATE create) {
         if(!checkIdentity(create.getIdentity())){
@@ -216,6 +225,51 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean getPaymentAgree() {
         return MemberThreadLocal.get().getPaymentAgree_yn() == "Y";
+    }
+
+    /**
+     * 회원 탈퇴
+     * @param password : 비밀번호
+     */
+    @Override
+    public void delete(String password) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+
+        if(!passwordEncoder.matches(password, memberEntity.getPassword())){
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        }
+
+        if(memberEntity.getDel_yn().equals("Y")){
+            throw new BadRequestException("이미 탈퇴한 회원입니다.");
+        }
+
+        memberEntity.deleted();
+        memberRepository.save(memberEntity);
+    }
+
+    /**
+     * 탈퇴한 아이디 복구하기.
+     * @param re_create : 복구할 회원 정보
+     */
+    @Override
+    public void reCreate(MemberDto.RE_CREATE re_create) {
+        MemberEntity memberEntity = memberRepository.findByIdentity(re_create.getIdentity())
+                .orElseThrow(() -> new BadRequestException("아이디나 비밀번호를 다시 확인해주세요"));
+
+        if(memberEntity.getDel_yn().equals("N")){
+            throw new BadRequestException("탈퇴한 회원이 아닙니다.");
+        }
+
+        if(!passwordEncoder.matches(re_create.getPassword(), memberEntity.getPassword())){
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        }
+
+        if(!memberEntity.getPhone().equals(new Phone(re_create.getPhone()))){
+            throw new BadRequestException("전화번호가 다릅니다.");
+        }
+
+        memberEntity.reCreated();
+        memberRepository.save(memberEntity);
     }
 
     /**

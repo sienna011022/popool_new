@@ -205,4 +205,20 @@ public class MemberDto {
         @NotBlank(message = "생년월일을 입력해주세요.")
         private String birth;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class RE_CREATE{
+        @ApiModelProperty("복귀할 아이디")
+        @NotBlank(message = "아이디를 적어주세요.")
+        private String identity;
+
+        @ApiModelProperty(example = "010-XXXX-XXXX")
+        @NotBlank(message = "휴대폰 번호을 입력해주세요.")
+        private String phone;
+
+        @ApiModelProperty(example = "사용자 비밀번호")
+        @NotBlank(message = "비밀번호를 입력해주세요")
+        private String password;
+    }
 }
