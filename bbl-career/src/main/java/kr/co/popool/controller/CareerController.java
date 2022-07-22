@@ -32,9 +32,9 @@ public class CareerController {
     }
 
     //개인 인사 조회 - GET
-    @GetMapping("/{id}")
-    public Optional<CareerEntity> index(@PathVariable Long id){
-        return careerService.show(id);
+    @GetMapping("/{memberIdentity}")
+    public Optional<CareerEntity> index(@PathVariable String memberIdentity){
+        return careerService.show(memberIdentity);
     }
 
     //인사 등록 - POST
@@ -47,9 +47,9 @@ public class CareerController {
     }
 
     //인사 수정 - PATCH
-    @PatchMapping("/{id}")
-    public ResponseFormat updateCareer(@PathVariable Long id, @RequestBody CareerDto.UPDATE careerDto){
-        CareerEntity updated = careerService.update(id,careerDto);
+    @PatchMapping("/{memberIdentity}")
+    public ResponseFormat updateCareer(@PathVariable String memberIdentity, @RequestBody CareerDto.UPDATE careerDto){
+        CareerEntity updated = careerService.update(memberIdentity,careerDto);
         return (updated != null) ?  ResponseFormat.ok(updated) :
                 ResponseFormat.fail("수정 실패");
     }

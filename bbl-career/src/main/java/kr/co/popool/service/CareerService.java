@@ -12,11 +12,11 @@ public interface CareerService {
 
     List<CareerEntity> showAll();
 
-    Optional<CareerEntity> show(Long id);
+    Optional<CareerEntity> show(String memberIdentity);
 
     CareerEntity newCareer(CareerDto.CREATE newCareer);
 
-    CareerEntity update(Long id, CareerDto.UPDATE careerDto);
+    CareerEntity update(String memberIdentity, CareerDto.UPDATE careerDto);
 
 
 }

@@ -32,8 +32,8 @@ public class BaseEntity {
     @Column(name = "updated_at", nullable = true)
     protected Timestamp updated_at = null;
 
-    @Column(name = "use_career")
-    protected Long use_Career;
+    @Column(name = "use_Member")
+    protected String use_Member;
 
     public void deleted() {
         this.del_yn = "Y";

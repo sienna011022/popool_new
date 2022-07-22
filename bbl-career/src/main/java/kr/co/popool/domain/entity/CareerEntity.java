@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "identity", "history_id" }) },name = "tbl_career")
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_identity", "history_id" }) },name = "tbl_career")
 @Getter
 @ToString
 @Entity
@@ -16,8 +16,8 @@ import javax.persistence.*;
 
 public class CareerEntity extends BaseEntity {
 
-    @Column(name = "identity", nullable = false, length = 100)
-    private String identity;
+    @Column(name = "member_identity", nullable = false, length = 100)
+    private String memberIdentity;
 
     @Column(name = "grade")
     @Enumerated(value = EnumType.STRING)
@@ -37,8 +37,8 @@ public class CareerEntity extends BaseEntity {
 
 
     @Builder
-    public CareerEntity(String identity,ScoreGrade grade, String name, String period, String context,String historyId) {
-        this.identity = identity;
+    public CareerEntity(String memberIdentity,ScoreGrade grade, String name, String period, String context,String historyId) {
+        this.memberIdentity = memberIdentity;
         this.grade = grade;
         this.name = name;
         this.period = period;
