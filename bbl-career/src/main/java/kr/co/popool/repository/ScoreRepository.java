@@ -3,10 +3,10 @@ package kr.co.popool.repository;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
+import kr.co.popool.domain.entity.ScoreEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.Optional;
 
 public interface ScoreRepository extends JpaRepository<ScoreEntity,Long> {
@@ -16,4 +16,5 @@ public interface ScoreRepository extends JpaRepository<ScoreEntity,Long> {
     List<ScoreEntity> findByCareerEntity(CareerEntity careerEntity);
 
     Optional<ScoreEntity> findByEvaluatorIdentity(String evaluatorIdentity);
+
 }
