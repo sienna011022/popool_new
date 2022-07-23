@@ -1,5 +1,4 @@
 package kr.co.popool.service;
-
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.entity.CareerEntity;
@@ -66,7 +65,6 @@ public class ScoreServiceImpl implements ScoreService {
 
         scoreRepository.save(scoreEntity);
 
-
     }
 
     @Override
@@ -82,6 +80,8 @@ public class ScoreServiceImpl implements ScoreService {
 
     }
 
+
+ 
 }
 
 

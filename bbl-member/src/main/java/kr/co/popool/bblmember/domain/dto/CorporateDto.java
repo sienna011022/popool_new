@@ -82,4 +82,18 @@ public class CorporateDto {
         private String businessName;
     }
 
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class READ_CORPORATE{
+        @ApiModelProperty(example = "변경할 대표 성함")
+        private String ceoName;
+
+        @ApiModelProperty(example = "변경할 사업자번호")
+        private Long businessNumber;
+
+        @ApiModelProperty(example = "변경할 사업자명")
+        private String businessName;
+    }
+
 }

@@ -1,6 +1,7 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
+import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
@@ -16,6 +17,8 @@ import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,12 +74,43 @@ public class CorporateServiceImpl implements CorporateService{
 
     @Override
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
+
         CorporateEntity corporateEntity = MemberThreadLocal.get().getCorporateEntity();
+        Optional<CorporateEntity> corporateEntity
+                = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity());
 
-        corporateEntity.corporateUpdate(update_corporate);
+        if(!corporateEntity.isPresent()){
+            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
+        }
 
-        corporateEntity.updateUseMember(corporateEntity.getId());
-        corporateRepository.save(corporateEntity);
+        CorporateEntity corporate = corporateEntity.get();
+        corporate.corporateUpdate(update_corporate);
+        corporate.updateUseMember(corporate.getId());
+        corporateRepository.save(corporate);
+    }
+
+    /**
+     * 기업 정보 조회
+     * @return : 기업 정보
+     * @Exception WRONG_CORPORATE: 기업 회원이 아닙니다.
+     */
+    @Override
+    public CorporateDto.READ_CORPORATE getCorporate() {
+
+        Optional<CorporateEntity> corporateEntity
+                = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity());
+
+        if(!corporateEntity.isPresent()){
+            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
+        }
+
+        CorporateDto.READ_CORPORATE read_corporate = CorporateDto.READ_CORPORATE.builder()
+                .businessName(corporateEntity.get().getBusinessName())
+                .businessNumber(corporateEntity.get().getBusinessNumber())
+                .ceoName(corporateEntity.get().getCeoName())
+                .build();
+
+        return read_corporate;
     }
 
 }

@@ -2,6 +2,7 @@ package kr.co.popool.service;
 
 import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.entity.ScoreEntity;
+import java.util.List;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface ScoreService {
     void createScore( ScoreDto.SCOREINFO newScore);
 
     void updateScore( ScoreDto.UPDATE updateScoreDto);
+
 }

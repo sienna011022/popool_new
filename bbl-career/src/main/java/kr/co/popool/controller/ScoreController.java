@@ -26,6 +26,7 @@ public class ScoreController {
             List<ScoreDto.SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
             return ResponseFormat.ok(scoreDtoList);
         }
+        
         @ApiOperation("평가 내역 등록")
         @PostMapping()
         public ResponseFormat create( @RequestBody ScoreDto.SCOREINFO newScoreDto) {
@@ -33,6 +34,17 @@ public class ScoreController {
             return ResponseFormat.ok();
         }
         @ApiOperation("평가 내역 수정")
+        @PatchMapping("/{evaluatorIdentity}")
+        public ResponseFormat update( @RequestBody ScoreDto.UPDATE updateScoreDto) {
+            scoreService.updateScore(updateScoreDto);
+            return ResponseFormat.ok();
+
+        @PostMapping()
+        public ResponseFormat create( @RequestBody ScoreDto.SCOREINFO newScoreDto) {
+            scoreService.createScore(newScoreDto);
+            return ResponseFormat.ok();
+        }
+
         @PatchMapping("/{evaluatorIdentity}")
         public ResponseFormat update( @RequestBody ScoreDto.UPDATE updateScoreDto) {
             scoreService.updateScore(updateScoreDto);

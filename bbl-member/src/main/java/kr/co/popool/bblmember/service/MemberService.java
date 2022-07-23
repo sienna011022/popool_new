@@ -20,7 +20,9 @@ public interface MemberService {
 
     //get
     MemberDto.READ get();
+    String findIdentity(MemberDto.READ_ID read_id);
     boolean getAddress();
+    boolean getPaymentAgree();
 
     //common
     boolean checkIdentity(String identity);

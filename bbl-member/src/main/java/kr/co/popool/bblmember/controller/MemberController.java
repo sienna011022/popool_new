@@ -60,7 +60,7 @@ public class MemberController {
     }
 
     @ApiOperation("회원 자동 결제 여부 수정")
-    @PutMapping("/update/member")
+    @PutMapping("/update/payment")
     public ResponseFormat paymentAgreeUpdate(){
         memberService.paymentAgreeUpdate();
         return ResponseFormat.ok();
@@ -70,6 +70,24 @@ public class MemberController {
     @GetMapping()
     public ResponseFormat<MemberDto.READ> get(){
         return ResponseFormat.ok(memberService.get());
+    }
+
+    @ApiOperation("아이디 찾기")
+    @PostMapping("/identity")
+    public ResponseFormat<String> findIdentity(@RequestBody @Valid MemberDto.READ_ID read_id){
+        return ResponseFormat.ok(memberService.findIdentity(read_id));
+    }
+
+    @ApiOperation("주소 등록 여부 조회")
+    @GetMapping("/address")
+    public ResponseFormat<Boolean> getAddress(){
+        return ResponseFormat.ok(memberService.getAddress());
+    }
+
+    @ApiOperation("자동 결제 동의 여부 조회")
+    @GetMapping("/payment")
+    public ResponseFormat<Boolean> getPaymentAgree(){
+        return ResponseFormat.ok(memberService.getPaymentAgree());
     }
 
     @ApiOperation("아이디 중복 체크")

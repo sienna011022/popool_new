@@ -31,6 +31,7 @@ public class CareerController {
         return careerService.showAll();
     }
 
+
     @ApiOperation("개인 인사 내역 조회")
     @GetMapping("/{memberIdentity}")
     public Optional<CareerEntity> index(@PathVariable String memberIdentity){
@@ -45,6 +46,7 @@ public class CareerController {
                 ResponseFormat.ok(created) :
                 ResponseFormat.fail("등록 실패");
     }
+
 
     @ApiOperation("개인 인사 내역 수정")
     @PatchMapping("/{memberIdentity}")
