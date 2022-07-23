@@ -1,11 +1,7 @@
 package kr.co.popool.service;
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.domain.dto.CareerDto;
-import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.entity.CareerEntity;
-import kr.co.popool.domain.entity.ScoreEntity;
-import kr.co.popool.domain.shared.enums.ScoreGrade;
 import kr.co.popool.repository.CareerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintDeclarationException;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j //로깅을 위함
@@ -35,7 +28,7 @@ public class CareerServiceImpl implements CareerService {
         for (CareerEntity list : careerEntityList) {
             CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
                     .memberIdentity(list.getMemberIdentity())
-                    .grade(String.valueOf(list.getGrade()))
+                    .grade(String.valueOf(list.getGradeEntity().getGrade()))
                     .name(list.getName())
                     .period(list.getPeriod())
                     .context(list.getContext())
@@ -55,7 +48,7 @@ public class CareerServiceImpl implements CareerService {
 
         CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
-        .grade(String.valueOf(careerEntity.getGrade()))
+        .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
         .name(careerEntity.getName())
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())
