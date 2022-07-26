@@ -131,7 +131,6 @@ public class MemberDto {
         private String newCheckPassword;
     }
 
-
     @Builder
     @Getter
     @AllArgsConstructor
