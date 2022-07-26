@@ -26,6 +26,9 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())                                 // API 문서에 대한 내용
+                .securityContexts(Arrays.asList(securityContext())) // swagger에서 jwt 토큰값 넣기위한 설정
+                .securitySchemes(Arrays.asList(apiKey()))           // swagger에서 jwt 토큰값 넣기위한 설정
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
