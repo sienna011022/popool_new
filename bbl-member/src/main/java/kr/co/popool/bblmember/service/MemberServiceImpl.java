@@ -189,7 +189,7 @@ public class MemberServiceImpl implements MemberService {
                 .phone(memberEntity.getPhone())
                 .gender(memberEntity.getGender())
                 .memberRank(memberEntity.getMemberRank())
-                .create_at(memberEntity.getCreated_at())
+                .create_at(memberEntity.getCreatedAt())
                 .build();
 
         return read;

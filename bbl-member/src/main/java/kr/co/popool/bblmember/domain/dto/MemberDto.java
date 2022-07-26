@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class MemberDto {
 
@@ -187,7 +188,7 @@ public class MemberDto {
         private MemberRank memberRank;
 
         @ApiModelProperty(example = "2022-01-01")
-        private Timestamp create_at;
+        private LocalDateTime create_at;
     }
 
     @Getter

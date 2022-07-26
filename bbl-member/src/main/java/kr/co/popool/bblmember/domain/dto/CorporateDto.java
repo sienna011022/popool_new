@@ -20,8 +20,8 @@ public class CorporateDto {
         private String ceoName;
 
         @ApiModelProperty(example = "사업자번호")
-        @NotBlank(message = "사업자 번호를 입력해주세요.")
-        private Long businessNumber;
+        @NotBlank(message = "111-1111-1111")
+        private String businessNumber;
 
         @ApiModelProperty(example = "사업자명")
         @NotBlank(message = "사업자명을 입력해주세요.")
@@ -75,7 +75,7 @@ public class CorporateDto {
 
         @ApiModelProperty(example = "변경할 사업자번호")
         @NotBlank(message = "사업자 번호를 입력해주세요.")
-        private Long businessNumber;
+        private String businessNumber;
 
         @ApiModelProperty(example = "변경할 사업자명")
         @NotBlank(message = "사업자명을 입력해주세요.")
@@ -90,7 +90,7 @@ public class CorporateDto {
         private String ceoName;
 
         @ApiModelProperty(example = "변경할 사업자번호")
-        private Long businessNumber;
+        private String businessNumber;
 
         @ApiModelProperty(example = "변경할 사업자명")
         private String businessName;
