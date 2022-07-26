@@ -9,7 +9,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_identity", "history_id" }) },name = "tbl_career")
 @Getter
-@ToString
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "career_id"))
 
