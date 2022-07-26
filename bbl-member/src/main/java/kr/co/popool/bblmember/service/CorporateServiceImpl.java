@@ -17,6 +17,7 @@ import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,7 @@ public class CorporateServiceImpl implements CorporateService{
      * @param update_corporate : 변경할 데이터
      */
     @Override
+    @Transactional
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
 
         CorporateEntity corporateEntity = corporateRepository.findById(MemberThreadLocal.get().getCorporateEntity().getId())
