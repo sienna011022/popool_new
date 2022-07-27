@@ -13,3 +13,4 @@ INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positi
 INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('2','evaluator2',5,5,5,5,5);
 INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('1','evaluator3',5,5,5,5,5);
 
+
