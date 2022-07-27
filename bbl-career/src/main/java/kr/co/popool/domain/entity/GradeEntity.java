@@ -1,11 +1,15 @@
 package kr.co.popool.domain.entity;
 
-import kr.co.popool.domain.dto.GradeDto;
 import kr.co.popool.domain.shared.BaseEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.aop.scope.ScopedProxyFactoryBean;
+import kr.co.popool.domain.dto.GradeDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,7 @@ import java.util.List;
 @Getter
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "grade_id"))
+
 
 public class GradeEntity extends BaseEntity {
 

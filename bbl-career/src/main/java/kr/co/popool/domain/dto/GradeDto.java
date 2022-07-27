@@ -49,9 +49,10 @@ public class GradeDto {
 
         @ApiModelProperty(example = "평가 인원")
         private int totalMember;
-
+        
         @ApiModelProperty(example = "평가 합계")
         private int totalScore;
+
 
 
 

@@ -35,7 +35,7 @@ public class ScoreController {
             scoreService.createScore(newScoreDto);
             return ResponseFormat.ok();
         }
-        
+
         @ApiOperation("평가 내역 수정")
         @PatchMapping("/{evaluatorIdentity}")
         public ResponseFormat update( @RequestBody ScoreDto.UPDATE updateScoreDto) {
