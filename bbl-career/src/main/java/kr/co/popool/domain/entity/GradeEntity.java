@@ -1,5 +1,4 @@
 package kr.co.popool.domain.entity;
-
 import kr.co.popool.domain.shared.BaseEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.AccessLevel;
@@ -57,6 +56,7 @@ public class GradeEntity extends BaseEntity {
         this.totalMember = totalMember;
         this.totalScore = totalScore;
     }
+    
     public void updateGrade(GradeDto.UPDATEGRADE updateGradeDto){
         this.average = updateGradeDto.getAverage();
         this.grade = updateGradeDto.getGrade();

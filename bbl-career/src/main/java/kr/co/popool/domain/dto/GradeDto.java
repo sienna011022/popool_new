@@ -31,6 +31,7 @@ public class GradeDto {
 
 
 
+
     }
 
     @Builder
@@ -56,7 +57,9 @@ public class GradeDto {
 
 
 
+
     }
+
     @Builder
     @ToString
     @Getter
@@ -68,5 +71,6 @@ public class GradeDto {
         private ScoreGrade grade;
 
     }
+
 
 }

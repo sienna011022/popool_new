@@ -24,12 +24,15 @@ import java.util.Optional;
 @Slf4j //로깅을 위함
 @RequiredArgsConstructor
 public class GradeServiceImpl implements GradeService{
+
     public static final int DEFAULT_SIZE = 1;
+
     private final GradeRepository gradeRepository;
     private final CareerRepository careerRepository;
 
     @Override
     public void updateGrade(ScoreDto.SCOREINFO newScore) {
+
 
 
         CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
@@ -50,7 +53,7 @@ public class GradeServiceImpl implements GradeService{
         int average = totalScore / totalMember;
 
         ScoreGrade finalGrade;
-        //등급 산정
+
         if (20 < average) {
             finalGrade = ScoreGrade.GOLD;
 
@@ -115,5 +118,5 @@ public class GradeServiceImpl implements GradeService{
 
         return onlyGrade;
 
-    }
+}
 }

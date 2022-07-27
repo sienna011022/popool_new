@@ -20,8 +20,7 @@ public class ScoreController {
 
         private final ScoreServiceImpl scoreService;
         private final GradeServiceImpl gradeService;
-
-
+        
         @ApiOperation("개인 평가 내역 조회")
         @GetMapping()
         public ResponseFormat show(@PathVariable String memberIdentity){
@@ -33,8 +32,9 @@ public class ScoreController {
         @PostMapping()
         public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
             scoreService.createScore(newScoreDto);
+            gradeService.updateGrade(newScoreDto);
             return ResponseFormat.ok();
-        }
+}
 
         @ApiOperation("평가 내역 수정")
         @PatchMapping("/{evaluatorIdentity}")
@@ -47,13 +47,6 @@ public class ScoreController {
         public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto){
             scoreService.createScore(newScoreDto);
             gradeService.updateGrade(newScoreDto);
-            return ResponseFormat.ok();
-        }
-        
-        @ApiOperation("평가 내역 수정")
-        @PatchMapping("/{evaluatorIdentity}")
-        public ResponseFormat update( @RequestBody ScoreDto.UPDATE updateScoreDto) {
-            scoreService.updateScore(updateScoreDto);
             return ResponseFormat.ok();
         }
 

@@ -10,4 +10,5 @@ public interface GradeService {
     GradeDto.GRADEINFO showGradeInfo(String memberIdentity);
 
     GradeDto.ONLYGRADE showGrade(String memberIdentity);
+
 }
