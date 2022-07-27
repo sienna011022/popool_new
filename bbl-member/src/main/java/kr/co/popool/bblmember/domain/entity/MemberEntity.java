@@ -24,16 +24,16 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "identity", unique = true, nullable = false, length = 100)
     private String identity;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", length = 100)
     private String password;
 
     @Column(name = "email", unique = true, length = 100)
     private String email;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "birth", nullable = false, length = 100)
+    @Column(name = "birth", length = 100)
     private String birth;
 
     @Column(name = "refresh_token", length = 600)
@@ -42,26 +42,26 @@ public class MemberEntity extends BaseEntity {
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "number"
-                    , column = @Column(name = "phone", unique = true, nullable = false))
+                    , column = @Column(name = "phone", unique = true))
     })
     private Phone phone;
 
     @Embedded
     private Address address;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "member_role", nullable = false)
+    @Column(name = "member_role")
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
 
-    @Column(name = "member_rank", nullable = false)
+    @Column(name = "member_rank")
     @Enumerated(value = EnumType.STRING)
     private MemberRank memberRank;
 
-    @Column(name = "payment_agree", nullable = false, length = 1)
+    @Column(name = "payment_agree", length = 1)
     private String paymentAgree_yn = "N";
 
     @OneToOne
@@ -104,7 +104,7 @@ public class MemberEntity extends BaseEntity {
         this.password = password;
     }
 
-    public  void updateAddress(MemberDto.UPDATE_ADDRESS update_address){
+    public void updateAddress(MemberDto.UPDATE_ADDRESS update_address){
         this.address = new Address(update_address.getZipCode(), update_address.getAddr1(), update_address.getAddr2());
     }
 

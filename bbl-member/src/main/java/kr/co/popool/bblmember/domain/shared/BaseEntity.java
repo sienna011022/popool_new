@@ -33,7 +33,7 @@ public class BaseEntity {
 
     @LastModifiedBy
     @Column(name = "use_member")
-    protected Long useMember = null;
+    protected String useMember = null;
 
     public void deleted() {
         this.del_yn = "Y";

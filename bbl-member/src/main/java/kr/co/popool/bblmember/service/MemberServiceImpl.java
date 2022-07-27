@@ -93,14 +93,13 @@ public class MemberServiceImpl implements MemberService {
      * @param update : 변경할 데이터
      */
     @Override
-    @Transactional
     public void update(MemberDto.UPDATE update) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        if(!checkPhone(new Phone(update.getPhone()))){
+        if(!checkPhone(new Phone(update.getPhone())) && !memberEntity.getPhone().equals(new Phone(update.getPhone()))){
             throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
         }
-        if(!checkEmail(update.getEmail())){
+        if(!checkEmail(update.getEmail()) && !memberEntity.getEmail().equals(update.getEmail())){
             throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
         }
 
@@ -133,7 +132,6 @@ public class MemberServiceImpl implements MemberService {
      * @param update_address : 변경할 데이터
      */
     @Override
-    @Transactional
     public void updateAddress(MemberDto.UPDATE_ADDRESS update_address) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
@@ -146,7 +144,6 @@ public class MemberServiceImpl implements MemberService {
      * @param update_phone : 변경할 데이터
      */
     @Override
-    @Transactional
     public void updatePhone(MemberDto.UPDATE_PHONE update_phone) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
