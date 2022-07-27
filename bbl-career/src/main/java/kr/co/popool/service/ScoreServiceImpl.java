@@ -1,4 +1,5 @@
 package kr.co.popool.service;
+
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.entity.CareerEntity;
