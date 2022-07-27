@@ -48,7 +48,6 @@ public class CareerServiceImpl implements CareerService {
 
         CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
-        .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
         .name(careerEntity.getName())
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())

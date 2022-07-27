@@ -42,12 +42,6 @@ public class ScoreController {
             scoreService.updateScore(updateScoreDto);
             return ResponseFormat.ok();
 
-        @ApiOperation("평가 내역 등록")
-        @PostMapping()
-        public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto){
-            scoreService.createScore(newScoreDto);
-            gradeService.updateGrade(newScoreDto);
-            return ResponseFormat.ok();
         }
 
 }
