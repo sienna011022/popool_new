@@ -18,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CorporateServiceImpl implements CorporateService{
@@ -72,21 +70,18 @@ public class CorporateServiceImpl implements CorporateService{
         memberRepository.save(memberEntity);
     }
 
+    /**
+     * 기업 정보 수정
+     * @param update_corporate : 변경할 데이터
+     */
     @Override
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE update_corporate) {
 
-        CorporateEntity corporateEntity = MemberThreadLocal.get().getCorporateEntity();
-        Optional<CorporateEntity> corporateEntity
-                = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity());
+        CorporateEntity corporateEntity = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CORPORATE));
 
-        if(!corporateEntity.isPresent()){
-            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
-        }
-
-        CorporateEntity corporate = corporateEntity.get();
-        corporate.corporateUpdate(update_corporate);
-        corporate.updateUseMember(corporate.getId());
-        corporateRepository.save(corporate);
+        corporateEntity.corporateUpdate(update_corporate);
+        corporateRepository.save(corporateEntity);
     }
 
     /**
@@ -97,20 +92,15 @@ public class CorporateServiceImpl implements CorporateService{
     @Override
     public CorporateDto.READ_CORPORATE getCorporate() {
 
-        Optional<CorporateEntity> corporateEntity
-                = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity());
-
-        if(!corporateEntity.isPresent()){
-            throw new BusinessLogicException(ErrorCode.WRONG_CORPORATE);
-        }
+        CorporateEntity corporateEntity = memberRepository.findByCorporateEntity(MemberThreadLocal.get().getCorporateEntity())
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CORPORATE));
 
         CorporateDto.READ_CORPORATE read_corporate = CorporateDto.READ_CORPORATE.builder()
-                .businessName(corporateEntity.get().getBusinessName())
-                .businessNumber(corporateEntity.get().getBusinessNumber())
-                .ceoName(corporateEntity.get().getCeoName())
+                .businessName(corporateEntity.getBusinessName())
+                .businessNumber(corporateEntity.getBusinessNumber())
+                .ceoName(corporateEntity.getCeoName())
                 .build();
 
         return read_corporate;
     }
-
 }

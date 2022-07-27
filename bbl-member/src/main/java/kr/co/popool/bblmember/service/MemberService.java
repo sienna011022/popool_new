@@ -24,6 +24,10 @@ public interface MemberService {
     boolean getAddress();
     boolean getPaymentAgree();
 
+    //delete
+    void delete(String password);
+    void reCreate(MemberDto.RE_CREATE re_creat);
+
     //common
     boolean checkIdentity(String identity);
     boolean checkEmail(String email);
