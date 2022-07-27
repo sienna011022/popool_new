@@ -23,7 +23,6 @@ public  class CareerDto {
         private String memberIdentity;
 
         @ApiModelProperty(example = "평가등급")
-        @Enumerated(EnumType.STRING)
         private String grade;
 
         @ApiModelProperty(example = "이름")

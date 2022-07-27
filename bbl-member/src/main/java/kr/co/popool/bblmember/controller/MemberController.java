@@ -2,7 +2,6 @@ package kr.co.popool.bblmember.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.bblmember.domain.dto.CorporateDto;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.service.MemberServiceImpl;
@@ -88,6 +87,20 @@ public class MemberController {
     @GetMapping("/payment")
     public ResponseFormat<Boolean> getPaymentAgree(){
         return ResponseFormat.ok(memberService.getPaymentAgree());
+    }
+
+    @ApiOperation("회원 탈퇴")
+    @DeleteMapping("/delete")
+    public ResponseFormat delete(@RequestParam("password") String password){
+        memberService.delete(password);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("회원 정보 복구")
+    @PostMapping("/reCreate")
+    public ResponseFormat reCreate(@RequestBody @Valid MemberDto.RE_CREATE re_create){
+        memberService.reCreate(re_create);
+        return ResponseFormat.ok();
     }
 
     @ApiOperation("아이디 중복 체크")

@@ -10,13 +10,13 @@ import java.util.Optional;
 
 public interface CareerService {
 
-    List<CareerEntity> showAll();
+    List<CareerDto.CAREERINFO> showAll();
 
-    Optional<CareerEntity> show(String memberIdentity);
+    CareerDto.CAREERINFO show(String memberIdentity);
 
-    CareerEntity newCareer(CareerDto.CREATE newCareer);
+    void newCareer(CareerDto.CREATE newCareer);
 
-    CareerEntity update(String memberIdentity, CareerDto.UPDATE careerDto);
+    void update(String memberIdentity, CareerDto.UPDATE careerDto);
 
 
 }
