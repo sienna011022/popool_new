@@ -25,30 +25,35 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GradeServiceImpl implements GradeService{
 
+    public static final int DEFAULT_SIZE = 1;
+
     private final GradeRepository gradeRepository;
     private final CareerRepository careerRepository;
 
     @Override
     public void updateGrade(ScoreDto.SCOREINFO newScore) {
 
+
+
         CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
                 .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity);
-        int total_score = gradeEntity.getTotal_score();
+        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 평가 내역이 존재하지 않습니다"));
+        int totalScore = gradeEntity.getTotalScore();
 
-        total_score += newScore.getAttendance();
-        total_score += newScore.getCooperative();
-        total_score += newScore.getPositiveness();
-        total_score += newScore.getSincerity();
-        total_score += newScore.getTechnical();
+        totalScore += newScore.getAttendance();
+        totalScore += newScore.getCooperative();
+        totalScore += newScore.getPositiveness();
+        totalScore += newScore.getSincerity();
+        totalScore += newScore.getTechnical();
 
-        int total_member = gradeEntity.getTotal_member() + 1;
+        int totalMember = gradeEntity.getTotalMember() + DEFAULT_SIZE;
 
-        int average = total_score / total_member;
+        int average = totalScore / totalMember;
 
         ScoreGrade finalGrade;
-        //등급 산정
+
         if (20 < average) {
             finalGrade = ScoreGrade.GOLD;
 
@@ -64,8 +69,8 @@ public class GradeServiceImpl implements GradeService{
 
         GradeDto.UPDATEGRADE updateGradeDto = GradeDto.UPDATEGRADE.builder()
                 .grade(finalGrade)
-                .total_member(total_member)
-                .total_score(total_score)
+                .totalMember(totalMember)
+                .totalScore(totalScore)
                 .average(average)
                 .build();
 
@@ -79,4 +84,39 @@ public class GradeServiceImpl implements GradeService{
 
 
     }
+
+    @Override
+    public GradeDto.GRADEINFO showGradeInfo(String memberIdentity) {
+        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+        
+        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급 내역이 존재하지 않습니다"));
+
+        GradeDto.GRADEINFO gradeInfo = GradeDto.GRADEINFO.builder()
+                .average(gradeEntity.getAverage())
+                .grade(gradeEntity.getGrade())
+                .totalMember(gradeEntity.getTotalMember())
+                .totalScore(gradeEntity.getTotalScore())
+                .build();
+
+        return gradeInfo;
+
+    }
+
+    @Override
+    public GradeDto.ONLYGRADE showGrade(String memberIdentity) {
+        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+
+        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급이 존재하지 않습니다"));
+
+        GradeDto.ONLYGRADE onlyGrade = GradeDto.ONLYGRADE.builder()
+                .grade(gradeEntity.getGrade())
+                .build();
+
+        return onlyGrade;
+
+}
 }

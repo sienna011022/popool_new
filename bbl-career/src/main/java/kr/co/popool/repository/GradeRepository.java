@@ -7,11 +7,12 @@ import kr.co.popool.domain.entity.ScoreEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 
 
 public interface GradeRepository extends JpaRepository<GradeEntity,Long> {
 
+     Optional<GradeEntity> findByCareerEntity (CareerEntity careerEntity);
 
-
-     GradeEntity findByCareerEntity (CareerEntity careerEntity);
 }
