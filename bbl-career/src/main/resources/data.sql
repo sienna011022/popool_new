@@ -9,4 +9,7 @@ INSERT INTO tbl_grade(career_id,average,grade,total_score,total_member) VALUES('
 INSERT INTO tbl_grade(career_id,average,grade,total_score,total_member) VALUES('3',5,'BLACK',5,1);
 
 
+INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('3','evaluator1',5,5,5,5,5);
+INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('2','evaluator2',5,5,5,5,5);
+INSERT INTO tbl_score(career_id, evaluator_identity, attendance,sincerity,positiveness, technical,cooperative) VALUES('1','evaluator3',5,5,5,5,5);
 

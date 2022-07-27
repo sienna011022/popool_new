@@ -5,6 +5,7 @@ import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,7 +27,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     private static final String[] AUTH_ARR = {
-            //TODO : 보안 예외 처리 주소
+            "/swagger/**",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "favicon.ico"
     };
 
     @Override
@@ -43,9 +51,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 X
                 .and()
                     .authorizeRequests() //TODO : 시큐리티 요청
+                    .antMatchers( "/**").permitAll()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
                             , UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(new UserDetailsServiceImpl())
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
