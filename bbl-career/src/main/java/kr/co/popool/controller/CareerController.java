@@ -1,5 +1,6 @@
 package kr.co.popool.controller;
 
+import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.entity.CareerEntity;
@@ -24,34 +25,32 @@ public class CareerController {
 
     private final CareerServiceImpl careerService;
 
-
-    //인사 조회 - GET
+    @ApiOperation("전체 인사 내역 조회")
     @GetMapping()
-    public List<CareerEntity> index(){
+    public List<CareerDto.CAREERINFO> showAll(){
         return careerService.showAll();
     }
 
-    //개인 인사 조회 - GET
+    @ApiOperation("개인 인사 내역 조회")
     @GetMapping("/{memberIdentity}")
-    public Optional<CareerEntity> index(@PathVariable String memberIdentity){
+    public CareerDto.CAREERINFO show(@PathVariable String memberIdentity){
         return careerService.show(memberIdentity);
     }
 
-    //인사 등록 - POST
+    @ApiOperation("개인 인사 내역 등록")
     @PostMapping()
     public ResponseFormat createCareer(@RequestBody @Valid CareerDto.CREATE careerDto){
-        CareerEntity created = careerService.newCareer(careerDto);
-        return(created != null) ?
-                ResponseFormat.ok(created) :
-                ResponseFormat.fail("등록 실패");
+       careerService.newCareer(careerDto);
+        return ResponseFormat.ok();
+
     }
 
-    //인사 수정 - PATCH
+    @ApiOperation("개인 인사 내역 수정")
     @PatchMapping("/{memberIdentity}")
     public ResponseFormat updateCareer(@PathVariable String memberIdentity, @RequestBody CareerDto.UPDATE careerDto){
-        CareerEntity updated = careerService.update(memberIdentity,careerDto);
-        return (updated != null) ?  ResponseFormat.ok(updated) :
-                ResponseFormat.fail("수정 실패");
+        careerService.update(memberIdentity,careerDto);
+        return ResponseFormat.ok();
+
     }
 
 }
