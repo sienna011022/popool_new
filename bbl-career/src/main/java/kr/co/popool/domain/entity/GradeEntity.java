@@ -37,26 +37,26 @@ public class GradeEntity extends BaseEntity {
 
     @Column(name = "total_member")
     @ColumnDefault("0")
-    private int total_member;
+    private int totalMember;
 
     @Column(name = "total_score")
     @ColumnDefault("0")
-    private int total_score;
+    private int totalScore;
 
     @Builder
-    public GradeEntity(List<ScoreEntity> scores, CareerEntity careerEntity, float average, ScoreGrade grade, int total_member,int total_score) {
+    public GradeEntity(List<ScoreEntity> scores, CareerEntity careerEntity, float average, ScoreGrade grade, int totalMember,int totalScore) {
         this.scores = scores;
         this.careerEntity = careerEntity;
         this.average = average;
         this.grade = grade;
-        this.total_member = total_member;
-        this.total_score = total_score;
+        this.totalMember = totalMember;
+        this.totalScore = totalScore;
     }
     public void updateGrade(GradeDto.UPDATEGRADE updateGradeDto){
         this.average = updateGradeDto.getAverage();
         this.grade = updateGradeDto.getGrade();
-        this.total_member = updateGradeDto.getTotal_member();
-        this.total_score = updateGradeDto.getTotal_score();
+        this.totalMember = updateGradeDto.getTotalMember();
+        this.totalScore = updateGradeDto.getTotalScore();
 
     }
 }

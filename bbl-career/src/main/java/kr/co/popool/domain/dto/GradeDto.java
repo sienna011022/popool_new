@@ -24,10 +24,10 @@ public class GradeDto {
     private ScoreGrade grade;
 
     @ApiModelProperty(example = "평가 인원")
-    private int total_member;
+    private int totalMember;
 
     @ApiModelProperty(example = "평가 합계")
-    private int total_score;
+    private int totalScore;
 
 
 
@@ -48,14 +48,24 @@ public class GradeDto {
         private ScoreGrade grade;
 
         @ApiModelProperty(example = "평가 인원")
-        private int total_member;
+        private int totalMember;
 
         @ApiModelProperty(example = "평가 합계")
-        private int total_score;
+        private int totalScore;
 
 
 
     }
+    @Builder
+    @ToString
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ONLYGRADE {
 
+        @ApiModelProperty(example = "평가 등급")
+        private ScoreGrade grade;
+
+    }
 
 }
