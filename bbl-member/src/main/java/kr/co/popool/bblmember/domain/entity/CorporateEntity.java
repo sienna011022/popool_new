@@ -20,13 +20,13 @@ public class CorporateEntity extends BaseEntity {
     private String ceoName;
 
     @Column(name = "business_number", nullable = false, length = 100)
-    private Long businessNumber;
+    private String businessNumber;
 
     @Column(name = "business_name", nullable = false, length = 100)
     private String businessName;
 
     @Builder
-    public CorporateEntity(String ceoName, Long businessNumber, String businessName) {
+    public CorporateEntity(String ceoName, String businessNumber, String businessName) {
         this.ceoName = ceoName;
         this.businessNumber = businessNumber;
         this.businessName = businessName;

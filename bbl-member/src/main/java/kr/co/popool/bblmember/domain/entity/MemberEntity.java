@@ -66,7 +66,7 @@ public class MemberEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "corporate_id")
-    private CorporateEntity corporateEntity;
+    private CorporateEntity corporateEntity = null;
 
     @Builder
     public MemberEntity(String identity,

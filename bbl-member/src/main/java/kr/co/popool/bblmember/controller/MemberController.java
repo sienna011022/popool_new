@@ -25,7 +25,7 @@ public class MemberController {
 
     @ApiOperation("일반 회원가입")
     @PostMapping("/normal/signUp")
-    public ResponseFormat corporateSignUp(@RequestBody @Valid MemberDto.CREATE create){
+    public ResponseFormat signUp(@RequestBody @Valid MemberDto.CREATE create){
         memberService.signUp(create);
         return ResponseFormat.ok();
     }
