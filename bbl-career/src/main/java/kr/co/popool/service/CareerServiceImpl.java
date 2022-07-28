@@ -2,7 +2,10 @@ package kr.co.popool.service;
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.entity.CareerEntity;
+import kr.co.popool.domain.entity.GradeEntity;
+import kr.co.popool.domain.shared.enums.ScoreGrade;
 import kr.co.popool.repository.CareerRepository;
+import kr.co.popool.repository.GradeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j //로깅을 위함
@@ -20,16 +24,20 @@ public class CareerServiceImpl implements CareerService {
     private final CareerRepository careerRepository;
 
 
+
+
     @Override
     public List<CareerDto.CAREERINFO> showAll() {
         List<CareerEntity> careerEntityList = careerRepository.findAll();
         List<CareerDto.CAREERINFO> CareerDtoList = new ArrayList<>();
 
+        //TODO: 등급 내역 null인 경우 처리하기
+
         for (CareerEntity list : careerEntityList) {
             CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
                     .memberIdentity(list.getMemberIdentity())
-                    .grade(String.valueOf(list.getGradeEntity().getGrade()))
                     .name(list.getName())
+                    .grade(String.valueOf(list.getGradeEntity().getGrade()))
                     .period(list.getPeriod())
                     .context(list.getContext())
                     .historyId(list.getHistoryId())
@@ -49,6 +57,7 @@ public class CareerServiceImpl implements CareerService {
         CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
+        .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
@@ -89,7 +98,6 @@ public class CareerServiceImpl implements CareerService {
 
         CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity).orElseThrow(()-> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
         careerEntity.updateCareer(careerDto);
-
         careerRepository.save(careerEntity);
 
     }

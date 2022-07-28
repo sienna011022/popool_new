@@ -3,6 +3,7 @@ package kr.co.popool.domain.shared;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 @Getter
 
 public class BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +34,13 @@ public class BaseEntity {
     @Column(name = "updated_at", nullable = true)
     protected Timestamp updated_at = null;
 
-    @Column(name = "use_Member")
-    protected String use_Member;
+    @LastModifiedBy
+    @Column(name = "use_career")
+    protected Long use_Cember = null;
 
     public void deleted() {
         this.del_yn = "Y";
     }
-
-    public void reCreated(){
-        this.del_yn = "N";
-    }
 }
+
+
