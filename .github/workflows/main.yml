@@ -1,0 +1,233 @@
+name: Deploy-popool
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-career:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./bbl-career/gradlew
+        shell: bash
+
+      - name: Build Career with Gradle
+        run: ./bbl-career/gradlew clean build
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate bbl-career package
+        run: |
+          mkdir -p bbl-career
+          cp bbl-career/build/libs/*.jar bbl-career/application.jar
+          cp Procfile bbl-career/Procfile
+          cp -r .ebextensions bbl-career/.ebextensions
+          cd bbl-career && zip -r bbl-career.zip .
+          
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bbl-career
+          environment_name: Bblcareer-env-1
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: bbl-career/bbl-career.zip
+          
+  build-common:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./bbl-common/gradlew #setting
+        shell: bash
+
+      - name: Build Career with Gradle
+        run: ./bbl-common/gradlew clean build #setting
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate bbl-common package
+        run: |
+          mkdir -p bbl-common
+          cp bbl-common/build/libs/*.jar bbl-common/application.jar
+          cp Procfile bbl-common/Procfile
+          cp -r .ebextensions bbl-common/.ebextensions
+          cd bbl-common && zip -r bbl-common.zip .
+          
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bbl-common
+          environment_name: Bblcommon-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: bbl-common/bbl-common.zip    
+          
+  build-eureka:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./bbl-eureka/gradlew #setting
+        shell: bash
+
+      - name: Build Career with Gradle
+        run: ./bbl-eureka/gradlew clean build #setting
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate bbl-eureka package
+        run: |
+          mkdir -p bbl-eureka
+          cp bbl-eureka/build/libs/*.jar bbl-eureka/application.jar
+          cp Procfile bbl-eureka/Procfile
+          cp -r .ebextensions bbl-eureka/.ebextensions
+          cd bbl-eureka && zip -r bbl-eureka.zip .
+          
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bbl-eureka
+          environment_name: Bbleureka-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: bbl-eureka/bbl-eureka.zip
+          
+  build-member:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./bbl-member/gradlew #setting
+        shell: bash
+
+      - name: Build Career with Gradle
+        run: ./bbl-member/gradlew clean build #setting
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate bbl-member package
+        run: |
+          mkdir -p bbl-member
+          cp bbl-member/build/libs/*.jar bbl-member/application.jar
+          cp Procfile bbl-member/Procfile
+          cp -r .ebextensions bbl-member/.ebextensions
+          cd bbl-member && zip -r bbl-member.zip .
+          
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bbl-member
+          environment_name: Bblmember-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: bbl-member/bbl-member.zip    
+
+  build-payment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./bbl-payment/gradlew #setting
+        shell: bash
+
+      - name: Build Career with Gradle
+        run: ./bbl-payment/gradlew clean build #setting
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate bbl-payment package
+        run: |
+          mkdir -p bbl-payment
+          cp bbl-payment/build/libs/*.jar bbl-payment/application.jar
+          cp Procfile bbl-payment/Procfile
+          cp -r .ebextensions bbl-payment/.ebextensions
+          cd bbl-payment && zip -r bbl-payment.zip .
+          
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bbl-payment
+          environment_name: Bblpayment-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: bbl-payment/bbl-payment.zip    
