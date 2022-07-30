@@ -1,6 +1,7 @@
 package kr.co.popool.domain.entity;
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.shared.BaseEntity;
+import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,4 +53,7 @@ public class CareerEntity extends BaseEntity {
 
     }
 
+    public void updateGrade(GradeEntity gradeEntity) {
+        this.gradeEntity = gradeEntity;
+    }
 }

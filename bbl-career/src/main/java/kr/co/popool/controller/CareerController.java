@@ -40,9 +40,8 @@ public class CareerController {
     @ApiOperation("개인 인사 내역 등록")
     @PostMapping()
     public ResponseFormat createCareer(@RequestBody @Valid CareerDto.CREATE careerDto){
-       careerService.newCareer(careerDto);
+        careerService.newCareer(careerDto);
         return ResponseFormat.ok();
-
     }
 
     @ApiOperation("개인 인사 내역 수정")

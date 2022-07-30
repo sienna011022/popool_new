@@ -1,22 +1,17 @@
 package kr.co.popool.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.dto.GradeDto;
 import kr.co.popool.domain.dto.ScoreDto;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
-import kr.co.popool.domain.entity.ScoreEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import kr.co.popool.repository.CareerRepository;
 import kr.co.popool.repository.GradeRepository;
-import kr.co.popool.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -75,10 +70,12 @@ public class GradeServiceImpl implements GradeService{
                 .build();
 
         gradeEntity.updateGrade(updateGradeDto);
-
         gradeRepository.save(gradeEntity);
 
-        //TODO:최종 인사 내역에 등급 반영
+        //평가 내역과 인사 내역 mapping
+        careerEntity.updateGrade(gradeEntity);
+        careerRepository.save(careerEntity);
+
         //TODO:에러 처리
 
 
