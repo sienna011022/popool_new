@@ -18,43 +18,41 @@ public class OAuthController {
     private final OauthServiceImpl oauthService;
 
     @ApiOperation("카카오 회원가입")
-    @PostMapping("/kakao")
+    @PostMapping("/kakao/login/singUp")
     public ResponseFormat signUpKakao(@RequestBody OauthDto.CREATE create){
-        oauthService.signUpKakao(create);
+        oauthService.saveAdditionalMemberInfo(create);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("네이버 회원가입")
-    @PostMapping("/naver")
+    @PostMapping("/naver/login/singUp")
     public ResponseFormat signUpNaver(@RequestBody OauthDto.CREATE create){
-        oauthService.signUpNaver(create);
+        oauthService.saveAdditionalMemberInfo(create);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("구글 회원가입")
-    @PostMapping("/google")
+    @PostMapping("/google/login/singUp")
     public ResponseFormat signUpGoogle(@RequestBody OauthDto.CREATE create){
-        oauthService.signUpGoogle(create);
+        oauthService.saveAdditionalMemberInfo(create);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("카카오 로그인")
     @PostMapping("/kakao/login")
     public ResponseFormat<OauthDto.TOKEN_READ> loginKAKAO(@RequestBody OauthDto.LOGIN login){
-        return ResponseFormat.ok(oauthService.loginKakao(login));
+        return ResponseFormat.ok(oauthService.login(login));
     }
 
     @ApiOperation("네이버 로그인")
     @PostMapping("/naver/login")
     public ResponseFormat<OauthDto.TOKEN_READ> loginNAVER(@RequestBody OauthDto.LOGIN login){
-        return ResponseFormat.ok(oauthService.loginNaver(login));
+        return ResponseFormat.ok(oauthService.login(login));
     }
 
     @ApiOperation("구글 로그인")
     @PostMapping("/google/login")
     public ResponseFormat<OauthDto.TOKEN_READ> signUpGOOGLE(@RequestBody OauthDto.LOGIN login){
-        return ResponseFormat.ok(oauthService.loginGoogle(login));
+        return ResponseFormat.ok(oauthService.login(login));
     }
-
-
 }
