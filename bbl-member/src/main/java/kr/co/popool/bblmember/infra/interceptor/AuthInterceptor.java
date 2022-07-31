@@ -17,7 +17,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler){
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
 
         if(token == null){
             return true;
