@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class UserFilter extends AbstraceGatewayFilterFactory<Config> {
-    public UserFilter(){
+public class MemberFilter extends AbstraceGatewayFilterFactory<Config> {
+    public MemberFilter(){
         super(Config.class);
     }
 
@@ -25,7 +25,7 @@ public class UserFilter extends AbstraceGatewayFilterFactory<Config> {
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 if(config.isPostLogger()) {
-                    log.info(""UserFilter "End:{}", exchange.getResponse());
+                    log.info(""MemberFilter"End:{}", exchange.getResponse());
                 }
             }));
         };
