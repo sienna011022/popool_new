@@ -33,6 +33,9 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "name", length = 100)
     private String name;
 
+    @Column(name = "provider")
+    private String provider;
+
     @Column(name = "birth", length = 100)
     private String birth;
 
@@ -120,4 +123,9 @@ public class MemberEntity extends BaseEntity {
         this.paymentAgree_yn = "N";
     }
 
+    public void saveOauth(String email, String provider, String name) {
+        this.email = email;
+        this.provider = provider;
+        this.name = name;
+    }
 }

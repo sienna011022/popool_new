@@ -1,7 +1,2 @@
-spring:
-  profiles:
-    include: secret
-
-logging:
-  level:
-    root: info
+jwt:
+  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M

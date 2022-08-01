@@ -1,18 +1,22 @@
 package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblmember.domain.dto.OauthDto;
+import org.springframework.http.ResponseEntity;
 
 public interface OauthService {
 
-    //create
-    void signUpKakao(OauthDto.CREATE create);
-    void signUpNaver(OauthDto.CREATE create);
-    void signUpGoogle(OauthDto.CREATE create);
+    //common
+    OauthDto.PROFILE checkProfile(ResponseEntity<String> response, String provider);
 
     //login
-    OauthDto.TOKEN_READ loginKakao(OauthDto.LOGIN login);
-    OauthDto.TOKEN_READ loginNaver(OauthDto.LOGIN login);
-    OauthDto.TOKEN_READ loginGoogle(OauthDto.LOGIN login);
+    OauthDto.TOKEN_READ login(OauthDto.LOGIN login);
+
+    //create
+    void saveAdditionalMemberInfo(OauthDto.CREATE create);
+
+    //get
+    OauthDto.PROFILE getProfile(String accessToken, String provider);
+    OauthDto.TOKEN_INFO getAccessToken(OauthDto.LOGIN login);
 
 
 }

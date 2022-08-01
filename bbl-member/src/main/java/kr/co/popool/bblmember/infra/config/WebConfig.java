@@ -3,6 +3,7 @@ package kr.co.popool.bblmember.infra.config;
 import kr.co.popool.bblmember.infra.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,4 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
         return new AuthInterceptor();
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }
