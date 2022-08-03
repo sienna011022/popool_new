@@ -9,8 +9,9 @@ import java.util.List;
 
 public interface ScoreService {
 
-    List<ScoreDto.SHOWSCORE> showScores(String memberIdentity);
-    void createScore( ScoreDto.SCOREINFO newScore);
+  List<ScoreDto.SHOWSCORE> showScores(String memberIdentity);
 
-    void updateScore( ScoreDto.UPDATE updateScoreDto);
+  void createScore(ScoreDto.SCOREINFO newScore);
+
+  void updateScore(ScoreDto.UPDATE updateScoreDto);
 }

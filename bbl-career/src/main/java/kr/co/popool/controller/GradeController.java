@@ -19,22 +19,23 @@ import java.util.List;
 @Slf4j //로깅을 위함
 @RequiredArgsConstructor
 @PropertySource("classpath:/application.properties")
-@RequestMapping(value="/careers/{memberIdentity}/scores/grade")
+@RequestMapping(value = "/careers/{memberIdentity}/scores/grade")
 public class GradeController {
 
-    private final GradeServiceImpl gradeService;
-    
-    @ApiOperation("개인 등급 조회")
-    @GetMapping("")
-    public ResponseFormat showGrade(@PathVariable String memberIdentity){
-        GradeDto.ONLYGRADE onlyGrade = gradeService.showGrade(memberIdentity);
-        return ResponseFormat.ok(onlyGrade);
-    }
-    
-    @ApiOperation("개인 등급 상세 내역 조회")
-    @GetMapping("/all")
-    public ResponseFormat showGradeInfo(@PathVariable String memberIdentity){
-        GradeDto.GRADEINFO gradeInfo = gradeService.showGradeInfo(memberIdentity);
-        return ResponseFormat.ok(gradeInfo);
-    }
+  private final GradeServiceImpl gradeService;
+
+  @ApiOperation("개인 등급 조회")
+  @GetMapping("")
+  public ResponseFormat showGrade(@PathVariable String memberIdentity) {
+    GradeDto.ONLYGRADE onlyGrade = gradeService.showGrade(memberIdentity);
+    return ResponseFormat.ok(onlyGrade);
+  }
+
+  @ApiOperation("개인 등급 상세 내역 조회")
+  @GetMapping("/all")
+  public ResponseFormat showGradeInfo(@PathVariable String memberIdentity) {
+    GradeDto.GRADEINFO gradeInfo = gradeService.showGradeInfo(memberIdentity);
+    return ResponseFormat.ok(gradeInfo);
+  }
+
 }

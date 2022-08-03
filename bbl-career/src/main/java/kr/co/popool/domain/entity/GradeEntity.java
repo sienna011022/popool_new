@@ -27,7 +27,7 @@ public class GradeEntity extends BaseEntity {
     @JoinColumn(name = "scores")
     private List<ScoreEntity> scores = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "career_id")
     private CareerEntity careerEntity;
 

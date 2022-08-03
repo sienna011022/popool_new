@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 
+public interface GradeRepository extends JpaRepository<GradeEntity, Long> {
 
-public interface GradeRepository extends JpaRepository<GradeEntity,Long> {
-
-     Optional<GradeEntity> findByCareerEntity (CareerEntity careerEntity);
+  Optional<GradeEntity> findByCareerEntity(CareerEntity careerEntity);
 
 }
