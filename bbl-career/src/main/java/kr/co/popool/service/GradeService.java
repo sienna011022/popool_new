@@ -5,10 +5,10 @@ import kr.co.popool.domain.dto.ScoreDto;
 
 public interface GradeService {
 
-    void updateGrade(ScoreDto.SCOREINFO newScore);
+  void updateGrade(ScoreDto.SCOREINFO newScore);
 
-    GradeDto.GRADEINFO showGradeInfo(String memberIdentity);
+  GradeDto.GRADEINFO showGradeInfo(String memberIdentity);
 
-    GradeDto.ONLYGRADE showGrade(String memberIdentity);
+  GradeDto.ONLYGRADE showGrade(String memberIdentity);
 
 }

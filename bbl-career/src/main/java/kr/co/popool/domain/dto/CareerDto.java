@@ -10,106 +10,100 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 
-public  class CareerDto {
-    @Builder
-    @ToString
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class CAREERINFO {
+public class CareerDto {
 
-        @ApiModelProperty(example = "member아이디")
-        @NotBlank(message = "평가를 원하는 member 아이디를 입력하세요")
-        private String memberIdentity;
+  @Builder
+  @ToString
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class CAREERINFO {
 
-        @ApiModelProperty(example = "평가등급")
-        private String grade;
+    @ApiModelProperty(example = "member아이디")
+    @NotBlank(message = "평가를 원하는 member 아이디를 입력하세요")
+    private String memberIdentity;
 
-        @ApiModelProperty(example = "이름")
-        @NotBlank(message = "이름를 입력해주세요.")
-        private String name;
+    @ApiModelProperty(example = "평가등급")
+    private String grade;
 
-        @ApiModelProperty(example = "재직 기간")
-        @NotBlank(message = "재직 기간을 입력해주세요")
-        private String period;
+    @ApiModelProperty(example = "이름")
+    @NotBlank(message = "이름를 입력해주세요.")
+    private String name;
 
+    @ApiModelProperty(example = "재직 기간")
+    @NotBlank(message = "재직 기간을 입력해주세요")
+    private String period;
 
-        @ApiModelProperty(example = "간단한 자기 소개")
-        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
-        private String context;
+    @ApiModelProperty(example = "간단한 자기 소개")
+    @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+    private String context;
 
-        @ApiModelProperty(example = "블록체인 아이디")
-        @NotBlank(message = "블록체인")
-        private String historyId;
-
-
-
-    }
-
-    @Builder
-    @ToString
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class CREATE {
-
-        @ApiModelProperty(example = "member 아이디")
-        @NotBlank(message = "본인의 아이디를 입력하세요")
-        private String memberIdentity;
-
-        @ApiModelProperty(example = "이름")
-        @NotBlank(message = "이름를 입력해주세요.")
-        private String name;
-
-        @ApiModelProperty(example = "재직 기간")
-        @NotBlank(message = "재직 기간을 입력해주세요")
-        private String period;
+    @ApiModelProperty(example = "블록체인 아이디")
+    @NotBlank(message = "블록체인")
+    private String historyId;
 
 
-        @ApiModelProperty(example = "간단한 자기 소개")
-        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
-        private String context;
+  }
+
+  @Builder
+  @ToString
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class CREATE {
+
+    @ApiModelProperty(example = "member 아이디")
+    @NotBlank(message = "본인의 아이디를 입력하세요")
+    private String memberIdentity;
+
+    @ApiModelProperty(example = "이름")
+    @NotBlank(message = "이름를 입력해주세요.")
+    private String name;
+
+    @ApiModelProperty(example = "재직 기간")
+    @NotBlank(message = "재직 기간을 입력해주세요")
+    private String period;
+
+    @ApiModelProperty(example = "간단한 자기 소개")
+    @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+    private String context;
+
+    @ApiModelProperty(example = "블록체인 아이디")
+    @NotBlank(message = "블록체인")
+    private String historyId;
 
 
-        @ApiModelProperty(example = "블록체인 아이디")
-        @NotBlank(message = "블록체인")
-        private String historyId;
+  }
+
+  @Builder
+  @ToString
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class UPDATE {
+
+    @ApiModelProperty(example = "member 아이디")
+    @NotBlank(message = "본인의 아이디를 입력하세요")
+    private String memberIdentity;
+
+    @ApiModelProperty(example = "이름")
+    @NotBlank(message = "이름를 입력해주세요.")
+    private String name;
+
+    @ApiModelProperty(example = "재직 기간")
+    @NotBlank(message = "재직 기간을 입력해주세요")
+    private String period;
+
+    @ApiModelProperty(example = "간단한 자기 소개")
+    @NotBlank(message = "간단한 자기 소개를 입력해주세요")
+    private String context;
+
+    @ApiModelProperty(example = "블록체인 아이디")
+    @NotBlank(message = "블록체인")
+    private String historyId;
 
 
-
-    }
-    @Builder
-    @ToString
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class UPDATE {
-
-        @ApiModelProperty(example = "member 아이디")
-        @NotBlank(message = "본인의 아이디를 입력하세요")
-        private String memberIdentity;
-
-        @ApiModelProperty(example = "이름")
-        @NotBlank(message = "이름를 입력해주세요.")
-        private String name;
-
-        @ApiModelProperty(example = "재직 기간")
-        @NotBlank(message = "재직 기간을 입력해주세요")
-        private String period;
-
-        @ApiModelProperty(example = "간단한 자기 소개")
-        @NotBlank(message = "간단한 자기 소개를 입력해주세요")
-        private String context;
-
-        @ApiModelProperty(example = "블록체인 아이디")
-        @NotBlank(message = "블록체인")
-        private String historyId;
-
-
-
-    }
-
-
+  }
 
 
 }

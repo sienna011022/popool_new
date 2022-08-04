@@ -19,70 +19,73 @@ import java.util.Optional;
 @Slf4j //로깅을 위함
 @RequiredArgsConstructor
 public class ScoreServiceImpl implements ScoreService {
-    private final CareerRepository careerRepository;
-    private final ScoreRepository scoreRepository;
 
-    public List<ScoreDto.SHOWSCORE> showScores(String memberIdentity) {
+  private final CareerRepository careerRepository;
+  private final ScoreRepository scoreRepository;
 
-        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-                .orElseThrow(() -> new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다"));;
+  public List<ScoreDto.SHOWSCORE> showScores(String memberIdentity) {
 
-        List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity);
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+        .orElseThrow(() -> new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다"));
+    ;
 
-        List<ScoreDto.SHOWSCORE> ScoreList = new ArrayList<>();
+    List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity);
 
-        for (ScoreEntity list : scoreEntityList) {
-            ScoreDto.SHOWSCORE score = ScoreDto.SHOWSCORE.builder()
-                    .evaluatorIdentity(list.getEvaluatorIdentity())
-                    .attendance(list.getAttendance())
-                    .sincerity(list.getSincerity())
-                    .positiveness(list.getSincerity())
-                    .technical(list.getTechnical())
-                    .cooperative(list.getCooperative())
-                    .build();
-            ScoreList.add(score);
-        }
+    List<ScoreDto.SHOWSCORE> ScoreList = new ArrayList<>();
 
-        return ScoreList;
-}
-
-    @Override
-    @Transactional
-    public void createScore(ScoreDto.SCOREINFO newScore) {
-
-        CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
-                .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
-
-        ScoreEntity scoreEntity = ScoreEntity.builder()
-                .careerEntity(careerEntity)
-                .evaluatorIdentity(newScore.getEvaluatorIdentity())
-                .attendance(newScore.getAttendance())
-                .sincerity(newScore.getSincerity())
-                .positiveness(newScore.getSincerity())
-                .technical(newScore.getTechnical())
-                .cooperative(newScore.getCooperative())
-                .build();
-
-        scoreRepository.save(scoreEntity);
-
+    for (ScoreEntity list : scoreEntityList) {
+      ScoreDto.SHOWSCORE score = ScoreDto.SHOWSCORE.builder()
+          .evaluatorIdentity(list.getEvaluatorIdentity())
+          .attendance(list.getAttendance())
+          .sincerity(list.getSincerity())
+          .positiveness(list.getSincerity())
+          .technical(list.getTechnical())
+          .cooperative(list.getCooperative())
+          .build();
+      ScoreList.add(score);
     }
 
-    @Override
-    @Transactional
-    public void updateScore(ScoreDto.UPDATE updateScoreDto) {
+    return ScoreList;
+  }
 
-        log.info("등록한 평가자의 아이디:{},career:{}",updateScoreDto.getEvaluatorIdentity(),updateScoreDto.toString());
+  @Override
+  @Transactional
+  public void createScore(ScoreDto.SCOREINFO newScore) {
 
-        ScoreEntity scoreEntity = scoreRepository.findByEvaluatorIdentity(updateScoreDto.getEvaluatorIdentity())
-                .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
-        scoreEntity.updateScore(updateScoreDto);
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
+        .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-        scoreRepository.save(scoreEntity);
+    ScoreEntity scoreEntity = ScoreEntity.builder()
+        .careerEntity(careerEntity)
+        .evaluatorIdentity(newScore.getEvaluatorIdentity())
+        .attendance(newScore.getAttendance())
+        .sincerity(newScore.getSincerity())
+        .positiveness(newScore.getSincerity())
+        .technical(newScore.getTechnical())
+        .cooperative(newScore.getCooperative())
+        .build();
 
-    }
+    scoreRepository.save(scoreEntity);
+
+  }
+
+  @Override
+  @Transactional
+  public void updateScore(ScoreDto.UPDATE updateScoreDto) {
+
+    log.info("등록한 평가자의 아이디:{},career:{}", updateScoreDto.getEvaluatorIdentity(),
+        updateScoreDto.toString());
+
+    ScoreEntity scoreEntity = scoreRepository.findByEvaluatorIdentity(
+            updateScoreDto.getEvaluatorIdentity())
+        .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+    scoreEntity.updateScore(updateScoreDto);
+
+    scoreRepository.save(scoreEntity);
+
+  }
 
 
- 
 }
 
 

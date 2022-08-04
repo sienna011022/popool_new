@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CareerRepository extends JpaRepository<CareerEntity,Long> {
+public interface CareerRepository extends JpaRepository<CareerEntity, Long> {
 
-    Optional<CareerEntity> findByMemberIdentity(String memberIdentity);
+  Optional<CareerEntity> findByMemberIdentity(String memberIdentity);
 
 
 }

@@ -12,108 +12,98 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 
 @Service
 @Slf4j //로깅을 위함
 @RequiredArgsConstructor
-public class GradeServiceImpl implements GradeService{
+public class GradeServiceImpl implements GradeService {
 
-    public static final int DEFAULT_SIZE = 1;
+  public static final int DEFAULT_SIZE = 1;
 
-    private final GradeRepository gradeRepository;
-    private final CareerRepository careerRepository;
+  private final GradeRepository gradeRepository;
 
-    @Override
-    public void updateGrade(ScoreDto.SCOREINFO newScore) {
+  private final CareerRepository careerRepository;
 
+  @Override
+  public void updateGrade(ScoreDto.SCOREINFO newScore) {
 
+    //메소드 분리하기
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-        CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+    GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 평가 내역이 존재하지 않습니다"));
+    int totalScore = gradeEntity.getTotalScore();
 
-        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 평가 내역이 존재하지 않습니다"));
-        int totalScore = gradeEntity.getTotalScore();
+    totalScore += newScore.getAttendance();
+    totalScore += newScore.getCooperative();
+    totalScore += newScore.getPositiveness();
+    totalScore += newScore.getSincerity();
+    totalScore += newScore.getTechnical();
 
-        totalScore += newScore.getAttendance();
-        totalScore += newScore.getCooperative();
-        totalScore += newScore.getPositiveness();
-        totalScore += newScore.getSincerity();
-        totalScore += newScore.getTechnical();
+    int totalMember = gradeEntity.getTotalMember() + DEFAULT_SIZE;
 
-        int totalMember = gradeEntity.getTotalMember() + DEFAULT_SIZE;
+    int average = totalScore / totalMember;
 
-        int average = totalScore / totalMember;
+    ScoreGrade finalGrade;
 
-        ScoreGrade finalGrade;
+    if (20 < average) {
+      finalGrade = ScoreGrade.GOLD;
 
-        if (20 < average) {
-            finalGrade = ScoreGrade.GOLD;
+    } else if (16 < average) {
+      finalGrade = ScoreGrade.SILVER;
 
-        } else if (16 < average) {
-            finalGrade = ScoreGrade.SILVER;
+    } else if (10 < average) {
+      finalGrade = ScoreGrade.BRONZE;
 
-        } else if (10 < average) {
-            finalGrade = ScoreGrade.BRONZE;
-
-        } else {
-            finalGrade = ScoreGrade.BLACK;
-        }
-
-        GradeDto.UPDATEGRADE updateGradeDto = GradeDto.UPDATEGRADE.builder()
-                .grade(finalGrade)
-                .totalMember(totalMember)
-                .totalScore(totalScore)
-                .average(average)
-                .build();
-
-        gradeEntity.updateGrade(updateGradeDto);
-        gradeRepository.save(gradeEntity);
-
-        //평가 내역과 인사 내역 mapping
-        careerEntity.updateGrade(gradeEntity);
-        careerRepository.save(careerEntity);
-
-        //TODO:에러 처리
-
-
-
+    } else {
+      finalGrade = ScoreGrade.BLACK;
     }
 
-    @Override
-    public GradeDto.GRADEINFO showGradeInfo(String memberIdentity) {
-        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
-        
-        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급 내역이 존재하지 않습니다"));
+    GradeDto.UPDATEGRADE updateGradeDto = GradeDto.UPDATEGRADE.builder().grade(finalGrade)
+        .totalMember(totalMember).totalScore(totalScore).average(average).build();
 
-        GradeDto.GRADEINFO gradeInfo = GradeDto.GRADEINFO.builder()
-                .average(gradeEntity.getAverage())
-                .grade(gradeEntity.getGrade())
-                .totalMember(gradeEntity.getTotalMember())
-                .totalScore(gradeEntity.getTotalScore())
-                .build();
+    gradeEntity.updateGrade(updateGradeDto);
+    gradeRepository.save(gradeEntity);
 
-        return gradeInfo;
+    //평가 내역과 인사 내역 mapping
+    careerEntity.updateGrade(gradeEntity);
+    careerRepository.save(careerEntity);
 
-    }
+    //TODO:에러 처리
 
-    @Override
-    public GradeDto.ONLYGRADE showGrade(String memberIdentity) {
-        CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+  }
 
-        GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
-                .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급이 존재하지 않습니다"));
+  @Override
+  public GradeDto.GRADEINFO showGradeInfo(String memberIdentity) {
 
-        GradeDto.ONLYGRADE onlyGrade = GradeDto.ONLYGRADE.builder()
-                .grade(gradeEntity.getGrade())
-                .build();
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-        return onlyGrade;
+    GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급 내역이 존재하지 않습니다"));
 
-}
+    GradeDto.GRADEINFO gradeInfo = GradeDto.GRADEINFO.builder().average(gradeEntity.getAverage())
+        .grade(gradeEntity.getGrade()).totalMember(gradeEntity.getTotalMember())
+        .totalScore(gradeEntity.getTotalScore()).build();
+
+    return gradeInfo;
+
+  }
+
+  @Override
+  public GradeDto.ONLYGRADE showGrade(String memberIdentity) {
+
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+
+    GradeEntity gradeEntity = gradeRepository.findByCareerEntity(careerEntity)
+        .orElseThrow(() -> new BadRequestException("아이디에 해당하는 등급이 존재하지 않습니다"));
+
+    GradeDto.ONLYGRADE onlyGrade = GradeDto.ONLYGRADE.builder().grade(gradeEntity.getGrade())
+        .build();
+
+    return onlyGrade;
+
+  }
 }

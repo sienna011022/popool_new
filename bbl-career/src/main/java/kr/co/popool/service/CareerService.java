@@ -1,7 +1,6 @@
 package kr.co.popool.service;
 
 
-
 import kr.co.popool.domain.dto.CareerDto;
 import kr.co.popool.domain.entity.CareerEntity;
 
@@ -10,13 +9,13 @@ import java.util.Optional;
 
 public interface CareerService {
 
-    List<CareerDto.CAREERINFO> showAll();
+  List<CareerDto.CAREERINFO> showAll();
 
-    CareerDto.CAREERINFO show(String memberIdentity);
+  CareerDto.CAREERINFO show(String memberIdentity);
 
-    void newCareer(CareerDto.CREATE newCareer);
+  void newCareer(CareerDto.CREATE newCareer);
 
-    void update(String memberIdentity, CareerDto.UPDATE careerDto);
+  void update(String memberIdentity, CareerDto.UPDATE careerDto);
 
 
 }

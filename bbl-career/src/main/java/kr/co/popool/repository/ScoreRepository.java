@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ScoreRepository extends JpaRepository<ScoreEntity,Long> {
+public interface ScoreRepository extends JpaRepository<ScoreEntity, Long> {
 
-    Optional<ScoreEntity> findById(Long id);
+  Optional<ScoreEntity> findById(Long id);
 
-    List<ScoreEntity> findByCareerEntity(CareerEntity careerEntity);
+  List<ScoreEntity> findByCareerEntity(CareerEntity careerEntity);
 
-    Optional<ScoreEntity> findByEvaluatorIdentity(String evaluatorIdentity);
+  Optional<ScoreEntity> findByEvaluatorIdentity(String evaluatorIdentity);
 }

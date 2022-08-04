@@ -13,34 +13,33 @@ import java.sql.Timestamp;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(of="id", callSuper = false)
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Getter
 
 public class BaseEntity {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  protected Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+  @Column(name = "del_yn", nullable = true, length = 1)
+  protected String del_yn = "N";
 
-    @Column(name = "del_yn", nullable = true, length = 1)
-    protected String del_yn = "N";
+  @CreatedDate            //최초 생성 시간
+  @Column(name = "created_at", nullable = true, updatable = false)
+  protected Timestamp created_at = null;
 
-    @CreatedDate            //최초 생성 시간
-    @Column(name = "created_at", nullable = true, updatable = false)
-    protected Timestamp created_at = null;
+  @LastModifiedDate       //마지막 수정 시간
+  @Column(name = "updated_at", nullable = true)
+  protected Timestamp updated_at = null;
 
-    @LastModifiedDate       //마지막 수정 시간
-    @Column(name = "updated_at", nullable = true)
-    protected Timestamp updated_at = null;
+  @LastModifiedBy
+  @Column(name = "use_career")
+  protected Long use_Cember = null;
 
-    @LastModifiedBy
-    @Column(name = "use_career")
-    protected Long use_Cember = null;
-
-    public void deleted() {
-        this.del_yn = "Y";
-    }
+  public void deleted() {
+    this.del_yn = "Y";
+  }
 }
 
 
