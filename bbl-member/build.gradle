@@ -28,6 +28,8 @@ dependencies {
     implementation group: 'javax.xml.bind', name: 'jaxb-api'
     implementation group: 'com.google.code.gson', name: 'gson'
 
+    implementation project(path: ":bbl-common")
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -35,8 +37,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //Eureka
-//  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation project(path: ":bbl-common")
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     //Swagger 및 Validation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
