@@ -1,6 +1,7 @@
 package kr.co.popool.bblmember.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Address;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
@@ -83,6 +84,13 @@ public class MemberDto {
         private String memberRank;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class CHECK_PW {
+        private String password;
+        private String checkPassword;
+    }
 
     @Builder
     @Getter
@@ -221,4 +229,5 @@ public class MemberDto {
         @NotBlank(message = "비밀번호를 입력해주세요")
         private String password;
     }
+
 }
