@@ -61,6 +61,27 @@ public class OauthDto {
         private String memberRank;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class CREATE_CORPORATE {
+        @ApiModelProperty(example = "대표 성함")
+        @NotBlank(message = "기업 대표 성함을 입력해주세요.")
+        private String ceoName;
+
+        @ApiModelProperty(example = "사업자번호")
+        @NotBlank(message = "111-1111-1111")
+        private String businessNumber;
+
+        @ApiModelProperty(example = "사업자명")
+        @NotBlank(message = "사업자명을 입력해주세요.")
+        private String businessName;
+
+        private OauthDto.CREATE create;
+    }
+
+
+
     @Builder
     @Getter
     @AllArgsConstructor
