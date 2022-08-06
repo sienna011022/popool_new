@@ -1,5 +1,4 @@
-package main.java.kr.co.popool.gateway;
-
+package kr.co.popool.gateway.filters;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -9,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class MemberFilter extends AbstraceGatewayFilterFactory<Config> {
+public class MemberFilter extends AbstractGatewayFilterFactory<Config> {
     public MemberFilter(){
         super(Config.class);
     }
@@ -17,15 +16,15 @@ public class MemberFilter extends AbstraceGatewayFilterFactory<Config> {
     @Override
     public GatewayFilter apply(final Config config){
         return(exchange,chain) ->{
-            log.info("UserFilter baseMessage: {}",config.getBaseMessage());
+            log.info("MemberFilter baseMessage: {}",config.getBaseMessage());
 
-            if(congif.isPreLogger()) {
-                log.info("UserFilter Start: {}", exchange.getRequest());
+            if(config.isPreLogger()) {
+                log.info("MemberFilter Start: {}", exchange.getRequest());
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 if(config.isPostLogger()) {
-                    log.info(""MemberFilter"End:{}", exchange.getResponse());
+                    log.info("MemberFilter End:{}", exchange.getResponse());
                 }
             }));
         };

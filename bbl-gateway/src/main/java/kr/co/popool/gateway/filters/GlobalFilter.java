@@ -1,4 +1,4 @@
-package main.java.kr.co.popool.gateway;
+package kr.co.popool.gateway.filters;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class GlobalFilter extends AbstraceGatewayFilterFactory<Config> {
+public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     public GlobalFilter(){
         super(Config.class);
     }
@@ -18,7 +18,7 @@ public class GlobalFilter extends AbstraceGatewayFilterFactory<Config> {
         return(exchange,chain) ->{
             log.info("GlobalFilter baseMessage: {}",config.getBaseMessage());
 
-            if(congif.isPreLogger()) {
+            if(config.isPreLogger()) {
                 log.info("GlobalFilter Start: {}", exchange.getRequest());
             }
 
