@@ -13,6 +13,7 @@ public interface OauthService {
 
     //create
     void saveAdditionalMemberInfo(OauthDto.CREATE create);
+    void saveAdditionalCorporateInfo(OauthDto.CREATE_CORPORATE create);
 
     //get
     OauthDto.PROFILE getProfile(String accessToken, String provider);
