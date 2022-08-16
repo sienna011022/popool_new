@@ -46,8 +46,8 @@ public class CareerController {
 
   @ApiOperation("개인 인사 내역 수정")
   @PatchMapping("/{memberIdentity}")
-  public ResponseFormat updateCareer(@PathVariable String memberIdentity,@RequestBody CareerDto.UPDATE careerDto) {
-    careerService.update(memberIdentity, careerDto);
+  public ResponseFormat updateCareer(@RequestBody CareerDto.UPDATE careerDto) {
+    careerService.update(careerDto);
     return ResponseFormat.ok();
 
   }

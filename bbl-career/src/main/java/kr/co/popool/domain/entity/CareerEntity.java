@@ -59,4 +59,14 @@ public class CareerEntity extends BaseEntity {
   public void updateGrade(GradeEntity gradeEntity) {
     this.gradeEntity = gradeEntity;
   }
+
+  public static CareerEntity of(CareerDto.CREATE newCareer) {
+    return CareerEntity.builder()
+        .memberIdentity(newCareer.getMemberIdentity())
+        .name(newCareer.getName())
+        .context(newCareer.getContext())
+        .period(newCareer.getPeriod())
+        .historyId(newCareer.getHistoryId())
+        .build();
+  }
 }
