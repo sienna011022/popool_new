@@ -24,6 +24,7 @@ public class CareerServiceImpl implements CareerService {
     List<CareerEntity> careerEntityList = careerRepository.findAll();
     List<CareerDto.CAREERINFO> CareerDtoList = new ArrayList<>();
 
+
     //TODO: 등급 내역 null인 경우 처리하기
 
     for (CareerEntity list : careerEntityList) {
@@ -46,7 +47,7 @@ public class CareerServiceImpl implements CareerService {
     CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
         .orElseThrow(() -> new BadRequestException("아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-    CareerDto.CAREERINFO careerInfo = CareerDto.CAREERINFO.builder()
+    return CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
         .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
@@ -54,8 +55,6 @@ public class CareerServiceImpl implements CareerService {
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
         .build();
-
-    return careerInfo;
 
   }
 
