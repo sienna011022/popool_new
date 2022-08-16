@@ -101,5 +101,4 @@ public class CareerServiceImpl implements CareerService {
     careerRepository.save(careerEntity);
 
   }
-
 }

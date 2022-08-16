@@ -153,6 +153,19 @@ public class ScoreDto {
     private int cooperative;
 
   }
+
+  public static ScoreDto.SHOWSCORE of(ScoreEntity scoreEntity) {
+    ScoreDto.SHOWSCORE score = ScoreDto.SHOWSCORE.builder()
+        .evaluatorIdentity(scoreEntity.getEvaluatorIdentity())
+        .attendance(scoreEntity.getAttendance())
+        .sincerity(scoreEntity.getSincerity())
+        .positiveness(scoreEntity.getSincerity())
+        .technical(scoreEntity.getTechnical())
+        .cooperative(scoreEntity.getCooperative())
+        .build();
+
+    return score;
+  }
 }
 
 
