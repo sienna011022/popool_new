@@ -13,6 +13,8 @@ import javax.validation.constraints.NotBlank;
 
 public class CareerDto {
 
+
+
   @Builder
   @ToString
   @Getter
@@ -106,11 +108,11 @@ public class CareerDto {
 
   }
 
-
   public static CareerDto.CAREERINFO of(CareerEntity careerEntity){
     return CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
+        //null일떄는 어떻게 하지..
         .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())
@@ -118,5 +120,19 @@ public class CareerDto {
         .build();
 
   }
+
+  public static CareerDto.CAREERINFO NoneGradeDto(CareerEntity careerEntity) {
+    return CareerDto.CAREERINFO.builder()
+        .memberIdentity(careerEntity.getMemberIdentity())
+        .name(careerEntity.getName())
+        .grade("None")
+        .period(careerEntity.getPeriod())
+        .context(careerEntity.getContext())
+        .historyId(careerEntity.getHistoryId())
+        .build();
+
+  }
+
+
 
 }

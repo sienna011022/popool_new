@@ -4,11 +4,10 @@ import static kr.co.popool.bblcommon.error.model.ErrorCode.DUPLICATED_MEMBERIDEN
 
 import java.util.ArrayList;
 import java.util.List;
-import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
-import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.domain.dto.CareerDto;
+import kr.co.popool.domain.dto.CareerDto.CAREERINFO;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.repository.CareerRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +31,13 @@ public class CareerServiceImpl implements CareerService {
 
   @Override
   public List<CareerDto.CAREERINFO> showAll() {
-    //TODO: 등급 내역 null인 경우 처리하기
+
     List<CareerEntity> careerEntityList = careerRepository.findAll();
     List<CareerDto.CAREERINFO> CareerDtoList = new ArrayList<>();
 
     for (CareerEntity list : careerEntityList) {
-      CareerDto.CAREERINFO careerDto = CareerDto.of(list);
-      CareerDtoList.add(careerDto);
+      CareerDtoList.add(checkGrade(list));
     }
-
     return CareerDtoList;
   }
 
@@ -55,10 +52,8 @@ public class CareerServiceImpl implements CareerService {
   public CareerDto.CAREERINFO show(String memberIdentity) {
     CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
         .orElseThrow(() -> new NotFoundException(memberIdentity));
-
-    return CareerDto.of(careerEntity);
+    return checkGrade(careerEntity);
   }
-
 
   /**
    * 인사 내역 등록
@@ -80,7 +75,6 @@ public class CareerServiceImpl implements CareerService {
     } catch (DataIntegrityViolationException e) {
       throw new DuplicatedException(DUPLICATED_MEMBERIDENTITY);
     }
-
   }
 
   /**
@@ -99,7 +93,13 @@ public class CareerServiceImpl implements CareerService {
         .orElseThrow(() -> new NotFoundException(careerDto.getMemberIdentity()));
     careerEntity.updateCareer(careerDto);
     careerRepository.save(careerEntity);
-
   }
 
+  public static CAREERINFO checkGrade(CareerEntity careerEntity) {
+    if (careerEntity.getGradeEntity() != null) {
+      return CareerDto.of(careerEntity);
+    } else {
+      return CareerDto.NoneGradeDto(careerEntity);
+    }
+  }
 }
