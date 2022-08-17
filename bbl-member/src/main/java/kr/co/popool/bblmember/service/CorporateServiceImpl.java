@@ -3,12 +3,14 @@ package kr.co.popool.bblmember.service;
 import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
+import kr.co.popool.bblmember.domain.dto.QueryDto;
 import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,15 +66,13 @@ public class CorporateServiceImpl implements CorporateService{
     @Override
     public CorporateDto.READ_CORPORATE getCorporate() {
 
-        CorporateEntity corporateEntity = corporateRepository.findById(MemberThreadLocal.get().getCorporateEntity().getId())
+        QueryDto.CORPORATE_INFO corporateInfo = corporateRepository.findDtoByCorporateInfo(MemberThreadLocal.get())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CORPORATE));
 
-        //TODO select name, number, ceoName from Corentity where ?
-        //TODO select(Proections.bean(
         return CorporateDto.READ_CORPORATE.builder()
-                .businessName(corporateEntity.getBusinessName())
-                .businessNumber(corporateEntity.getBusinessNumber())
-                .ceoName(corporateEntity.getCeoName())
+                .businessName(corporateInfo.getBusinessName())
+                .businessNumber(corporateInfo.getBusinessNumber())
+                .ceoName(corporateInfo.getCeoName())
                 .build();
     }
 }
