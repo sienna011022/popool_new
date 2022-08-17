@@ -36,9 +36,13 @@ public class CorporateRepositoryCustomImpl extends QuerydslRepositorySupport imp
                         qCorporateEntity.businessName
                 ))
                 .from(qCorporateEntity)
-                .where(qMemberEntity.eq(memberEntity))
+                .where(eqCorporate(memberEntity.getCorporateEntity()))
                 .fetchOne()
         );
+    }
+
+    private BooleanExpression eqCorporate(CorporateEntity corporateEntity){
+        return this.qMemberEntity.corporateEntity.eq(corporateEntity);
     }
 
 }
