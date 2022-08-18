@@ -1,8 +1,8 @@
 package kr.co.popool.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.ScoreDto;
+import kr.co.popool.domain.dto.queryDto.ScoreQueryDto.SHOWSCORE;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
 import kr.co.popool.repository.CareerRepository;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,23 +31,12 @@ public class ScoreServiceImpl implements ScoreService {
    * @Exception NotFoundException : 아이디에 해당하는 평가 내역을 찾지 못함.
    */
 
-  public List<ScoreDto.SHOWSCORE> showScores(String memberIdentity) {
+  @Override
+  public Optional<List<SHOWSCORE>> showScores(String memberIdentity) {
+    //TODO: queryDsl 예외 처리
 
-    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-        .orElseThrow(() -> new NotFoundException(memberIdentity));
+    return scoreRepository.showAllScores(memberIdentity);
 
-    List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity);
-
-
-
-    List<ScoreDto.SHOWSCORE> ScoreList = new ArrayList<>();
-
-    for (ScoreEntity list : scoreEntityList) {
-      ScoreDto.SHOWSCORE score = ScoreDto.of(list);
-      ScoreList.add(score);
-    }
-
-    return ScoreList;
   }
 
 
