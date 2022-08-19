@@ -24,6 +24,7 @@ public interface MemberService {
     //get
     MemberDto.READ get();
     String findIdentity(MemberDto.READ_ID readId);
+    String getLoginInfo();
     boolean getAddress();
     boolean getPaymentAgree();
 

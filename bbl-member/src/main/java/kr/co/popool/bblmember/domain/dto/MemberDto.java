@@ -1,7 +1,6 @@
 package kr.co.popool.bblmember.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Address;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.domain.shared.enums.Gender;
@@ -9,12 +8,9 @@ import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class MemberDto {
@@ -216,7 +212,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    public static class RE_CREATE{
+    public static class RE_CREATE {
         @ApiModelProperty("복귀할 아이디")
         @NotBlank(message = "아이디를 적어주세요.")
         private String identity;
@@ -229,5 +225,4 @@ public class MemberDto {
         @NotBlank(message = "비밀번호를 입력해주세요")
         private String password;
     }
-
 }
