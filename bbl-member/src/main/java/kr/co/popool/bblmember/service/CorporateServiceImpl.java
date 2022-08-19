@@ -10,7 +10,6 @@ import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.CorporateRepository;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class CorporateServiceImpl implements CorporateService{
     private final MemberRepository memberRepository;
     private final CorporateRepository corporateRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     /**
      * 기업 회원가입

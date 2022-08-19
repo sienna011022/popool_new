@@ -51,6 +51,9 @@ dependencies {
     //Eureka
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
+    //feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
     //Swagger 및 Validation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-validation'

@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.popool.bblmember.domain.dto.QQueryDto_MEMBER_INFO;
 import kr.co.popool.bblmember.domain.dto.QueryDto;
-import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.entity.QMemberEntity;
 import kr.co.popool.bblmember.repository.MemberRepositoryCustom;
