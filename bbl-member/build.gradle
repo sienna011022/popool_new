@@ -48,6 +48,9 @@ dependencies {
             "javax.annotation:javax.annotation-api",
     )
 
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //Eureka
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
