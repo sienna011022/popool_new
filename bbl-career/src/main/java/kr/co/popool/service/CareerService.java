@@ -15,7 +15,7 @@ public interface CareerService {
 
   void newCareer(CareerDto.CREATE newCareer);
 
-  void update(String memberIdentity, CareerDto.UPDATE careerDto);
+  void update(CareerDto.UPDATE careerDto);
 
 
 }

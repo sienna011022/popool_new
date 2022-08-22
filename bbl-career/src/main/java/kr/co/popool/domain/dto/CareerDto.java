@@ -2,6 +2,7 @@ package kr.co.popool.domain.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
 
@@ -105,5 +106,17 @@ public class CareerDto {
 
   }
 
+
+  public static CareerDto.CAREERINFO of(CareerEntity careerEntity){
+    return CareerDto.CAREERINFO.builder()
+        .memberIdentity(careerEntity.getMemberIdentity())
+        .name(careerEntity.getName())
+        .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
+        .period(careerEntity.getPeriod())
+        .context(careerEntity.getContext())
+        .historyId(careerEntity.getHistoryId())
+        .build();
+
+  }
 
 }
