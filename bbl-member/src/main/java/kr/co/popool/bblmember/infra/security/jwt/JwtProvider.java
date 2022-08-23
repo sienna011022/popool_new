@@ -8,7 +8,9 @@ import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenInvalidException;
+import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.MemberRepository;
+import kr.co.popool.bblmember.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +40,7 @@ public class JwtProvider {
     private final long REFRESH_EXPIRE = 1000 * 60 * 60 * 24 * 14;   //2주
 
     private final MemberRepository memberRepository;
+    private final RedisService redisService;                        //Redis
 
     /**
      * 시크릿 키를 Base64로 인코딩을 하는 메소드.
@@ -97,7 +100,7 @@ public class JwtProvider {
         Date expireDate = new Date();
         expireDate.setTime(issueDate.getTime() + REFRESH_EXPIRE);
 
-        return Jwts.builder()
+        String refreshToken =  Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(generateClaims(identity, memberRole, name))
                 .setIssuedAt(issueDate)
@@ -105,6 +108,10 @@ public class JwtProvider {
                 .setExpiration(expireDate)      //유효 시간 2주일.
                 .signWith(SignatureAlgorithm.HS256, generateKey())
                 .compact();
+
+        redisService.createData(identity, refreshToken, issueDate.getTime() + REFRESH_EXPIRE); //Redis
+
+        return refreshToken;
     }
 
     /**
@@ -113,10 +120,11 @@ public class JwtProvider {
      * @return 사용자의 새로운 AccessToken
      */
     public String createAccessToken(String refreshToken){
-        MemberEntity memberEntity = findMemberByToken(refreshToken);
+        MemberEntity memberEntity = MemberThreadLocal.get();
 
-        if(!memberEntity.getRefreshToken().equals(refreshToken))
-            throw new UnauthorizedException();
+        if(!refreshToken.equals(redisService.getValue(memberEntity.getIdentity()))){
+            throw new JwtTokenExpiredException();
+        }
 
         return createAccessToken(memberEntity.getIdentity()
                 , memberEntity.getMemberRole(), memberEntity.getName());

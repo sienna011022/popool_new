@@ -41,9 +41,6 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "birth", length = 100)
     private String birth;
 
-    @Column(name = "refresh_token", length = 600)
-    private String refreshToken;
-
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "number"
@@ -131,10 +128,6 @@ public class MemberEntity extends BaseEntity {
         this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
         this.phone = new Phone(memberUpdate.getPhone());
         this.email = memberUpdate.getEmail();
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
     }
 
     public void updatePassword(String password){

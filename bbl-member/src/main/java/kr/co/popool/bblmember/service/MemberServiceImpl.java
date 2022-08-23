@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String[] tokens = generateToken(memberEntity);
-        memberEntity.updateRefreshToken(tokens[1]);
+        //TODO : redis에 refreshToken 저장
 
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }

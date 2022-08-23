@@ -6,7 +6,7 @@ public interface RedisService {
     String getValue(String key);
 
     //create
-    void createData(String key, String value);
+    void createData(String key, String value, long expired);
 
     //delete
     void deleteData(String key);
