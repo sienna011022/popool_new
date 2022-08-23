@@ -13,6 +13,7 @@ public interface MemberService {
 
     //create
     void signUp(MemberDto.CREATE create);
+    MemberDto.TOKEN reCreateAccessToken(String refreshToken);
 
     //update
     void update(MemberDto.UPDATE update);
@@ -31,6 +32,7 @@ public interface MemberService {
     //delete
     void delete(String password);
     void reCreate(MemberDto.RE_CREATE reCreat);
+    void deletRefreshToken(String identity);
 
     //common
     boolean checkIdentity(String identity);
@@ -43,5 +45,4 @@ public interface MemberService {
     void checkSignUp(MemberDto.CREATE create);
     void checkSignUp(OauthDto.CREATE create);
     void checkSignUp(CorporateDto.CREATE_CORPORATE create);
-
 }

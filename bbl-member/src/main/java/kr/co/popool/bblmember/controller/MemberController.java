@@ -5,6 +5,7 @@ import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.shared.Phone;
 import kr.co.popool.bblmember.service.MemberService;
+import kr.co.popool.bblmember.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final RedisService redisService;
 
     @ApiOperation("로그인")
     @PostMapping("/login")
@@ -131,6 +133,20 @@ public class MemberController {
     @PostMapping("identity/info")
     public ResponseFormat<String> loginInfo(){
         return ResponseFormat.ok(memberService.getLoginInfo());
+    }
+
+    @ApiOperation("AccessToken 재발급")
+    @GetMapping("/refresh")
+    public ResponseFormat<String> resetRefreshToken(@RequestHeader("token") String refreshToken){
+        //TODO : refreshtoken 재발급
+        return null;
+    }
+
+    @ApiOperation("Redis Data 삭제")
+    @DeleteMapping("/refresh/delete")
+    public ResponseFormat deleteRefreshToken(@RequestParam("identity") String identity){
+        //TODO : refreshToken delete
+        return null;
     }
 
 }
