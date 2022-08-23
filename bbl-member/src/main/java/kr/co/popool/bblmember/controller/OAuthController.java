@@ -3,16 +3,19 @@ package kr.co.popool.bblmember.controller;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.OauthDto;
-import kr.co.popool.bblmember.service.OauthServiceImpl;
+import kr.co.popool.bblmember.service.OauthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
 public class OAuthController {
 
-    private final OauthServiceImpl oauthService;
+    private final OauthService oauthService;
 
     @PostMapping("/kakao")
     public ResponseFormat<String> getKey(){

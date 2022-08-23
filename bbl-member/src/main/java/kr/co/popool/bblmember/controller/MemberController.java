@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.shared.Phone;
-import kr.co.popool.bblmember.service.MemberServiceImpl;
+import kr.co.popool.bblmember.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     @ApiOperation("로그인")
     @PostMapping("/login")
@@ -125,6 +125,12 @@ public class MemberController {
             @RequestParam("phone") String phone
     ) {
         return ResponseFormat.ok(memberService.checkPhone(new Phone(phone)));
+    }
+
+    @ApiOperation("로그인 정보 호출")
+    @PostMapping("identity/info")
+    public ResponseFormat<String> loginInfo(){
+        return ResponseFormat.ok(memberService.getLoginInfo());
     }
 
 }

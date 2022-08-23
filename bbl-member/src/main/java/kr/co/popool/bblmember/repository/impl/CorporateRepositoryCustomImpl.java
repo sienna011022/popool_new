@@ -12,7 +12,6 @@ import kr.co.popool.bblmember.repository.CorporateRepositoryCustom;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
