@@ -2,6 +2,7 @@ package kr.co.popool.service;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.domain.dto.ScoreDto;
+import kr.co.popool.domain.dto.queryDto.ScoreQueryDto.SHOWSCORE;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
 import kr.co.popool.repository.CareerRepository;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,30 +23,31 @@ public class ScoreServiceImpl implements ScoreService {
   private final CareerRepository careerRepository;
   private final ScoreRepository scoreRepository;
 
-  public List<ScoreDto.SHOWSCORE> showScores(String memberIdentity) {
+  /**
+   * 평가 조회
+   *
+   * @param memberIdentity : 인사 아이디
+   * @return : List<ScoreDto.SHOWSCORE> DTO 객체 리스트
+   * @Exception NotFoundException : 아이디에 해당하는 평가 내역을 찾지 못함.
+   */
 
-    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-        .orElseThrow(() -> new BadRequestException("평가 조회 실패 - 아이디에 해당하는 평가 내역이 존재하지 않습니다"));
-    ;
+  @Override
+  public Optional<List<SHOWSCORE>> showScores(String memberIdentity) {
+    //TODO: queryDsl 예외 처리
 
-    List<ScoreEntity> scoreEntityList = scoreRepository.findByCareerEntity(careerEntity);
+    return scoreRepository.showAllScores(memberIdentity);
 
-    List<ScoreDto.SHOWSCORE> ScoreList = new ArrayList<>();
-
-    for (ScoreEntity list : scoreEntityList) {
-      ScoreDto.SHOWSCORE score = ScoreDto.SHOWSCORE.builder()
-          .evaluatorIdentity(list.getEvaluatorIdentity())
-          .attendance(list.getAttendance())
-          .sincerity(list.getSincerity())
-          .positiveness(list.getSincerity())
-          .technical(list.getTechnical())
-          .cooperative(list.getCooperative())
-          .build();
-      ScoreList.add(score);
-    }
-
-    return ScoreList;
   }
+
+
+  /**
+   * 평가 등록
+   *
+   * @param newScore : 평가 DTO
+   * @return : void
+   * @Exception BadRequestException : 평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다
+   */
+
 
   @Override
   @Transactional
@@ -55,30 +56,28 @@ public class ScoreServiceImpl implements ScoreService {
     CareerEntity careerEntity = careerRepository.findByMemberIdentity(newScore.getMemberIdentity())
         .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
-    ScoreEntity scoreEntity = ScoreEntity.builder()
-        .careerEntity(careerEntity)
-        .evaluatorIdentity(newScore.getEvaluatorIdentity())
-        .attendance(newScore.getAttendance())
-        .sincerity(newScore.getSincerity())
-        .positiveness(newScore.getSincerity())
-        .technical(newScore.getTechnical())
-        .cooperative(newScore.getCooperative())
-        .build();
+    ScoreEntity scoreEntity = ScoreEntity.of(newScore, careerEntity);
 
     scoreRepository.save(scoreEntity);
 
   }
 
+  /**
+   * 평가 수정
+   *
+   * @param updateScoreDto : 평가 수정 DTO
+   * @return : void
+   * @Exception BadRequestException : 평가 수정 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다
+   */
+
   @Override
   @Transactional
   public void updateScore(ScoreDto.UPDATE updateScoreDto) {
 
-    log.info("등록한 평가자의 아이디:{},career:{}", updateScoreDto.getEvaluatorIdentity(),
-        updateScoreDto.toString());
-
     ScoreEntity scoreEntity = scoreRepository.findByEvaluatorIdentity(
             updateScoreDto.getEvaluatorIdentity())
-        .orElseThrow(() -> new BadRequestException("평가 생성 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+        .orElseThrow(() -> new BadRequestException("평가 수정 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
+
     scoreEntity.updateScore(updateScoreDto);
 
     scoreRepository.save(scoreEntity);

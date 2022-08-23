@@ -1,2 +1,18 @@
 jwt:
   secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
+
+server:
+  port: 8001
+
+spring:
+  application:
+    name: bbl-member
+
+eureka:
+  instance:
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka

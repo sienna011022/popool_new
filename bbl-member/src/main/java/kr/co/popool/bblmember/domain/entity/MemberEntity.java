@@ -1,6 +1,7 @@
 package kr.co.popool.bblmember.domain.entity;
 
 import kr.co.popool.bblmember.domain.dto.MemberDto;
+import kr.co.popool.bblmember.domain.dto.OauthDto;
 import kr.co.popool.bblmember.domain.shared.Address;
 import kr.co.popool.bblmember.domain.shared.BaseEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
@@ -11,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -38,9 +40,6 @@ public class MemberEntity extends BaseEntity {
 
     @Column(name = "birth", length = 100)
     private String birth;
-
-    @Column(name = "refresh_token", length = 600)
-    private String refreshToken;
 
     @Embedded
     @AttributeOverrides({
@@ -92,15 +91,43 @@ public class MemberEntity extends BaseEntity {
         this.corporateEntity = corporateEntity;
     }
 
+    public static MemberEntity of(MemberDto.CREATE create,
+                                  PasswordEncoder passwordEncoder,
+                                  CorporateEntity corporateEntity) {
+        return MemberEntity.builder()
+                .identity(create.getIdentity())
+                .password(passwordEncoder.encode(create.getPassword()))
+                .name(create.getName())
+                .birth(create.getBirth())
+                .phone(new Phone(create.getPhone()))
+                .gender(Gender.of(create.getGender()))
+                .memberRank(MemberRank.of(create.getMemberRank()))
+                .memberRole(MemberRole.of(create.getMemberRole()))
+                .corporateEntity(corporateEntity)
+                .build();
+    }
+
+    public static MemberEntity of(OauthDto.CREATE create,
+                                  PasswordEncoder passwordEncoder,
+                                  CorporateEntity corporateEntity) {
+        return MemberEntity.builder()
+                .identity(create.getIdentity())
+                .password(passwordEncoder.encode(create.getPassword()))
+                .name(create.getName())
+                .birth(create.getBirth())
+                .phone(new Phone(create.getPhone()))
+                .gender(Gender.of(create.getGender()))
+                .memberRank(MemberRank.of(create.getMemberRank()))
+                .memberRole(MemberRole.of(create.getMemberRole()))
+                .corporateEntity(corporateEntity)
+                .build();
+    }
+
     public void updateMember(MemberDto.UPDATE memberUpdate){
         this.name = memberUpdate.getName();
         this.address = new Address(memberUpdate.getZipCode(), memberUpdate.getAddr1(), memberUpdate.getAddr2());
         this.phone = new Phone(memberUpdate.getPhone());
         this.email = memberUpdate.getEmail();
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
     }
 
     public void updatePassword(String password){

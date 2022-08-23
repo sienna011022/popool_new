@@ -8,12 +8,9 @@ import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class MemberDto {
@@ -83,6 +80,13 @@ public class MemberDto {
         private String memberRank;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class CHECK_PW {
+        private String password;
+        private String checkPassword;
+    }
 
     @Builder
     @Getter
@@ -208,7 +212,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    public static class RE_CREATE{
+    public static class RE_CREATE {
         @ApiModelProperty("복귀할 아이디")
         @NotBlank(message = "아이디를 적어주세요.")
         private String identity;

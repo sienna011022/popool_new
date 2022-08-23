@@ -8,7 +8,9 @@ import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenInvalidException;
+import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.MemberRepository;
+import kr.co.popool.bblmember.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,10 @@ public class JwtProvider {
     final String MEMBER = "identity";
     private final long ACCESS_EXPIRE = 1000 * 60 * 30;              //30분
     private final long REFRESH_EXPIRE = 1000 * 60 * 60 * 24 * 14;   //2주
+
+    public long getRefreshExpire() {
+        return REFRESH_EXPIRE;
+    }
 
     private final MemberRepository memberRepository;
 
@@ -114,9 +120,6 @@ public class JwtProvider {
      */
     public String createAccessToken(String refreshToken){
         MemberEntity memberEntity = findMemberByToken(refreshToken);
-
-        if(!memberEntity.getRefreshToken().equals(refreshToken))
-            throw new UnauthorizedException();
 
         return createAccessToken(memberEntity.getIdentity()
                 , memberEntity.getMemberRole(), memberEntity.getName());

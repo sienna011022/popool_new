@@ -2,15 +2,11 @@ package kr.co.popool.bblmember.service;
 
 import com.google.gson.Gson;
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.bblcommon.error.exception.DuplicatedException;
-import kr.co.popool.bblcommon.error.model.ErrorCode;
 import kr.co.popool.bblmember.domain.dto.OauthDto;
+import kr.co.popool.bblmember.domain.entity.CorporateEntity;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.OauthRequest;
 import kr.co.popool.bblmember.domain.shared.OauthRequestFactory;
-import kr.co.popool.bblmember.domain.shared.Phone;
-import kr.co.popool.bblmember.domain.shared.enums.Gender;
-import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberRepository;
@@ -22,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -41,33 +39,30 @@ public class OauthServiceImpl implements OauthService{
 
     @Override
     public void saveAdditionalMemberInfo(OauthDto.CREATE create) {
-        if (!memberService.checkIdentity(create.getIdentity())) {
-            throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
-        }
+        memberService.checkSignUp(create);
 
-        if (!create.getPassword().equals(create.getCheckPassword())) {
-            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        }
-
-        if (!memberService.checkPhone(new Phone(create.getPhone()))) {
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
-
-        MemberEntity memberEntity = MemberEntity.builder()
-                .identity(create.getIdentity())
-                .password(passwordEncoder.encode(create.getPassword()))
-                .birth(create.getBirth())
-                .phone(new Phone(create.getPhone()))
-                .gender(Gender.of(create.getGender()))
-                .memberRank(MemberRank.of(create.getMemberRank()))
-                .memberRole(MemberRole.of(create.getMemberRole()))
-                .corporateEntity(null)
-                .build();
+        MemberEntity memberEntity = MemberEntity.of(create, passwordEncoder, null);
 
         memberEntity.saveOauth(create.getEmail(), create.getProvider(), create.getName());
 
         memberRepository.save(memberEntity);
     }
+
+    @Override
+    public void saveAdditionalCorporateInfo(OauthDto.CREATE_CORPORATE create) {
+        memberService.checkSignUp(create.getCreate());
+
+        CorporateEntity corporateEntity = CorporateEntity.of(create);
+
+        MemberEntity memberEntity = MemberEntity.of(create.getCreate(), passwordEncoder, corporateEntity);
+
+        memberEntity.saveOauth(create.getCreate().getEmail(),
+                create.getCreate().getProvider(),
+                create.getCreate().getName());
+
+        memberRepository.save(memberEntity);
+    }
+
 
     @Override
     @Transactional
@@ -104,14 +99,18 @@ public class OauthServiceImpl implements OauthService{
                 .build();
     }
 
-    @Override
-    public OauthDto.TOKEN_INFO getAccessToken(OauthDto.LOGIN login) {
+    private HttpHeaders setHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        return httpHeaders;
+    }
+
+    @Override
+    public OauthDto.TOKEN_INFO getAccessToken(OauthDto.LOGIN login) {
+        HttpHeaders httpHeaders = setHeaders();
 
         OauthRequest oauthRequest = oauthRequestFactory.getRequest(login.getCode(), login.getProvider());
         HttpEntity<LinkedMultiValueMap<String, String>> request = new HttpEntity<>(oauthRequest.getMap(), httpHeaders);
-
         ResponseEntity<String> response = restTemplate.postForEntity(oauthRequest.getUrl(), request, String.class);
 
         try {
@@ -127,8 +126,7 @@ public class OauthServiceImpl implements OauthService{
 
     @Override
     public OauthDto.PROFILE getProfile(String accessToken, String provider) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpHeaders httpHeaders = setHeaders();
         httpHeaders.set("Authorization", "Bearer " + accessToken);
 
         String profileUrl = oauthRequestFactory.getUrlProfile(provider);
@@ -139,7 +137,7 @@ public class OauthServiceImpl implements OauthService{
             if(response.getStatusCode() == HttpStatus.OK){
                 return checkProfile(response, provider);
             }
-        }catch (Exception e){
+        }catch (HttpClientErrorException | HttpServerErrorException e){
             throw new BadRequestException("프로필을 가져올 수 없습니다.");
         }
         throw new BadRequestException("프로필을 가져올 수 없습니다.");

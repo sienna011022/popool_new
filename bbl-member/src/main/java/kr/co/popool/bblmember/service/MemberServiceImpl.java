@@ -5,16 +5,16 @@ import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.bblcommon.error.model.ErrorCode;
+import kr.co.popool.bblmember.domain.dto.CorporateDto;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
+import kr.co.popool.bblmember.domain.dto.OauthDto;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
-import kr.co.popool.bblmember.domain.shared.enums.Gender;
-import kr.co.popool.bblmember.domain.shared.enums.MemberRank;
-import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
     private final JwtProvider jwtProvider;
 
     /**
@@ -36,56 +37,43 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public MemberDto.TOKEN login(MemberDto.LOGIN login) {
-
         MemberEntity memberEntity = memberRepository.findByIdentity(login.getIdentity())
                 .orElseThrow(() -> new BadRequestException("아이디나 비밀번호를 다시 확인해주세요"));
 
-        if(!passwordEncoder.matches(login.getPassword(), memberEntity.getPassword())){
-            throw new BadRequestException("아이디나 비밀번호를 다시 확인해주세요");
-        }
+        checkPassword(login.getPassword(), memberEntity.getPassword());
 
-        if(memberEntity.getDel_yn().equals("Y")){
+        if(checkDelete(memberEntity)){
             throw new BadRequestException("탈퇴한 회원입니다.");
         }
 
         String[] tokens = generateToken(memberEntity);
-        memberEntity.updateRefreshToken(tokens[1]);
+        redisService.createData(memberEntity.getIdentity(), tokens[1], jwtProvider.getRefreshExpire());
 
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
 
     /**
      * 일반 회원가입
-     * @param create 회원가입하기위한 회원의 정보
+     * @param create 회원가입을 위한 회원 정보
      * @Exception DuplicatedException : 아이디가 이미 존재할 경우 회원가입을 진행할 수 없다는 예외.
      */
     @Override
     public void signUp(MemberDto.CREATE create) {
-        if(!checkIdentity(create.getIdentity())){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
-        }
+        checkSignUp(create);
 
-        if(!create.getPassword().equals(create.getCheckPassword())){
-            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        }
-
-        if(!checkPhone(new Phone(create.getPhone()))){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
-
-        MemberEntity memberEntity = MemberEntity.builder()
-                .identity(create.getIdentity())
-                .password(passwordEncoder.encode(create.getPassword()))
-                .name(create.getName())
-                .birth(create.getBirth())
-                .phone(new Phone(create.getPhone()))
-                .gender(Gender.of(create.getGender()))
-                .memberRank(MemberRank.of(create.getMemberRank()))
-                .memberRole(MemberRole.of(create.getMemberRole()))
-                .corporateEntity(null)
-                .build();
+        MemberEntity memberEntity = MemberEntity.of(create, passwordEncoder, null);
 
         memberRepository.save(memberEntity);
+    }
+
+    @Override
+    public MemberDto.TOKEN reCreateAccessToken(String refreshToken) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+
+        redisService.checkValue(refreshToken, redisService.getValue(memberEntity.getIdentity()));
+
+        String[] tokens = generateToken(memberEntity);
+        return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
 
     /**
@@ -96,11 +84,11 @@ public class MemberServiceImpl implements MemberService {
     public void update(MemberDto.UPDATE update) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        if(!checkPhone(new Phone(update.getPhone())) && !memberEntity.getPhone().equals(new Phone(update.getPhone()))){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        if(!memberEntity.getPhone().equals(new Phone(update.getPhone()))){
+            checkPhone(new Phone(update.getPhone()));
         }
-        if(!checkEmail(update.getEmail()) && !memberEntity.getEmail().equals(update.getEmail())){
-            throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
+        if(!memberEntity.getEmail().equals(update.getEmail())){
+            checkEmail(update.getEmail());
         }
 
         memberEntity.updateMember(update);
@@ -109,45 +97,42 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 비밀번호 수정
-     * @param update_password : 변경할 데이터
+     * @param updatePassword : 변경할 데이터
      */
     @Override
     @Transactional
-    public void updatePassword(MemberDto.UPDATE_PASSWORD update_password) {
+    public void updatePassword(MemberDto.UPDATE_PASSWORD updatePassword) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        if(!passwordEncoder.matches(update_password.getOriginalPassword(), memberEntity.getPassword())){
-            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
-        if(!update_password.getNewPassword().equals(update_password.getNewCheckPassword())){
-            throw new BadRequestException("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        }
+        checkPassword(updatePassword.getOriginalPassword(), memberEntity.getPassword());
 
-        memberEntity.updatePassword(passwordEncoder.encode(update_password.getNewPassword()));
+        checkPassword(new MemberDto.CHECK_PW(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword()));
+
+        memberEntity.updatePassword(passwordEncoder.encode(updatePassword.getNewPassword()));
         memberRepository.save(memberEntity);
     }
 
     /**
      * 주소 수정
-     * @param update_address : 변경할 데이터
+     * @param updateAddress : 변경할 데이터
      */
     @Override
-    public void updateAddress(MemberDto.UPDATE_ADDRESS update_address) {
+    public void updateAddress(MemberDto.UPDATE_ADDRESS updateAddress) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        memberEntity.updateAddress(update_address);
+        memberEntity.updateAddress(updateAddress);
         memberRepository.save(memberEntity);
     }
 
     /**
      * 전화번호 수정
-     * @param update_phone : 변경할 데이터
+     * @param updatePhone : 변경할 데이터
      */
     @Override
-    public void updatePhone(MemberDto.UPDATE_PHONE update_phone) {
+    public void updatePhone(MemberDto.UPDATE_PHONE updatePhone) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        memberEntity.updatePhone(update_phone);
+        memberEntity.updatePhone(updatePhone);
         memberRepository.save(memberEntity);
     }
 
@@ -176,7 +161,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto.READ get() {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        MemberDto.READ read = MemberDto.READ.builder()
+        return MemberDto.READ.builder()
                 .id(memberEntity.getId())
                 .identity(memberEntity.getIdentity())
                 .name(memberEntity.getName())
@@ -188,21 +173,32 @@ public class MemberServiceImpl implements MemberService {
                 .memberRank(memberEntity.getMemberRank())
                 .create_at(memberEntity.getCreatedAt())
                 .build();
-
-        return read;
     }
 
-     /* 아이디 찾기
-     * @param read_id : 아이디를 찾기 위한 이름, 전화번호, 생년월일을 포함한 객체
+    /** 아이디 찾기
+     * @param readId : 아이디를 찾기 위한 이름, 전화번호, 생년월일을 포함한 객체
      * @return : 찾은 아이디
      * @Exception NotFoundException : 해당 회원이 없을 경우 발생하는 에러.
      */
     @Override
-    public String findIdentity(MemberDto.READ_ID read_id) {
+    public String findIdentity(MemberDto.READ_ID readId) {
         return memberRepository
-                .findByNameAndPhoneAndBirth(read_id.getName(), new Phone(read_id.getPhone()), read_id.getBirth())
+                .findByNameAndPhoneAndBirth(readId.getName(), new Phone(readId.getPhone()), readId.getBirth())
                 .orElseThrow(() -> new NotFoundException("MemberEntity"))
                 .getIdentity();
+    }
+
+    /**
+     * 로그인된 아이디 정보 전달(feign client 용)
+     * @return
+     */
+    @Override
+    public String getLoginInfo() {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+        if(memberEntity==null){
+            throw new BadRequestException("로그인을 해주세요.");
+        }
+        return memberEntity.getIdentity();
     }
 
     /**
@@ -231,11 +227,9 @@ public class MemberServiceImpl implements MemberService {
     public void delete(String password) {
         MemberEntity memberEntity = MemberThreadLocal.get();
 
-        if(!passwordEncoder.matches(password, memberEntity.getPassword())){
-            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
+        checkPassword(password, memberEntity.getPassword());
 
-        if(memberEntity.getDel_yn().equals("Y")){
+        if(checkDelete(memberEntity)){
             throw new BadRequestException("이미 탈퇴한 회원입니다.");
         }
 
@@ -245,58 +239,134 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 탈퇴한 아이디 복구하기.
-     * @param re_create : 복구할 회원 정보
+     * @param reCreate : 복구할 회원 정보
      */
     @Override
-    public void reCreate(MemberDto.RE_CREATE re_create) {
-        MemberEntity memberEntity = memberRepository.findByIdentity(re_create.getIdentity())
+    public void reCreate(MemberDto.RE_CREATE reCreate) {
+        MemberEntity memberEntity = memberRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BadRequestException("아이디나 비밀번호를 다시 확인해주세요"));
 
-        if(memberEntity.getDel_yn().equals("N")){
-            throw new BadRequestException("탈퇴한 회원이 아닙니다.");
-        }
+        checkDelete(memberEntity);
 
-        if(!passwordEncoder.matches(re_create.getPassword(), memberEntity.getPassword())){
-            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
+        checkPassword(reCreate.getPassword(), memberEntity.getPassword());
 
-        if(!memberEntity.getPhone().equals(new Phone(re_create.getPhone()))){
-            throw new BadRequestException("전화번호가 다릅니다.");
-        }
+        checkPhone(new Phone(reCreate.getPhone()), memberEntity.getPhone());
 
         memberEntity.reCreated();
         memberRepository.save(memberEntity);
     }
 
+    @Override
+    public void deletRefreshToken(String identity) {
+        redisService.deleteData(identity);
+    }
+
     /**
      * 아이디 중복 체크
      * @param identity : 중복 체크할 아이디
-     * @return : 중복된 아이디가 있다면 false, 없다면 true
+     * @Return 중복된 identity가 없다면 true
      */
     @Override
     public boolean checkIdentity(String identity) {
-        return !memberRepository.existsByIdentity(identity);
+        if (memberRepository.existsByIdentity(identity)) {
+            throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
+        }
+        return true;
     }
 
     /**
      * 이메일 중복 체크
      * @param email : 중복 체크할 이메일
-     * @return : 중복된 이메일이 있다면 false, 없다면 true
+     * @Return 중복된 email 없다면 true
      */
     @Override
     public boolean checkEmail(String email) {
-        return!memberRepository.existsByEmail(email);
+        if(memberRepository.existsByEmail(email)){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
+        }
+        return true;
     }
 
     /**
      * 전화번호 중복 체크
      * @param phone : 중복 체크할 전화번호
-     * @return : 중복된 전화번호가 있다면 false, 없다면 true
+     * @Return 중복된 전화번호가 없다면 true
      */
     @Override
     public boolean checkPhone(Phone phone) {
-        return !memberRepository.existsByPhone(phone);
+        if(memberRepository.existsByPhone(phone)){
+            throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
+        }
+        return true;
     }
+
+    @Override
+    public boolean checkPhone(Phone phone, Phone oldPhone) {
+        if(!phone.equals(oldPhone)){
+            throw new DuplicatedException(ErrorCode.WRONG_PHONE);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkPassword(MemberDto.CHECK_PW checkPw) {
+        if (!checkPw.getPassword().equals(checkPw.getCheckPassword())) {
+            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkPassword(String password, String oldPassword) {
+        if(!passwordEncoder.matches(password, oldPassword)){
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkDelete(MemberEntity memberEntity) {
+        if(memberEntity.getDel_yn().equals("N")){
+            throw new BadRequestException("탈퇴한 회원이 아닙니다.");
+        }
+        return true;
+    }
+
+    /**
+     * 회원가입에 필요한 체크 사항.
+     * @return 중복 됐다면 false, 없다면 true
+     */
+    @Override
+    public void checkSignUp(MemberDto.CREATE create) {
+
+        checkIdentity(create.getIdentity());
+
+        checkPhone(new Phone(create.getPhone()));
+
+        checkPassword(new MemberDto.CHECK_PW(create.getPassword(), create.getCheckPassword()));
+    }
+
+    @Override
+    public void checkSignUp(OauthDto.CREATE create) {
+
+        checkIdentity(create.getIdentity());
+
+        checkPhone(new Phone(create.getPhone()));
+
+        checkPassword(new MemberDto.CHECK_PW(create.getPassword(), create.getCheckPassword()));
+
+    }
+
+    @Override
+    public void checkSignUp(CorporateDto.CREATE_CORPORATE create) {
+
+        checkIdentity(create.getCreate().getIdentity());
+
+        checkPhone(new Phone(create.getCreate().getPhone()));
+
+        checkPassword(new MemberDto.CHECK_PW(create.getCreate().getPassword(), create.getCreate().getCheckPassword()));
+    }
+
 
     private String[] generateToken(MemberEntity memberEntity){
         String accessToken = jwtProvider.createAccessToken(memberEntity.getIdentity()

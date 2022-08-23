@@ -56,4 +56,17 @@ public class ScoreEntity extends BaseEntity {
     this.cooperative = updateScoreDto.getCooperative();
 
   }
+
+  public static ScoreEntity of(ScoreDto.SCOREINFO newScore, CareerEntity careerEntity) {
+    ScoreEntity scoreEntity = ScoreEntity.builder()
+        .careerEntity(careerEntity)
+        .evaluatorIdentity(newScore.getEvaluatorIdentity())
+        .attendance(newScore.getAttendance())
+        .sincerity(newScore.getSincerity())
+        .positiveness(newScore.getSincerity())
+        .technical(newScore.getTechnical())
+        .cooperative(newScore.getCooperative())
+        .build();
+        return scoreEntity;
+  }
 }

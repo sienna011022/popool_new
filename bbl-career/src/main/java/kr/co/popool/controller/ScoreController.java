@@ -1,8 +1,10 @@
 package kr.co.popool.controller;
 
 import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.domain.dto.ScoreDto;
+import kr.co.popool.domain.dto.queryDto.ScoreQueryDto.SHOWSCORE;
 import kr.co.popool.service.GradeServiceImpl;
 import kr.co.popool.service.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class ScoreController {
   @ApiOperation("개인 평가 내역 조회")
   @GetMapping()
   public ResponseFormat show(@PathVariable String memberIdentity) {
-    List<ScoreDto.SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
+    Optional<List<SHOWSCORE>> scoreDtoList = scoreService.showScores(memberIdentity);
     return ResponseFormat.ok(scoreDtoList);
   }
 

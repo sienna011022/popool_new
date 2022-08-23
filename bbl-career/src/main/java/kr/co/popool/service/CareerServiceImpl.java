@@ -95,11 +95,4 @@ public class CareerServiceImpl implements CareerService {
     careerRepository.save(careerEntity);
   }
 
-  public static CAREERINFO checkGrade(CareerEntity careerEntity) {
-    if (careerEntity.getGradeEntity() != null) {
-      return CareerDto.of(careerEntity);
-    } else {
-      return CareerDto.NoneGradeDto(careerEntity);
-    }
-  }
 }
