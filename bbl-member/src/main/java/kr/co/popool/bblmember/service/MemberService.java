@@ -32,7 +32,7 @@ public interface MemberService {
     //delete
     void delete(String password);
     void reCreate(MemberDto.RE_CREATE reCreat);
-    void deletRefreshToken(String identity);
+    void deleteRefreshToken(String identity);
 
     //common
     boolean checkIdentity(String identity);

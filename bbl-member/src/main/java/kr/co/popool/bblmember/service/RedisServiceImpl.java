@@ -1,6 +1,5 @@
 package kr.co.popool.bblmember.service;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

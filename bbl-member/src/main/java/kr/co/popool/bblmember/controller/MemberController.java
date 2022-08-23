@@ -16,7 +16,6 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
-    private final RedisService redisService;
 
     @ApiOperation("로그인")
     @PostMapping("/login")
