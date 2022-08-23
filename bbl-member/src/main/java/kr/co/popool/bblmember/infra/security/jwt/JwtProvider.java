@@ -39,8 +39,11 @@ public class JwtProvider {
     private final long ACCESS_EXPIRE = 1000 * 60 * 30;              //30분
     private final long REFRESH_EXPIRE = 1000 * 60 * 60 * 24 * 14;   //2주
 
+    public long getRefreshExpire() {
+        return REFRESH_EXPIRE;
+    }
+
     private final MemberRepository memberRepository;
-    private final RedisService redisService;                        //Redis
 
     /**
      * 시크릿 키를 Base64로 인코딩을 하는 메소드.
@@ -100,7 +103,7 @@ public class JwtProvider {
         Date expireDate = new Date();
         expireDate.setTime(issueDate.getTime() + REFRESH_EXPIRE);
 
-        String refreshToken =  Jwts.builder()
+        return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setClaims(generateClaims(identity, memberRole, name))
                 .setIssuedAt(issueDate)
@@ -108,10 +111,6 @@ public class JwtProvider {
                 .setExpiration(expireDate)      //유효 시간 2주일.
                 .signWith(SignatureAlgorithm.HS256, generateKey())
                 .compact();
-
-        redisService.createData(identity, refreshToken, issueDate.getTime() + REFRESH_EXPIRE); //Redis
-
-        return refreshToken;
     }
 
     /**
@@ -120,11 +119,7 @@ public class JwtProvider {
      * @return 사용자의 새로운 AccessToken
      */
     public String createAccessToken(String refreshToken){
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
-        if(!refreshToken.equals(redisService.getValue(memberEntity.getIdentity()))){
-            throw new JwtTokenExpiredException();
-        }
+        MemberEntity memberEntity = findMemberByToken(refreshToken);
 
         return createAccessToken(memberEntity.getIdentity()
                 , memberEntity.getMemberRole(), memberEntity.getName());

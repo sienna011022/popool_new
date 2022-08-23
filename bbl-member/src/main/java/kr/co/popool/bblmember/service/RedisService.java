@@ -10,4 +10,7 @@ public interface RedisService {
 
     //delete
     void deleteData(String key);
+
+    //check
+    void checkValue(String refreshToken, String redisToken);
 }

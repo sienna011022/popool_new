@@ -14,6 +14,7 @@ import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
     private final JwtProvider jwtProvider;
 
     /**
@@ -45,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String[] tokens = generateToken(memberEntity);
-        //TODO : redis에 refreshToken 저장
+        redisService.createData(memberEntity.getIdentity(), tokens[1], jwtProvider.getRefreshExpire());
 
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
@@ -62,6 +64,16 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = MemberEntity.of(create, passwordEncoder, null);
 
         memberRepository.save(memberEntity);
+    }
+
+    @Override
+    public MemberDto.TOKEN reCreateAccessToken(String refreshToken) {
+        MemberEntity memberEntity = MemberThreadLocal.get();
+
+        redisService.checkValue(refreshToken, redisService.getValue(memberEntity.getIdentity()));
+
+        String[] tokens = generateToken(memberEntity);
+        return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
 
     /**
@@ -242,6 +254,11 @@ public class MemberServiceImpl implements MemberService {
 
         memberEntity.reCreated();
         memberRepository.save(memberEntity);
+    }
+
+    @Override
+    public void deletRefreshToken(String identity) {
+        redisService.deleteData(identity);
     }
 
     /**
