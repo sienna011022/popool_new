@@ -80,8 +80,6 @@ public class OauthDto {
         private OauthDto.CREATE create;
     }
 
-
-
     @Builder
     @Getter
     @AllArgsConstructor
