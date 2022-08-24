@@ -1,33 +1,28 @@
-package kr.co.popool.domain.dto;
+package kr.co.popool.domain.dto.career;
 
 import io.swagger.annotations.ApiModelProperty;
-
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 
 public class CareerDto {
 
-
+  public static final ScoreGrade DEFAULT_GRADE = ScoreGrade.WHITE;
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
   public static class CAREERINFO {
 
-    @ApiModelProperty(example = "member아이디")
+    @ApiModelProperty(example = "인사 아이디")
     @NotBlank(message = "평가를 원하는 member 아이디를 입력하세요")
     private String memberIdentity;
 
     @ApiModelProperty(example = "평가등급")
-    private String grade;
+    private ScoreGrade grade;
 
     @ApiModelProperty(example = "이름")
     @NotBlank(message = "이름를 입력해주세요.")
@@ -45,11 +40,9 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
@@ -75,11 +68,9 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
@@ -105,34 +96,28 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
-  public static CareerDto.CAREERINFO of(CareerEntity careerEntity){
-    return CareerDto.CAREERINFO.builder()
+  public static CAREERINFO of(CareerEntity careerEntity) {
+    return CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
-        //null일떄는 어떻게 하지..
-        .grade(String.valueOf(careerEntity.getGradeEntity().getGrade()))
+        .grade(careerEntity.getGradeEntity().getGrade())
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
         .build();
 
   }
-
-  public static CareerDto.CAREERINFO NoneGradeDto(CareerEntity careerEntity) {
-    return CareerDto.CAREERINFO.builder()
+  public static CAREERINFO NoneGradeDto(CareerEntity careerEntity) {
+    return CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
-        .grade("None")
+        .grade(DEFAULT_GRADE)
         .period(careerEntity.getPeriod())
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
         .build();
 
   }
-
-
-
 }
