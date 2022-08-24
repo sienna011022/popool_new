@@ -14,7 +14,6 @@ import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -257,7 +256,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deletRefreshToken(String identity) {
+    public void deleteRefreshToken(String identity) {
         redisService.deleteData(identity);
     }
 

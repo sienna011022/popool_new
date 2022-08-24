@@ -36,6 +36,7 @@ public class OauthServiceImpl implements OauthService{
     private final Gson gson;
     private final MemberServiceImpl memberService;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
 
     @Override
     public void saveAdditionalMemberInfo(OauthDto.CREATE create) {
@@ -77,7 +78,7 @@ public class OauthServiceImpl implements OauthService{
 
             OauthDto.TOKEN_READ token_read = generateToken(member.getIdentity(), member.getName(), false);
 
-            member.updateRefreshToken(token_read.getRefreshToken());
+            redisService.createData(member.getIdentity(), token_read.getRefreshToken(), jwtProvider.getRefreshExpire());
             memberRepository.save(member);
 
             return token_read;
