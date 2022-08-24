@@ -1,4 +1,4 @@
-package kr.co.popool.repository;
+package kr.co.popool.repository.career;
 
 import kr.co.popool.domain.entity.CareerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
