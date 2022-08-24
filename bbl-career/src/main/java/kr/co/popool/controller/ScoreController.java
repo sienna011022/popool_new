@@ -1,16 +1,16 @@
 package kr.co.popool.controller;
 
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.domain.dto.ScoreDto;
-import kr.co.popool.service.GradeServiceImpl;
-import kr.co.popool.service.ScoreServiceImpl;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.ScoreDto;
+import kr.co.popool.service.score.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -20,12 +20,12 @@ import java.util.List;
 public class ScoreController {
 
   private final ScoreServiceImpl scoreService;
-  private final GradeServiceImpl gradeService;
+  private final GradeController gradeController;
 
   @ApiOperation("개인 평가 내역 조회")
   @GetMapping()
   public ResponseFormat show(@PathVariable String memberIdentity) {
-    List<ScoreDto.SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
+    List<SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
     return ResponseFormat.ok(scoreDtoList);
   }
 
@@ -33,7 +33,7 @@ public class ScoreController {
   @PostMapping()
   public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
     scoreService.createScore(newScoreDto);
-    gradeService.updateGrade(newScoreDto);
+    gradeController.createGrade(newScoreDto);
     return ResponseFormat.ok();
   }
 
