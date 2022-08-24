@@ -3,7 +3,7 @@ package kr.co.popool.bblmember.controller;
 import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
-import kr.co.popool.bblmember.service.CorporateServiceImpl;
+import kr.co.popool.bblmember.service.CorporateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class CorporateController {
 
-    private final CorporateServiceImpl corporateService;
+    private final CorporateService corporateService;
 
     @ApiOperation("기업 회원가입")
     @PostMapping("/corporate/signUp")

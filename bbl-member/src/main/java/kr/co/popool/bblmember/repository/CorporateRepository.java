@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CorporateRepository extends JpaRepository<CorporateEntity, Long> {
+public interface CorporateRepository extends JpaRepository<CorporateEntity, Long>, CorporateRepositoryCustom {
 
     //find
     Optional<CorporateEntity> findById(Long id);

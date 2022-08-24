@@ -12,7 +12,9 @@ public enum ScoreGrade {
   GOLD("골드"),
   SILVER("실버"),
   BRONZE("브론즈"),
-  BLACK("블랙");
+  BLACK("블랙"),
+
+  WHITE("등급 없음");
 
   private String grade;
 

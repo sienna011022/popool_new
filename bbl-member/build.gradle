@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
 }
 
@@ -27,6 +28,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'javax.xml.bind', name: 'jaxb-api'
     implementation group: 'com.google.code.gson', name: 'gson'
+    implementation project(path: ":bbl-common")
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -34,9 +36,26 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    //qureydsl
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
+    implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
+    implementation group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
+    //querydsl JPAAnnotationProcessor 사용 지정
+    // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+    // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+    annotationProcessor(
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+    )
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //Eureka
-//  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    implementation project(path: ":bbl-common")
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     //Swagger 및 Validation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -61,3 +80,41 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//querydsl 경로 지정
+def querydslDir = "$buildDir/generated/querydsl"
+
+//qureydsl 설정 추가
+querydsl {
+    jpa = true                          //JPA 사용 여부
+    querydslSourcesDir = querydslDir    //경로 지정
+}
+
+//build 시 사용할 sourceSet 추가.
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+//querydsl이 compileClassPath를 상속하도록 설정
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+
+    querydsl.extendsFrom compileClasspath
+}
+
+//querydsl 컴파일 시 사용할 옵션 설정.
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+
+    if (file(querydslDir).exists()) {
+        delete(file(querydslDir))
+    }
+}
+
+clean.doLast {
+    delete file(querydslDir)
+}
+
+
