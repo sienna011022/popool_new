@@ -1,7 +1,6 @@
 package kr.co.popool.domain.entity;
 
-import kr.co.popool.domain.dto.CareerDto;
-import kr.co.popool.domain.dto.ScoreDto;
+import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.domain.shared.BaseEntity;
 import lombok.*;
 import javax.persistence.*;
@@ -37,7 +36,8 @@ public class ScoreEntity extends BaseEntity {
   private int cooperative;
 
   @Builder
-  public ScoreEntity(CareerEntity careerEntity, String evaluatorIdentity, int attendance,
+  public ScoreEntity(CareerEntity careerEntity, GradeEntity gradeEntity, String evaluatorIdentity,
+      int attendance,
       int sincerity, int positiveness, int technical, int cooperative) {
     this.careerEntity = careerEntity;
     this.evaluatorIdentity = evaluatorIdentity;
@@ -46,15 +46,6 @@ public class ScoreEntity extends BaseEntity {
     this.positiveness = positiveness;
     this.technical = technical;
     this.cooperative = cooperative;
-  }
-
-  public void updateScore(ScoreDto.UPDATE updateScoreDto) {
-    this.attendance = updateScoreDto.getAttendance();
-    this.sincerity = updateScoreDto.getSincerity();
-    this.positiveness = updateScoreDto.getPositiveness();
-    this.technical = updateScoreDto.getTechnical();
-    this.cooperative = updateScoreDto.getCooperative();
-
   }
 
   public static ScoreEntity of(ScoreDto.SCOREINFO newScore, CareerEntity careerEntity) {
@@ -67,6 +58,15 @@ public class ScoreEntity extends BaseEntity {
         .technical(newScore.getTechnical())
         .cooperative(newScore.getCooperative())
         .build();
-        return scoreEntity;
+    return scoreEntity;
+  }
+
+  public void updateScore(ScoreDto.UPDATE updateScoreDto) {
+    this.attendance = updateScoreDto.getAttendance();
+    this.sincerity = updateScoreDto.getSincerity();
+    this.positiveness = updateScoreDto.getPositiveness();
+    this.technical = updateScoreDto.getTechnical();
+    this.cooperative = updateScoreDto.getCooperative();
+
   }
 }

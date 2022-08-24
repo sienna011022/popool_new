@@ -1,5 +1,4 @@
-package kr.co.popool.repository;
-
+package kr.co.popool.repository.score;
 
 import static kr.co.popool.domain.entity.QCareerEntity.careerEntity;
 import static kr.co.popool.domain.entity.QScoreEntity.scoreEntity;
@@ -7,10 +6,11 @@ import static kr.co.popool.domain.entity.QScoreEntity.scoreEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
-import kr.co.popool.domain.dto.queryDto.QScoreQueryDto_SHOWSCORE;
-import kr.co.popool.domain.dto.queryDto.ScoreQueryDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.QQueryScoreDto_SHOWSCORE;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
 import kr.co.popool.domain.entity.QCareerEntity;
 import kr.co.popool.domain.entity.QScoreEntity;
+import kr.co.popool.domain.entity.ScoreEntity;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,17 +25,17 @@ public class ScoreRepositoryImpl implements ScoreRepositoryCustom {
 
   @Override
   public Optional<List<SHOWSCORE>> showAllScores(String memberIdentity) {
+
     return Optional.ofNullable(query
         .select((
-                new QScoreQueryDto_SHOWSCORE(
-                    qScoreEntity.attendance,
-                    qScoreEntity.sincerity,
-                    qScoreEntity.positiveness,
-                    qScoreEntity.technical,
-                    qScoreEntity.cooperative,
-                    qScoreEntity.evaluatorIdentity
-                )
-            )
+            new QQueryScoreDto_SHOWSCORE(
+                qScoreEntity.attendance,
+                qScoreEntity.sincerity,
+                qScoreEntity.positiveness,
+                qScoreEntity.technical,
+                qScoreEntity.cooperative,
+                qScoreEntity.evaluatorIdentity
+            ))
         )
         .from(qScoreEntity)
         .join(qScoreEntity.careerEntity, qCareerEntity)
@@ -43,4 +43,19 @@ public class ScoreRepositoryImpl implements ScoreRepositoryCustom {
         .limit(1000)
         .fetch());
   }
+
+  public Optional<List<ScoreEntity>> getAllScoreList(String memberIdentity) {
+
+    return Optional.ofNullable(query
+        .select(qScoreEntity
+        )
+        .from(qScoreEntity)
+        .join(qScoreEntity.careerEntity, qCareerEntity)
+        .where(qCareerEntity.memberIdentity.eq(memberIdentity))
+        .limit(1000)
+        .fetch());
+
+  }
 }
+
+

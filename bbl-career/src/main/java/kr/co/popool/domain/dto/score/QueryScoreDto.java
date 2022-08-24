@@ -1,12 +1,14 @@
-package kr.co.popool.domain.dto.queryDto;
+package kr.co.popool.domain.dto.score;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
+
 import lombok.Getter;
 
-public class ScoreQueryDto {
+
+public class QueryScoreDto {
 
   @Getter
   public static class SHOWSCORE {
@@ -27,16 +29,14 @@ public class ScoreQueryDto {
     @NotBlank(message = "기술 점수를 입력하세요")
     private int technical;
 
-    @ApiModelProperty(example = "협업 능력")
+    @ApiModelProperty(example = "협업")
     @NotBlank(message = "협업능력 점수를 입력하세요")
     private int cooperative;
-
 
     @JsonProperty("evaluator_identity")
     @ApiModelProperty(example = "인사")
     @NotBlank(message = "본인 아이디를 입력하세요요")
     private String evaluatorIdentity;
-
 
     @QueryProjection
     public SHOWSCORE(int attendance, int sincerity, int positiveness, int technical,
@@ -49,5 +49,6 @@ public class ScoreQueryDto {
       this.cooperative = cooperative;
       this.evaluatorIdentity = evaluatorIdentity;
     }
+
   }
 }

@@ -1,20 +1,14 @@
-package kr.co.popool.domain.dto;
+package kr.co.popool.domain.dto.career;
 
 import io.swagger.annotations.ApiModelProperty;
-
 import kr.co.popool.domain.entity.CareerEntity;
-import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 
 public class CareerDto {
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
@@ -43,11 +37,9 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
@@ -73,11 +65,9 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
   @Builder
-  @ToString
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
@@ -103,11 +93,9 @@ public class CareerDto {
     @NotBlank(message = "블록체인")
     private String historyId;
 
-
   }
 
-
-  public static CareerDto.CAREERINFO of(CareerEntity careerEntity){
+  public static CareerDto.CAREERINFO of(CareerEntity careerEntity) {
     return CareerDto.CAREERINFO.builder()
         .memberIdentity(careerEntity.getMemberIdentity())
         .name(careerEntity.getName())
@@ -116,7 +104,17 @@ public class CareerDto {
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
         .build();
-
   }
 
+  public static CareerDto.CAREERINFO NoneGradeDto(CareerEntity careerEntity) {
+    return CareerDto.CAREERINFO.builder()
+        .memberIdentity(careerEntity.getMemberIdentity())
+        .name(careerEntity.getName())
+        .grade("NoneGrade")
+        .period(careerEntity.getPeriod())
+        .context(careerEntity.getContext())
+        .historyId(careerEntity.getHistoryId())
+        .build();
+
+  }
 }

@@ -1,8 +1,7 @@
 package kr.co.popool.domain.entity;
 
-import kr.co.popool.domain.dto.CareerDto;
+import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.shared.BaseEntity;
-import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,18 +47,6 @@ public class CareerEntity extends BaseEntity {
 
   }
 
-  public void updateCareer(CareerDto.UPDATE careerUpdate) {
-    this.name = careerUpdate.getName();
-    this.period = careerUpdate.getPeriod();
-    this.context = careerUpdate.getContext();
-    this.historyId = careerUpdate.getHistoryId();
-
-  }
-
-  public void updateGrade(GradeEntity gradeEntity) {
-    this.gradeEntity = gradeEntity;
-  }
-
   public static CareerEntity of(CareerDto.CREATE newCareer) {
     return CareerEntity.builder()
         .memberIdentity(newCareer.getMemberIdentity())
@@ -69,4 +56,16 @@ public class CareerEntity extends BaseEntity {
         .historyId(newCareer.getHistoryId())
         .build();
   }
+
+  public void updateCareer(CareerDto.UPDATE careerUpdate) {
+    this.name = careerUpdate.getName();
+    this.period = careerUpdate.getPeriod();
+    this.context = careerUpdate.getContext();
+    this.historyId = careerUpdate.getHistoryId();
+  }
+
+  public void createGrade(GradeEntity gradeEntity) {
+    this.gradeEntity = gradeEntity;
+  }
+
 }
