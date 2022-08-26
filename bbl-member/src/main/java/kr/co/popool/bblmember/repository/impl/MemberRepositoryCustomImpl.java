@@ -18,10 +18,12 @@ public class MemberRepositoryCustomImpl extends QuerydslRepositorySupport implem
     private final JPAQueryFactory jpaQueryFactory;
     private final QMemberEntity qMemberEntity = QMemberEntity.memberEntity;
 
-    public MemberRepositoryCustomImpl(Class<?> domainClass, JPAQueryFactory jpaQueryFactory) {
-        super(domainClass);
+
+    public MemberRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
+        super(MemberEntity.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
+
 
     @Override
     public Optional<QueryDto.MEMBER_INFO> findDtoByMemberInfo(MemberEntity memberEntity) {

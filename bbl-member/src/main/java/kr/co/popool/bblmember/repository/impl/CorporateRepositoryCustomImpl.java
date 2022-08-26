@@ -21,8 +21,8 @@ public class CorporateRepositoryCustomImpl extends QuerydslRepositorySupport imp
     private final QCorporateEntity qCorporateEntity = QCorporateEntity.corporateEntity;
     private final QMemberEntity qMemberEntity = QMemberEntity.memberEntity;
 
-    public CorporateRepositoryCustomImpl(Class<?> domainClass, JPAQueryFactory jpaQueryFactory) {
-        super(domainClass);
+    public CorporateRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
+        super(CorporateEntity.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
