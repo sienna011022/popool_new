@@ -52,6 +52,7 @@ public class CouponServiceImpl implements CouponService{
     @Override
     @Transactional
     public void deleteCoupon(Long couponId) throws Exception {
-        couponRepository.deleteById(couponId);
+        CouponEntity findCoupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundException("Coupon"));
+        findCoupon.deleted();
     }
 }

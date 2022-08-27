@@ -52,6 +52,7 @@ public class SubscribeServiceImpl implements SubscribeService{
     @Override
     @Transactional
     public void deleteSubscribe(Long subscribeId) throws Exception {
-        subscribeRepository.deleteById(subscribeId);
+        SubscribeEntity findSubscribe = subscribeRepository.findById(subscribeId).orElseThrow(() -> new NotFoundException("Subscribe"));
+        findSubscribe.deleted();
     }
 }

@@ -52,6 +52,8 @@ public class PeriodCouponServiceImpl implements PeriodCouponService{
     @Override
     @Transactional
     public void deletePeriodCoupon(Long periodCouponId) throws Exception {
-        periodCouponRepository.deleteById(periodCouponId);
+
+        PeriodCouponEntity findPeriodCoupon = periodCouponRepository.findById(periodCouponId).orElseThrow(() -> new NotFoundException("PeriodCoupon"));
+        findPeriodCoupon.deleted();
     }
 }
