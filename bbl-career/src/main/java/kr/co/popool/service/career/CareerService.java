@@ -1,4 +1,5 @@
 package kr.co.popool.service.career;
+
 import kr.co.popool.domain.dto.career.CareerDto;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface CareerService {
 
@@ -14,7 +16,7 @@ public interface CareerService {
 
   CAREERINFO show(String memberIdentity);
 
-  void newCareer(CareerDto.CREATE newCareer);
+  void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile);
 
   void update(CareerDto.UPDATE careerDto);
 

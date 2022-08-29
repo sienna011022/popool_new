@@ -7,10 +7,10 @@ import kr.co.popool.service.career.CareerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j //로깅을 위함
@@ -35,9 +35,10 @@ public class CareerController {
   }
 
   @ApiOperation("개인 인사 내역 등록")
-  @PostMapping()
-  public ResponseFormat createCareer(@RequestBody @Valid CareerDto.CREATE careerDto) {
-    careerService.newCareer(careerDto);
+  @PostMapping(value = "/create",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseFormat createCareer(@RequestPart(value = "createDto") CareerDto.CREATE careerDto,@RequestPart(value = "file")
+  MultipartFile multipartFile) {
+    careerService.newCareer(careerDto,multipartFile);
     return ResponseFormat.ok();
   }
 
