@@ -1,4 +1,4 @@
-package main.java.kr.co.popool.gateway;
+package kr.co.popool.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

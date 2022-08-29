@@ -1,4 +1,4 @@
-package main.java.kr.co.popool.gateway.filters;
+package kr.co.popool.gateway.filters;
 
 import lombok.Getter;
 
