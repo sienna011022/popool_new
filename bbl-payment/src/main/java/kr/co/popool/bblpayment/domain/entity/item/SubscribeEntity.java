@@ -1,5 +1,7 @@
-package kr.co.popool.bblpayment.domain.entity;
+package kr.co.popool.bblpayment.domain.entity.item;
 
+import kr.co.popool.bblpayment.domain.dto.item.SubscribeDTO;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +19,15 @@ public class SubscribeEntity extends ItemMstEntity{
     @Column(nullable = true)
     private LocalDate payDatePerMonth;
 
+    @Builder
     public SubscribeEntity(int price, String name, LocalDate payDatePerMonth) {
         super(price, name);
         this.payDatePerMonth = payDatePerMonth;
+    }
+
+    public void update(SubscribeDTO.UPDATE update) {
+        this.name = update.getName();
+        this.price = update.getPrice();
+        this.payDatePerMonth = update.getPayDatePerMonth();
     }
 }

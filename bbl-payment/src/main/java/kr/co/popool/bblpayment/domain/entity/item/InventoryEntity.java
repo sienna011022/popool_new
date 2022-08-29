@@ -1,4 +1,4 @@
-package kr.co.popool.bblpayment.domain.entity;
+package kr.co.popool.bblpayment.domain.entity.item;
 
 import kr.co.popool.bblpayment.domain.shared.BaseEntity;
 import kr.co.popool.bblpayment.domain.shared.enums.CouponPeriod;
@@ -20,7 +20,7 @@ public class InventoryEntity extends BaseEntity {
     private int remainCouponCnt;
 
     //TODO: TIMESTAMP로 변경
-    @Column(nullable = false)
+    @Column
     private LocalDate endPeriodDate;
 
     @Column(nullable = false)
@@ -50,13 +50,16 @@ public class InventoryEntity extends BaseEntity {
     public void addPeriod(CouponPeriod couponPeriod) {
         if (isPeriodValid()) {
             this.endPeriodDate = this.endPeriodDate.plusMonths(couponPeriod.getPeriod());
+            return;
         }
-        else {
+
+        if (!isPeriodValid()) {
             this.endPeriodDate = LocalDate.now().plusMonths(couponPeriod.getPeriod());
+            return;
         }
     }
 
-    //TODO: if 없이 코딩하기
+
     //TODO: COMMON 모듈 ERROR 정의
     //== subscription ==//
     public void doSubscription() {

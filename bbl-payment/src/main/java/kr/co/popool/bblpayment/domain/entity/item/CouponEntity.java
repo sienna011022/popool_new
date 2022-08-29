@@ -1,5 +1,6 @@
-package kr.co.popool.bblpayment.domain.entity;
+package kr.co.popool.bblpayment.domain.entity.item;
 
+import kr.co.popool.bblpayment.domain.dto.item.CouponDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,11 @@ public class CouponEntity extends ItemMstEntity {
     public CouponEntity(int price, String name, int amount) {
         super(price, name);
         this.amount = amount;
+    }
+
+    public void update(CouponDTO.UPDATE update) {
+        this.name = update.getName();
+        this.price = update.getPrice();
+        this.amount = update.getAmount();
     }
 }

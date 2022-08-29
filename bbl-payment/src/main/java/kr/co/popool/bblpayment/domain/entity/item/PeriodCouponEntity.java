@@ -1,7 +1,8 @@
-package kr.co.popool.bblpayment.domain.entity;
+package kr.co.popool.bblpayment.domain.entity.item;
 
+import kr.co.popool.bblpayment.domain.dto.item.PeriodCouponDTO;
 import kr.co.popool.bblpayment.domain.shared.enums.CouponPeriod;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,15 @@ public class PeriodCouponEntity extends ItemMstEntity {
     @Column(nullable = true)
     private CouponPeriod period;
 
+    @Builder
     public PeriodCouponEntity(int price, String name, String period) {
         super(price, name);
         this.period = CouponPeriod.of(period);
+    }
+
+    public void update(PeriodCouponDTO.UPDATE update) {
+        this.name = update.getName();
+        this.price = update.getPrice();
+        this.period = CouponPeriod.of(update.getPeriod());
     }
 }
