@@ -1,4 +1,4 @@
-package kr.co.popool.bblmember.infra.error.handler;
+package kr.co.popool.bblmember.infra.handler;
 
 import kr.co.popool.bblcommon.error.exception.BusinessLogicException;
 import kr.co.popool.bblcommon.error.exception.UserDefineException;

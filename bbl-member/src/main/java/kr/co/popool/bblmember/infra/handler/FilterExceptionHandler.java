@@ -1,4 +1,4 @@
-package kr.co.popool.bblmember.infra.error.handler;
+package kr.co.popool.bblmember.infra.handler;
 
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
