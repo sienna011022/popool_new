@@ -245,7 +245,9 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = memberRepository.findByIdentity(reCreate.getIdentity())
                 .orElseThrow(() -> new BadRequestException("아이디나 비밀번호를 다시 확인해주세요"));
 
-        checkDelete(memberEntity);
+        if(!checkDelete(memberEntity)){
+            throw new BadRequestException("탈퇴한 회원이 아닙니다.");
+        }
 
         checkPassword(reCreate.getPassword(), memberEntity.getPassword());
 
@@ -326,7 +328,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkDelete(MemberEntity memberEntity) {
         if(memberEntity.getDel_yn().equals("N")){
-            throw new BadRequestException("탈퇴한 회원이 아닙니다.");
+            return false;
         }
         return true;
     }
