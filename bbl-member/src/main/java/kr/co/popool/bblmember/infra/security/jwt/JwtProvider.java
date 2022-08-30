@@ -2,15 +2,12 @@ package kr.co.popool.bblmember.infra.security.jwt;
 
 import io.jsonwebtoken.*;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
-import kr.co.popool.bblcommon.error.exception.UnauthorizedException;
 import kr.co.popool.bblcommon.error.exception.UserDefineException;
+import kr.co.popool.bblcommon.error.jwt.JwtTokenExpiredException;
+import kr.co.popool.bblcommon.error.jwt.JwtTokenInvalidException;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
-import kr.co.popool.bblmember.infra.error.jwt.JwtTokenExpiredException;
-import kr.co.popool.bblmember.infra.error.jwt.JwtTokenInvalidException;
-import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
 import kr.co.popool.bblmember.repository.MemberRepository;
-import kr.co.popool.bblmember.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
