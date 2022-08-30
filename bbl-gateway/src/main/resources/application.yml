@@ -1,42 +1,41 @@
-# Spring Cloud Gateway port
 server:
-  port: 8010   # spring cloud gateway가 동작하는 port 번호
+  port: 8010
 
 spring:
   application:
     name: bbl-gateway
   cloud:
     gateway:
-    default-filters:  # spring cloud gateway 공통 filter
-      - name: GlobalFilter
-        args:
-         baseMessage: Spring Cloud Gateway GlobalFilter
-         preLogger: true
-         postLogger: true
+      default-filters:  # spring cloud gateway 공통 filter
+        - name: GlobalFilter
+          args:
+           baseMessage: Spring Cloud Gateway GlobalFilter
+           preLogger: true
+           postLogger: true
     # MSA 라우팅 정의
-    routes:
-      - id: career_service
-        uri: http://localhost:8011
-        predicates:   # 조건부 집합 Header나 Parameter같은 HTTP 요청의 모든 항목 비교
-         - Path=/careers/**
-        filters:
-         - name: CareerFilter
-           args:
-             baseMessage: CareerFilter
-             preLogger: true
-             postLogger: true
-    #TODO common controller
-      - id: member_service
-          uri: http://localhost:8013
-          predicates:
-            - Path=/members/**,/oauth/**
+      routes:
+        - id: bbl-career
+          uri: http://localhost:8011
+          predicates:   # 조건부 집합 Header나 Parameter같은 HTTP 요청의 모든 항목 비교
+           - Path=/careers/**
           filters:
-            - name: MemberFilter
-              args:
-                baseMessage: MemberFilter
-                preLogger: true
-                postLogger: true
-    #TODO payment controller
+           - name: CareerFilter
+             args:
+               baseMessage: CareerFilter
+               preLogger: true
+               postLogger: true
+      #TODO common controller
+        - id: bbl-memer
+            uri: http://localhost:8013
+            predicates:
+              - Path=/members/**,/oauth/**
+            filters:
+              - name: MemberFilter
+                args:
+                  baseMessage: MemberFilter
+                  preLogger: true
+                  postLogger: true
+      #TODO payment controller
 
 eureka:
   instance:
@@ -45,7 +44,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${eureka.instance.hostname}/eureka/
+      defaultZone: http://${eureka.instance.hostname}/eureka
 
 #localhost:8080/member/ 주소로 서비스가 유입되면 member_service 호출 > localhost:8081/user로 라우팅 된다. *과정에서 globalfilter를 거침
 

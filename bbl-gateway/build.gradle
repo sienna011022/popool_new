@@ -1,5 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.7.RELEASE'
+    //TODO : 여기 2.6.7.RELEASE 되어 있길래 .RELEASE 지웠음.
+    id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -11,45 +12,61 @@ allprojects {
     targetCompatibility = "11"
 
 
-repositories {
-    mavenCentral()
-}
-
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'java'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    repositories {
+        mavenCentral()
     }
-}
 
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8'
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
     }
+
+    //TODO : 이거 없길래 내가 추가함. (홍혁준)
+    ext {
+        set('springCloudVersion', "2021.0.3")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8'
+        }
     }
 }
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude group: ("org.junit.vintage"), module: ("junit-vintage-engine")
-    }
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //TODO : 없길래 추가함.
+    //gateway
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    //eureka
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //TODO : 무슨 용도?
+//    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+//        exclude group: ("org.junit.vintage"), module: ("junit-vintage-engine")
+//    }
+    //TODO : 무슨 용도?
+//    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    //TODO : 무슨 용도?
+//    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
-
-project (':gateway-server') {
-    dependencies {
-        implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-    }
-}
+//TODO : 주입 하는거 같은데, 필요 없을 것 같아. 위에서 했음.
+//project (':gateway-server') {
+//    dependencies {
+//        implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+//    }
+//}
 
 //xml방식으로 작성

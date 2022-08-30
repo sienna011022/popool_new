@@ -1,33 +1,40 @@
 package kr.co.popool.gateway.filters;
 
+import kr.co.popool.gateway.config.FilterConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
+public class GlobalFilter extends AbstractGatewayFilterFactory<FilterConfig> {
+
     public GlobalFilter(){
-        super(Config.class);
+        super(FilterConfig.class);
     }
 
     @Override
-    public GatewayFilter apply(final Config config){
-        return(exchange,chain) ->{
-            log.info("GlobalFilter baseMessage: {}",config.getBaseMessage());
+    public GatewayFilter apply(final FilterConfig filterConfig){
+        return ((exchange,chain) ->{
+            ServerHttpRequest request = exchange.getRequest();
+            ServerHttpResponse response = exchange.getResponse();
 
-            if(config.isPreLogger()) {
-                log.info("GlobalFilter Start: {}", exchange.getRequest());
+            log.info("GlobalFilter baseMessage: {}", filterConfig.getBaseMessage());
+
+            if(filterConfig.isPreLogger()) {
+                log.info("GlobalFilter Start: {}", request.getId());
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                if(config.isPostLogger()) {
-                    log.info("GlobalFilter End:{}", exchange.getResponse());
+                if(filterConfig.isPostLogger()) {
+                    log.info("GlobalFilter End:{}", response.getStatusCode());
                 }
             }));
-        };
+        });
     }
 }
 //AbstraceGatewayFilterFactory : Gateway를 구현하기 위한 추상 클래스
