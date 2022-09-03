@@ -2,6 +2,7 @@ package kr.co.popool.service.career;
 
 import static kr.co.popool.bblcommon.error.model.ErrorCode.DUPLICATED_MEMBERIDENTITY;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -27,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CareerServiceImpl implements CareerService {
 
   private final CareerRepository careerRepository;
+
+  private final FileUploadService fileUploadService;
   private final ScoreService scoreService;
 
   /**
@@ -73,14 +77,16 @@ public class CareerServiceImpl implements CareerService {
   @Override
   @Transactional
   //TODO : 예외 처리 세분화
-  public void newCareer(CareerDto.CREATE newCareer) {
+  public void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile) {
 
     CareerEntity careerEntity = CareerEntity.of(newCareer);
 
     try {
       careerRepository.save(careerEntity);
+      fileUploadService.save(multipartFile);
     } catch (DataIntegrityViolationException e) {
       throw new DuplicatedException(DUPLICATED_MEMBERIDENTITY);
+
     }
 
   }
