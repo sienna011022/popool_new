@@ -28,6 +28,6 @@ public class SubscribeEntity extends ItemMstEntity{
     public void update(SubscribeDTO.UPDATE update) {
         this.name = update.getName();
         this.price = update.getPrice();
-        this.payDatePerMonth = update.getPayDatePerMonth();
+        this.payDatePerMonth = LocalDate.parse(update.getPayDatePerMonth());
     }
 }
