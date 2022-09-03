@@ -1,4 +1,4 @@
-package kr.co.popool.bblmember.infra.error.jwt;
+package kr.co.popool.bblcommon.error.jwt;
 
 
 import kr.co.popool.bblcommon.error.exception.UserDefineException;
