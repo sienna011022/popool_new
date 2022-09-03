@@ -23,8 +23,8 @@ jobs:
         run: chmod +x ./bbl-eureka/gradlew #setting
         shell: bash
 
-      - name: Build Career with Gradle
-        run: ./bbl-eureka/gradlew clean build #setting
+      - name: Build Eureka with Gradle
+        run: ./bbl-eureka/gradlew clean build --warning-mode all #setting
         shell: bash
 
       - name: Get current time
@@ -69,7 +69,7 @@ jobs:
         shell: bash
 
       - name: Build Career with Gradle
-        run: ./bbl-career/gradlew clean build
+        run: ./bbl-career/gradlew clean build --warning-mode all
         shell: bash
 
       - name: Get current time
@@ -114,7 +114,7 @@ jobs:
         shell: bash
 
       - name: Build Career with Gradle
-        run: ./bbl-member/gradlew clean build #setting
+        run: ./bbl-member/gradlew clean build --warning-mode all #setting
         shell: bash
 
       - name: Get current time
@@ -159,7 +159,7 @@ jobs:
         shell: bash
 
       - name: Build Career with Gradle
-        run: ./bbl-payment/gradlew clean build #setting
+        run: ./bbl-payment/gradlew clean build --warning-mode all #setting
         shell: bash
 
       - name: Get current time
