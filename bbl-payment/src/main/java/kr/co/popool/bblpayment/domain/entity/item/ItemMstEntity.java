@@ -11,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @Getter
 @NoArgsConstructor
-@Table(name = "tbl_item_mst")
+@Table(name = "tbl_item")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @AttributeOverride(name = "id", column = @Column(name = "item_id"))
