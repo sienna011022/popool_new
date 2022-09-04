@@ -4,6 +4,7 @@ import kr.co.popool.domain.dto.career.CareerDto;
 
 import java.util.List;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
+import kr.co.popool.domain.dto.career.CareerDto.DELETE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
@@ -29,5 +30,9 @@ public interface CareerService {
   void updateGrade(String memberIdentity, GRADEDETAIL gradeDto);
 
   List<ScoreEntity> findScoreList(String memberIdentity);
+
+  void delete(DELETE careerDto);
+
+  boolean checkDelete(CareerEntity careerEntity);
 }
 

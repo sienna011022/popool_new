@@ -2,6 +2,7 @@ package kr.co.popool.service.grade;
 
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GETVALUE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto.SCOREINFO;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.service.career.CareerService;
@@ -27,10 +28,16 @@ public class CalculateGradeService {
 
   public GRADEDETAIL calculateGradeDto(SCOREINFO newScoreDto) {
 
-    GETVALUE valueDto = gradeService.getValue(newScoreDto);
+    GETVALUE valueDto = gradeService.getValue(newScoreDto.getMemberIdentity());
     return gradeService.createGradeDto(newScoreDto.getMemberIdentity(),
         valueDto);
 
+  }
+
+  public GRADEDETAIL updateGradeDto(DELETE deleteDto){
+
+    GETVALUE valueDto = gradeService.getValue(deleteDto.getMemberIdentity());
+    return gradeService.createGradeDto(deleteDto.getMemberIdentity(),valueDto);
   }
 
   /**

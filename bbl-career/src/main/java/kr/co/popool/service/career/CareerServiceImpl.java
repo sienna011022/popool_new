@@ -2,13 +2,14 @@ package kr.co.popool.service.career;
 
 import static kr.co.popool.bblcommon.error.model.ErrorCode.DUPLICATED_MEMBERIDENTITY;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
+import kr.co.popool.domain.dto.career.CareerDto.DELETE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
@@ -60,8 +61,8 @@ public class CareerServiceImpl implements CareerService {
 
   public CareerDto.CAREERINFO show(String memberIdentity) {
 
-    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
-        .orElseThrow(() -> new NotFoundException(memberIdentity));
+    CareerEntity careerEntity = findCareerEntity(memberIdentity);
+
     return checkGrade(careerEntity);
 
   }
@@ -104,6 +105,7 @@ public class CareerServiceImpl implements CareerService {
   public void update(CareerDto.UPDATE careerDto) {
 
     CareerEntity careerEntity = findCareerEntity(careerDto.getMemberIdentity());
+
     careerEntity.updateCareer(careerDto);
     careerRepository.save(careerEntity);
 
@@ -123,21 +125,6 @@ public class CareerServiceImpl implements CareerService {
     } catch (NullPointerException e) {
       return CareerDto.NoneGradeDto(careerEntity);
     }
-
-  }
-
-  /**
-   * 인사 아이디로 Entity 반환
-   *
-   * @param memberIdentity : 인사 아이디
-   * @return CareerEntity : 인사 Entity
-   * @Exception NotFoundException : 인사 내역이 존재하지 않는 경우
-   */
-  @Override
-  public CareerEntity findCareerEntity(String memberIdentity) {
-
-    return careerRepository.findByMemberIdentity(memberIdentity)
-        .orElseThrow(() -> new NotFoundException(memberIdentity));
 
   }
 
@@ -165,9 +152,16 @@ public class CareerServiceImpl implements CareerService {
    */
   @Override
   public List<ScoreEntity> findScoreList(String memberIdentity) {
+    return scoreService.findAllScore(memberIdentity);
 
-    List<ScoreEntity> scoreList = scoreService.findAllScore(memberIdentity);
-    return scoreList;
+  }
+
+  @Override
+  public void delete(DELETE careerDto) {
+
+    CareerEntity careerEntity = findCareerEntity(careerDto.getMemberIdentity());
+    careerEntity.deleted();
+    careerRepository.save(careerEntity);
 
   }
 
@@ -185,6 +179,36 @@ public class CareerServiceImpl implements CareerService {
     careerEntity.getGradeEntity().updateGrade(findScoreList(memberIdentity), gradeDto);
     careerRepository.save(careerEntity);
 
+  }
+
+  @Override
+  public boolean checkDelete(CareerEntity careerEntity) {
+    if (careerEntity.getDel_yn().equals("N")) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 인사 아이디로 Entity 반환
+   *
+   * @param memberIdentity : 인사 아이디
+   * @return CareerEntity : 인사 Entity
+   * @Exception NotFoundException : 인사 내역이 존재하지 않는 경우
+   */
+  @Override
+  public CareerEntity findCareerEntity(String memberIdentity) {
+
+    //TODO:feign 검증?
+
+    CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
+        .orElseThrow(() -> new NotFoundException(memberIdentity));
+
+    if (checkDelete(careerEntity)) {
+      throw new BadRequestException("탈퇴한 회원입니다.");
+    }
+
+    return careerEntity;
   }
 
 }

@@ -40,6 +40,7 @@ public class GradeRepositoryImpl implements GradeRepositoryCustom {
                 qScoreEntity.count()
             ))
         .from(qScoreEntity)
+        .where(qScoreEntity.del_yn.eq("N"))
         .where(qScoreEntity.careerEntity.memberIdentity.eq(memberIdentity))
         .fetchOne();
   }

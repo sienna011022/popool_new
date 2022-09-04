@@ -50,5 +50,12 @@ public class CareerController {
 
   }
 
+  @ApiOperation("개인 인사 내역 삭제")
+  @DeleteMapping("/delete")
+  public ResponseFormat delete(@RequestBody CareerDto.DELETE careerDto){
+    careerService.delete(careerDto);
+    return ResponseFormat.ok();
+  }
+
 }
 

@@ -120,5 +120,17 @@ public class CareerDto {
         .build();
 
   }
+
+  @Builder
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class DELETE {
+
+    @ApiModelProperty(example = "member 아이디")
+    @NotBlank(message = "본인의 아이디를 입력하세요")
+    private String memberIdentity;
+
+  }
 }
 

@@ -3,7 +3,10 @@ package kr.co.popool.controller;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
+import kr.co.popool.domain.dto.career.CareerDto;
+import kr.co.popool.domain.dto.score.QQueryScoreDto_SHOWSCORE_DELETE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.service.score.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +46,14 @@ public class ScoreController {
     scoreService.updateScore(updateScoreDto);
     return ResponseFormat.ok();
 
+  }
+
+  @ApiOperation("평가 내역 삭제")
+  @DeleteMapping("/delete")
+  public ResponseFormat delete(@RequestBody DELETE deleteDto){
+    scoreService.delete(deleteDto);
+    gradeController.updateGrade(deleteDto);
+    return ResponseFormat.ok();
   }
 
 }
