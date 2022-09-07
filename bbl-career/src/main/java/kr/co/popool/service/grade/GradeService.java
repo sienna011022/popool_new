@@ -13,9 +13,9 @@ public interface GradeService {
 
   GradeDto.ONLYGRADE showGradeOnly(String memberIdentity);
 
-  GETVALUE getValue(ScoreDto.SCOREINFO newScoreDto);
-
   GradeEntity createGradeEntity(String memberIdentity, GRADEDETAIL gradeDto);
+
+  GETVALUE getValue(String memberIdentity);
 
   GRADEDETAIL createGradeDto(String memberIdentity,GETVALUE valueDto);
 

@@ -128,7 +128,7 @@ public class MemberController {
     }
 
     @ApiOperation("로그인 정보 호출")
-    @PostMapping("identity/info")
+    @PostMapping("/identity/info")
     public ResponseFormat<String> loginInfo(){
         return ResponseFormat.ok(memberService.getLoginInfo());
     }

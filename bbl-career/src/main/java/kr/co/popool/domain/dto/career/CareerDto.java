@@ -5,6 +5,7 @@ import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
+import org.springframework.http.ResponseEntity;
 
 
 public class CareerDto {
@@ -39,7 +40,6 @@ public class CareerDto {
     @ApiModelProperty(example = "블록체인 아이디")
     @NotBlank(message = "블록체인")
     private String historyId;
-
   }
 
   @Builder
@@ -118,6 +118,18 @@ public class CareerDto {
         .context(careerEntity.getContext())
         .historyId(careerEntity.getHistoryId())
         .build();
+
+  }
+
+  @Builder
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class DELETE {
+
+    @ApiModelProperty(example = "member 아이디")
+    @NotBlank(message = "본인의 아이디를 입력하세요")
+    private String memberIdentity;
 
   }
 }

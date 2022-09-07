@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.co.popool.domain.dto.score.QQueryScoreDto_SHOWSCORE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.entity.QCareerEntity;
 import kr.co.popool.domain.entity.QScoreEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
@@ -38,6 +39,8 @@ public class ScoreRepositoryImpl implements ScoreRepositoryCustom {
             ))
         )
         .from(qScoreEntity)
+        .where(qScoreEntity.del_yn.eq("N"))
+        .join(qScoreEntity.careerEntity, qCareerEntity)
         .join(qScoreEntity.careerEntity, qCareerEntity)
         .where(qCareerEntity.memberIdentity.eq(memberIdentity))
         .limit(1000)
@@ -50,10 +53,23 @@ public class ScoreRepositoryImpl implements ScoreRepositoryCustom {
         .select(qScoreEntity
         )
         .from(qScoreEntity)
+        .where(qScoreEntity.del_yn.eq("N"))
         .join(qScoreEntity.careerEntity, qCareerEntity)
         .where(qCareerEntity.memberIdentity.eq(memberIdentity))
         .limit(1000)
         .fetch());
+
+  }
+
+  public Optional<ScoreEntity> getScoreEntity(DELETE deleteDto) {
+
+    return Optional.ofNullable(query
+        .select(qScoreEntity)
+        .from(qScoreEntity)
+        .join(qScoreEntity.careerEntity, qCareerEntity)
+        .where(qScoreEntity.evaluatorIdentity.eq(deleteDto.getEvaluatorIdentity()))
+        .where(qCareerEntity.memberIdentity.eq(deleteDto.getMemberIdentity()))
+        .fetchOne());
 
   }
 }
