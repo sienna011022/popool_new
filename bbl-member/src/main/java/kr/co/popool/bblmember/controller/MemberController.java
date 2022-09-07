@@ -127,12 +127,6 @@ public class MemberController {
         return ResponseFormat.ok(memberService.checkPhone(new Phone(phone)));
     }
 
-    @ApiOperation("로그인 정보 호출")
-    @PostMapping("identity/info")
-    public ResponseFormat<String> loginInfo(){
-        return ResponseFormat.ok(memberService.getLoginInfo());
-    }
-
     @ApiOperation("AccessToken 재발급")
     @GetMapping("/refresh")
     public ResponseFormat<MemberDto.TOKEN> resetRefreshToken(@RequestHeader("token") String refreshToken){

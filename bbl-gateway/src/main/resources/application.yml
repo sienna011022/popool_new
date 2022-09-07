@@ -1,3 +1,7 @@
+##member module 의 키와 동일
+jwt:
+  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
+
 server:
   port: 8010
 
