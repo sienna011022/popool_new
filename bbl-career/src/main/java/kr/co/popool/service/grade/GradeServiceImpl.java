@@ -6,7 +6,6 @@ import kr.co.popool.domain.dto.grade.GradeDto;
 import kr.co.popool.domain.dto.grade.GradeDto.ONLYGRADE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GETVALUE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
-import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.repository.grade.GradeRepository;
 import kr.co.popool.service.career.CareerService;
@@ -55,13 +54,13 @@ public class GradeServiceImpl implements GradeService {
   /**
    * 평가 등록 시 등급 테이블을 위한 각종 값을 계산 후 DTO반환
    *
-   * @param newScoreDto : 새로운 평가 DTO
+   * @param memberIdentity : 인사 아이디
    * @return GETVALUE : 등급 테이블을 위한 값 (ex.평균)
    */
   @Override
-  public GETVALUE getValue(ScoreDto.SCOREINFO newScoreDto) {
+  public GETVALUE getValue(String memberIdentity) {
 
-    return gradeRepository.getValue(newScoreDto.getMemberIdentity());
+    return gradeRepository.getValue(memberIdentity);
 
   }
 

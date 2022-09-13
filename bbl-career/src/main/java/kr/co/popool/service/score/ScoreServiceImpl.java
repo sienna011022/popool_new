@@ -3,8 +3,11 @@ package kr.co.popool.service.score;
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
+import kr.co.popool.domain.dto.score.ScoreDto.SCOREINFO;
 import kr.co.popool.domain.entity.CareerEntity;
+import kr.co.popool.domain.entity.QGradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
 import kr.co.popool.repository.career.CareerRepository;
 import kr.co.popool.repository.score.ScoreRepository;
@@ -36,6 +39,7 @@ public class ScoreServiceImpl implements ScoreService {
 
     return scoreRepository.showAllScores(memberIdentity)
         .orElseThrow(() -> new NotFoundException("memberIdentity"));
+
   }
 
   /**
@@ -72,6 +76,7 @@ public class ScoreServiceImpl implements ScoreService {
             updateScoreDto.getEvaluatorIdentity())
         .orElseThrow(() -> new BadRequestException("평가 수정 실패 - 아이디에 해당하는 인사 내역이 존재하지 않습니다"));
 
+    checkDelete(scoreEntity);
     scoreEntity.updateScore(updateScoreDto);
 
     scoreRepository.save(scoreEntity);
@@ -94,6 +99,26 @@ public class ScoreServiceImpl implements ScoreService {
 
   }
 
+  @Override
+  public void delete(DELETE deleteDto) {
+
+    ScoreEntity scoreEntity = scoreRepository.getScoreEntity(deleteDto)
+        .orElseThrow(() -> new NotFoundException("아이디에 해당하는 평가 내역이 존재하지 않습니다"));
+
+    scoreEntity.deleted();
+
+    scoreRepository.save(scoreEntity);
+
+
+  }
+
+  @Override
+  public boolean checkDelete(ScoreEntity scoreEntity) {
+    if (scoreEntity.getDel_yn().equals("N")) {
+      return false;
+    }
+    return true;
+  }
 
 }
 

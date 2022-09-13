@@ -1,6 +1,7 @@
 package kr.co.popool.service.score;
 
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
 
 
@@ -16,4 +17,8 @@ public interface ScoreService {
   void updateScore(ScoreDto.UPDATE updateScoreDto);
 
   List<ScoreEntity> findAllScore(String memberIdentity);
+
+  void delete(DELETE deleteDto);
+
+  boolean checkDelete(ScoreEntity scoreEntity);
 }

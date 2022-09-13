@@ -1,12 +1,9 @@
 package kr.co.popool.controller;
 
 import io.swagger.annotations.ApiOperation;
-import java.util.Optional;
-import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.domain.dto.grade.GradeDto;
-import kr.co.popool.domain.dto.grade.GradeDto.ONLYGRADE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
+import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.service.grade.CalculateGradeService;
 import kr.co.popool.service.grade.GradeService;
@@ -48,6 +45,15 @@ public class GradeController {
 
     return ResponseFormat.ok();
 
+  }
+
+  @ApiOperation("등급 업데이트 - 평가 삭제시")
+  public ResponseFormat updateGrade(DELETE deleteDto) {
+
+    GRADEDETAIL gradedetail = calculateService.updateGradeDto(deleteDto);
+    calculateService.saveGradeEntity(gradedetail, deleteDto.getMemberIdentity());
+
+    return ResponseFormat.ok();
 
   }
 }

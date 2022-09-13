@@ -1,9 +1,12 @@
-package kr.co.popool.repository.career;
+package kr.co.popool.repository;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.File;
 import com.amazonaws.services.s3.AmazonS3Client;
+import java.util.Date;
 import kr.co.popool.infra.config.MultipartUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,5 +34,14 @@ public class AmazonS3ResourceStorage {
         file.delete();
       }
     }
+  }
+
+  public String get(String fileName, Date expiration) {
+    GeneratePresignedUrlRequest generatePresignedUrlRequest =
+        new GeneratePresignedUrlRequest(bucket, (fileName).replace(File.separatorChar, '/'))
+            .withMethod(HttpMethod.GET)
+            .withExpiration(expiration);
+
+    return amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest).toString();
   }
 }
