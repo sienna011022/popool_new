@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -22,7 +24,7 @@ public class SubscribeServiceImpl implements SubscribeService{
         SubscribeEntity newSubscribe = SubscribeEntity.builder()
                 .name(createDTO.getName())
                 .price(createDTO.getPrice())
-                .payDatePerMonth(createDTO.getPayDatePerMonth())
+                .payDatePerMonth(LocalDate.parse(createDTO.getPayDatePerMonth()))
                 .build();
 
         subscribeRepository.save(newSubscribe);
@@ -45,7 +47,7 @@ public class SubscribeServiceImpl implements SubscribeService{
                 .subscribeId(findSubscribe.getId())
                 .name(findSubscribe.getName())
                 .price(findSubscribe.getPrice())
-                .payDatePerMonth(findSubscribe.getPayDatePerMonth())
+                .payDatePerMonth(findSubscribe.getPayDatePerMonth().toString())
                 .build();
     }
 

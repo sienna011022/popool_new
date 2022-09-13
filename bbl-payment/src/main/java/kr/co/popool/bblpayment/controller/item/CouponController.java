@@ -28,7 +28,7 @@ public class CouponController {
     @GetMapping("/items/coupon/{couponId}")
     public ResponseFormat<CouponDTO.DETAIL> readCouponDetail(@PathVariable("couponId") Long couponId) {
 
-        CouponDTO.READ couponDetail;
+        CouponDTO.DETAIL couponDetail;
 
         try {
             couponDetail = couponService.readCouponDetail(couponId);

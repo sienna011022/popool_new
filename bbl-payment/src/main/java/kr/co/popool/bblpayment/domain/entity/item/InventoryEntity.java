@@ -19,12 +19,15 @@ public class InventoryEntity extends BaseEntity {
     @Column(nullable = false)
     private int remainCouponCnt;
 
-    //TODO: TIMESTAMP로 변경
     @Column
     private LocalDate endPeriodDate;
 
-    @Column(nullable = false)
-    private boolean isSubscription;
+    @Column
+    private String sid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscribe_id")
+    private SubscribeEntity subscribe;
 
 
     //== coupon ==//
@@ -59,20 +62,25 @@ public class InventoryEntity extends BaseEntity {
         }
     }
 
-
-    //TODO: COMMON 모듈 ERROR 정의
+    //TODO: Common 모듈 에러 추가
     //== subscription ==//
-    public void doSubscription() {
-        if (this.isSubscription)
+    public void doSubscription(SubscribeEntity subscribe, String sid) {
+        if (isSubscription())
             throw new RuntimeException("이미 구독중입니다.");
 
         if (isPeriodValid())
             throw new RuntimeException("기간권 사용중입니다.");
 
-        this.isSubscription = true;
+        this.sid = sid;
+    }
+
+    public boolean isSubscription() {
+        if (this.sid == null)
+            return false;
+        return true;
     }
 
     public void cancelSubscription() {
-        this.isSubscription = false;
+        this.sid = null;
     }
 }

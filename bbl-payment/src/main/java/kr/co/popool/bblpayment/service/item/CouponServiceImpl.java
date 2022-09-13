@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class CouponServiceImpl implements CouponService{
+public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
 
@@ -37,11 +37,11 @@ public class CouponServiceImpl implements CouponService{
     }
 
     @Override
-    public CouponDTO.READ readCouponDetail(Long couponId) throws Exception {
+    public CouponDTO.DETAIL readCouponDetail(Long couponId) throws Exception {
 
         CouponEntity findCoupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundException("Coupon"));
 
-        return CouponDTO.READ.builder()
+        return CouponDTO.DETAIL.builder()
                 .couponId(findCoupon.getId())
                 .name(findCoupon.getName())
                 .amount(findCoupon.getAmount())
