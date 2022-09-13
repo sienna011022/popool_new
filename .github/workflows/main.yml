@@ -24,7 +24,7 @@ jobs:
         shell: bash
 
       - name: Build Eureka with Gradle
-        run: ./bbl-eureka/gradlew clean :bbl-eureka:build --warning-mode all #setting
+        run: ./bbl-eureka/gradlew clean :bbl-eureka:build --exclude-task test --warning-mode all #setting
         shell: bash
 
       - name: Get current time
@@ -70,7 +70,7 @@ jobs:
         shell: bash
 
       - name: Build Career with Gradle
-        run: ./bbl-payment/gradlew clean :bbl-payment:build --warning-mode all #setting
+        run: ./bbl-payment/gradlew clean :bbl-payment:build --exclude-task test --warning-mode all #setting
         shell: bash
 
       - name: Get current time
