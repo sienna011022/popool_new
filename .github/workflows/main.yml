@@ -53,7 +53,7 @@ jobs:
           environment_name: Bbleureka-env
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
-          deployment_package: bbl-eureka/bbl-eureka.zip
+          deployment_package: bbl-eureka/bbl-eureka/bbl-eureka.zip
 
 #  build-career:
 #    runs-on: ubuntu-latest
