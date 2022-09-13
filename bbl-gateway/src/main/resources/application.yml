@@ -1,3 +1,4 @@
+##원희 워니
 ##member module 의 키와 동일
 jwt:
   secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
@@ -30,7 +31,7 @@ spring:
                postLogger: true
       #TODO common controller
         - id: bbl-memer
-            uri: http://localhost:8013
+          uri: http://localhost:8013
             predicates:
               - Path=/members/**,/oauth/**
             filters:
