@@ -36,6 +36,7 @@ jobs:
 
       - name: Generate bbl-eureka package
         run: |
+          ls -al
           mkdir -p bbl-eureka
           cp bbl-eureka/build/libs/*.jar bbl-eureka/application.jar
           cp Procfile bbl-eureka/Procfile
