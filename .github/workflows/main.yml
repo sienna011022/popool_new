@@ -38,7 +38,7 @@ jobs:
         run: |
           cd bbl-eureka
           mkdir -p bbl-eureka
-          ls -al
+          ls -R
           cp build/libs/*.jar ./bbl-eureka/application.jar
           cp Procfile ./bbl-eureka/Procfile
           cp -r .ebextensions ./bbl-eureka/.ebextensions
