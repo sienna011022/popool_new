@@ -36,9 +36,10 @@ jobs:
 
       - name: Generate bbl-eureka package
         run: |
+          cd bbl-eureka
           ls -al
           mkdir -p bbl-eureka
-          cp bbl-eureka/build/libs/*.jar bbl-eureka/application.jar
+          cp build/libs/*.jar bbl-eureka/application.jar
           cp Procfile bbl-eureka/Procfile
           cp -r .ebextensions bbl-eureka/.ebextensions
           cd bbl-eureka && zip -r bbl-eureka.zip .
