@@ -188,19 +188,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인된 아이디 정보 전달(feign client 용)
-     * @return
-     */
-    @Override
-    public String getLoginInfo() {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-        if(memberEntity==null){
-            throw new BadRequestException("로그인을 해주세요.");
-        }
-        return memberEntity.getIdentity();
-    }
-
-    /**
      * 주소 등록 여부
      * @return 주소 등록 안되어있으면 false 되어 있으면 true
      */

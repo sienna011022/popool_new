@@ -24,7 +24,7 @@ jobs:
         shell: bash
 
       - name: Build Eureka with Gradle
-        run: ./bbl-eureka/gradlew clean build --warning-mode all #setting
+        run: ./bbl-eureka/gradlew clean :bbl-eureka:build --warning-mode all #setting
         shell: bash
 
       - name: Get current time
@@ -36,10 +36,12 @@ jobs:
 
       - name: Generate bbl-eureka package
         run: |
+          cd bbl-eureka
           mkdir -p bbl-eureka
-          cp bbl-eureka/build/libs/*.jar bbl-eureka/application.jar
-          cp Procfile bbl-eureka/Procfile
-          cp -r .ebextensions bbl-eureka/.ebextensions
+          ls -al
+          cp build/libs/*.jar ./bbl-eureka/application.jar
+          cp Procfile ./bbl-eureka/Procfile
+          cp -r .ebextensions ./bbl-eureka/.ebextensions
           cd bbl-eureka && zip -r bbl-eureka.zip .
 
       - name: Deploy to EB # (2)

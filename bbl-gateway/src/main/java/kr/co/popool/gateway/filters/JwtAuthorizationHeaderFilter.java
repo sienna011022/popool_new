@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -28,6 +27,7 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<F
     public GatewayFilter apply(FilterConfig config) {
         return ((exchange, chain) -> {
 
+            //인가 처리 여기서 실패하면 예외를 반환
             final Optional<String> token
                     = Optional.of(exchange.getRequest()
                     .getHeaders().get("Authorization").get(0)
