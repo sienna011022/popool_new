@@ -40,8 +40,8 @@ jobs:
           mkdir -p bbl-eureka
           ls -R
           cp build/libs/*.jar ./bbl-eureka/application.jar
-          cp Procfile ./bbl-eureka/Procfile
-          cp -r .ebextensions ./bbl-eureka/.ebextensions
+          cp ../Procfile ./bbl-eureka/Procfile
+          cp -r ../.ebextensions ./bbl-eureka/.ebextensions
           cd bbl-eureka && zip -r bbl-eureka.zip .
 
       - name: Deploy to EB # (2)
