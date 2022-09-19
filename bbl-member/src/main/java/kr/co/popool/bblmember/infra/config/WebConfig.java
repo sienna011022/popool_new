@@ -1,9 +1,9 @@
 package kr.co.popool.bblmember.infra.config;
 
+import kr.co.popool.bblcommon.jwt.JwtProviderCommon;
 import kr.co.popool.bblmember.infra.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -27,16 +27,17 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("members/login");
+                .excludePathPatterns("/members/login");
     }
 
     @Bean
     public AuthInterceptor authInterceptor(){
-        return new AuthInterceptor();
+        return new AuthInterceptor(jwtProviderCommon());
     }
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public JwtProviderCommon jwtProviderCommon(){
+        return new JwtProviderCommon();
     }
+
 }

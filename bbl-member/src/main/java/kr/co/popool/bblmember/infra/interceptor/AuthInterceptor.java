@@ -1,8 +1,8 @@
 package kr.co.popool.bblmember.infra.interceptor;
 
-import kr.co.popool.bblmember.domain.entity.MemberEntity;
-import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.co.popool.bblcommon.jwt.JwtProviderCommon;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,32 +10,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
+@RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProviderCommon jwtProviderCommon;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler){
-        String token = request.getHeader("Authorization");
+    public boolean preHandle(HttpServletRequest request,
+                             @NotNull HttpServletResponse response,
+                             @NotNull Object handler){
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION)
+                .replace("Bearer", "").trim();
 
-        if(token == null){
+        if(token==null){
             return true;
         }
 
-        MemberEntity memberEntity = jwtProvider.findMemberByToken(token);
-        MemberThreadLocal.set(memberEntity);
+        String identity = jwtProviderCommon.findIdentityByToken(token);
+        MemberThreadLocal.set(identity);
 
         return true;
     }
 
     @Override
-    public void postHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response
-            , @NotNull Object handler, ModelAndView modelAndView) {
+    public void postHandle(@NotNull HttpServletRequest request,
+                           @NotNull HttpServletResponse response,
+                           @NotNull Object handler,
+                           ModelAndView modelAndView){
 
-        if(MemberThreadLocal.get() == null){
+        if(MemberThreadLocal.get()==null){
             return;
         }
+
         MemberThreadLocal.remove();
     }
 }

@@ -38,16 +38,12 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto.TOKEN login(MemberDto.LOGIN login) {
         MemberEntity memberEntity = memberRepository.findByIdentity(login.getIdentity())
                 .orElseThrow(() -> new BadRequestException("아이디나 비밀번호를 다시 확인해주세요"));
-
-        checkPassword(login.getPassword(), memberEntity.getPassword());
-
-        if(checkDelete(memberEntity)){
+        checkEncodePassword(login.getPassword(), memberEntity.getPassword());
+        if(checkDelete(memberEntity))
             throw new BadRequestException("탈퇴한 회원입니다.");
-        }
 
         String[] tokens = generateToken(memberEntity);
         redisService.createData(memberEntity.getIdentity(), tokens[1], jwtProvider.getRefreshExpire());
-
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
 
@@ -59,18 +55,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void signUp(MemberDto.CREATE create) {
         checkSignUp(create);
-
         MemberEntity memberEntity = MemberEntity.of(create, passwordEncoder, null);
-
         memberRepository.save(memberEntity);
     }
 
     @Override
     public MemberDto.TOKEN reCreateAccessToken(String refreshToken) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
+        MemberEntity memberEntity = getThreadLocal();
         redisService.checkValue(refreshToken, redisService.getValue(memberEntity.getIdentity()));
-
         String[] tokens = generateToken(memberEntity);
         return new MemberDto.TOKEN(tokens[0], tokens[1]);
     }
@@ -81,14 +73,12 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void update(MemberDto.UPDATE update) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
+        MemberEntity memberEntity = getThreadLocal();
 
-        if(!memberEntity.getPhone().equals(new Phone(update.getPhone()))){
+        if(!memberEntity.getPhone().equals(new Phone(update.getPhone())))
             checkPhone(new Phone(update.getPhone()));
-        }
-        if(!memberEntity.getEmail().equals(update.getEmail())){
+        if(!memberEntity.getEmail().equals(update.getEmail()))
             checkEmail(update.getEmail());
-        }
 
         memberEntity.updateMember(update);
         memberRepository.save(memberEntity);
@@ -101,12 +91,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updatePassword(MemberDto.UPDATE_PASSWORD updatePassword) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
-        checkPassword(updatePassword.getOriginalPassword(), memberEntity.getPassword());
-
-        checkPassword(new MemberDto.CHECK_PW(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword()));
-
+        MemberEntity memberEntity = getThreadLocal();
+        checkEncodePassword(updatePassword.getOriginalPassword(), memberEntity.getPassword());
+        checkPassword(updatePassword.getNewPassword(), updatePassword.getNewCheckPassword());
         memberEntity.updatePassword(passwordEncoder.encode(updatePassword.getNewPassword()));
         memberRepository.save(memberEntity);
     }
@@ -117,8 +104,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void updateAddress(MemberDto.UPDATE_ADDRESS updateAddress) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
+        MemberEntity memberEntity = getThreadLocal();
         memberEntity.updateAddress(updateAddress);
         memberRepository.save(memberEntity);
     }
@@ -129,8 +115,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void updatePhone(MemberDto.UPDATE_PHONE updatePhone) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
+        MemberEntity memberEntity = getThreadLocal();
         memberEntity.updatePhone(updatePhone);
         memberRepository.save(memberEntity);
     }
@@ -140,12 +125,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void paymentAgreeUpdate() {
-        MemberEntity memberEntity = MemberThreadLocal.get();
+        MemberEntity memberEntity = getThreadLocal();
 
         if(memberEntity.getPaymentAgree_yn().equals("N")){
             memberEntity.agree();
-        }
-        if (memberEntity.getPaymentAgree_yn().equals("Y")){
+        }else if (memberEntity.getPaymentAgree_yn().equals("Y")){
             memberEntity.disagree();
         }
 
@@ -158,7 +142,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public MemberDto.READ get() {
-        MemberEntity memberEntity = MemberThreadLocal.get();
+        MemberEntity memberEntity = getThreadLocal();
 
         return MemberDto.READ.builder()
                 .id(memberEntity.getId())
@@ -193,7 +177,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public boolean getAddress() {
-        return MemberThreadLocal.get().getAddress() != null;
+        MemberEntity memberEntity = getThreadLocal();
+        return memberEntity.getAddress() != null;
     }
 
     /**
@@ -202,7 +187,15 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public boolean getPaymentAgree() {
-        return MemberThreadLocal.get().getPaymentAgree_yn() == "Y";
+        MemberEntity memberEntity = getThreadLocal();
+        return memberEntity.getPaymentAgree_yn() == "Y";
+    }
+
+    @Override
+    public MemberEntity getThreadLocal() {
+        String identity = MemberThreadLocal.get();
+        return memberRepository.findByIdentity(identity)
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 회원입니다."));
     }
 
     /**
@@ -211,9 +204,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void delete(String password) {
-        MemberEntity memberEntity = MemberThreadLocal.get();
-
-        checkPassword(password, memberEntity.getPassword());
+        MemberEntity memberEntity = getThreadLocal();
+        checkEncodePassword(password, memberEntity.getPassword());
 
         if(checkDelete(memberEntity)){
             throw new BadRequestException("이미 탈퇴한 회원입니다.");
@@ -237,9 +229,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         checkPassword(reCreate.getPassword(), memberEntity.getPassword());
-
-        checkPhone(new Phone(reCreate.getPhone()), memberEntity.getPhone());
-
+        checkUpdatePhone(new Phone(reCreate.getPhone()), memberEntity.getPhone());
         memberEntity.reCreated();
         memberRepository.save(memberEntity);
     }
@@ -255,11 +245,9 @@ public class MemberServiceImpl implements MemberService {
      * @Return 중복된 identity가 없다면 true
      */
     @Override
-    public boolean checkIdentity(String identity) {
-        if (memberRepository.existsByIdentity(identity)) {
+    public void checkIdentity(String identity) {
+        if (memberRepository.existsByIdentity(identity))
             throw new DuplicatedException(ErrorCode.DUPLICATED_ID);
-        }
-        return true;
     }
 
     /**
@@ -268,11 +256,9 @@ public class MemberServiceImpl implements MemberService {
      * @Return 중복된 email 없다면 true
      */
     @Override
-    public boolean checkEmail(String email) {
-        if(memberRepository.existsByEmail(email)){
+    public void checkEmail(String email) {
+        if(memberRepository.existsByEmail(email))
             throw new DuplicatedException(ErrorCode.DUPLICATED_EMAIL);
-        }
-        return true;
     }
 
     /**
@@ -281,42 +267,49 @@ public class MemberServiceImpl implements MemberService {
      * @Return 중복된 전화번호가 없다면 true
      */
     @Override
-    public boolean checkPhone(Phone phone) {
-        if(memberRepository.existsByPhone(phone)){
+    public void checkPhone(Phone phone) {
+        if(memberRepository.existsByPhone(phone))
             throw new DuplicatedException(ErrorCode.DUPLICATED_PHONE);
-        }
-        return true;
     }
 
+    /**
+     * 전화번호 검사
+     * @param phone
+     * @param checkPhone
+     * @return
+     */
     @Override
-    public boolean checkPhone(Phone phone, Phone oldPhone) {
-        if(!phone.equals(oldPhone)){
+    public void checkUpdatePhone(Phone phone, Phone checkPhone) {
+        if(!phone.equals(checkPhone))
             throw new DuplicatedException(ErrorCode.WRONG_PHONE);
-        }
-        return true;
     }
 
+    /**
+     * 비밀번호 체크
+     * @param password 비밀번호
+     * @param checkPassword 확인할 비밀번호
+     */
     @Override
-    public boolean checkPassword(MemberDto.CHECK_PW checkPw) {
-        if (!checkPw.getPassword().equals(checkPw.getCheckPassword())) {
-            throw new BadRequestException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        }
-        return true;
-    }
-
-    @Override
-    public boolean checkPassword(String password, String oldPassword) {
-        if(!passwordEncoder.matches(password, oldPassword)){
+    public void checkPassword(String password, String checkPassword) {
+        if(!password.equals(checkPassword))
             throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
-        }
-        return true;
+    }
+
+    /**
+     * 암호화된 비밀번호 체크
+     * @param password 확인할 비밀번호
+     * @param encodePassword 암호화된비밀번호
+     */
+    @Override
+    public void checkEncodePassword(String password, String encodePassword) {
+        if(!passwordEncoder.matches(password, encodePassword))
+            throw new BusinessLogicException(ErrorCode.WRONG_PASSWORD);
     }
 
     @Override
     public boolean checkDelete(MemberEntity memberEntity) {
-        if(memberEntity.getDel_yn().equals("N")){
+        if(memberEntity.getDel_yn().equals("N"))
             return false;
-        }
         return true;
     }
 
@@ -326,42 +319,38 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void checkSignUp(MemberDto.CREATE create) {
-
         checkIdentity(create.getIdentity());
-
         checkPhone(new Phone(create.getPhone()));
-
-        checkPassword(new MemberDto.CHECK_PW(create.getPassword(), create.getCheckPassword()));
+        checkPassword(create.getPassword(), create.getCheckPassword());
     }
 
+    /**
+     * 소셜 회원가입 시 필요한 체크 사항.
+     * @param create
+     */
     @Override
-    public void checkSignUp(OauthDto.CREATE create) {
-
+    public void checkOauthSignUp(OauthDto.CREATE create) {
         checkIdentity(create.getIdentity());
-
         checkPhone(new Phone(create.getPhone()));
-
-        checkPassword(new MemberDto.CHECK_PW(create.getPassword(), create.getCheckPassword()));
-
+        checkPassword(create.getPassword(), create.getCheckPassword());
     }
 
+    /**
+     * 기업 회원 가입 시 필요한 체크 사항.
+     * @param create
+     */
     @Override
-    public void checkSignUp(CorporateDto.CREATE_CORPORATE create) {
-
+    public void checkCorporateSignUp(CorporateDto.CREATE_CORPORATE create) {
         checkIdentity(create.getCreate().getIdentity());
-
         checkPhone(new Phone(create.getCreate().getPhone()));
-
-        checkPassword(new MemberDto.CHECK_PW(create.getCreate().getPassword(), create.getCreate().getCheckPassword()));
+        checkPassword(create.getCreate().getPassword(), create.getCreate().getCheckPassword());
     }
-
 
     private String[] generateToken(MemberEntity memberEntity){
         String accessToken = jwtProvider.createAccessToken(memberEntity.getIdentity()
                 , memberEntity.getMemberRole(), memberEntity.getName());
         String refreshToken = jwtProvider.createRefreshToken(memberEntity.getIdentity()
                 , memberEntity.getMemberRole(), memberEntity.getName());
-
         return new String[]{accessToken, refreshToken};
     }
 }

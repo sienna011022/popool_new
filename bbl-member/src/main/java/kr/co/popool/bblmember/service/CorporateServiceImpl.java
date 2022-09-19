@@ -29,15 +29,11 @@ public class CorporateServiceImpl implements CorporateService{
      */
     @Override
     public void corporateSignUp(CorporateDto.CREATE_CORPORATE createCorporate) {
-
-        memberService.checkSignUp(createCorporate);
-
+        memberService.checkCorporateSignUp(createCorporate);
         //TODO : 회원 권한은 관리자가 아니라면 모두 ROLE_MEMBER으로 자동 설정, 기업 회원 가입이기 CORPORATE_MEMBER 자동 설정.
 
         CorporateEntity corporateEntity = CorporateEntity.of(createCorporate);
-
         MemberEntity memberEntity = MemberEntity.of(createCorporate.getCreate(), passwordEncoder, corporateEntity);
-
         corporateRepository.save(corporateEntity);
         memberRepository.save(memberEntity);
     }
@@ -48,11 +44,9 @@ public class CorporateServiceImpl implements CorporateService{
      */
     @Override
     public void corporateUpdate(CorporateDto.UPDATE_CORPORATE updateCorporate) {
-
-        MemberEntity memberEntity = MemberThreadLocal.get();
+        MemberEntity memberEntity = memberService.getThreadLocal();
         CorporateEntity corporateEntity = corporateRepository.findById(memberEntity.getCorporateEntity().getId())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CORPORATE));
-
         corporateEntity.corporateUpdate(updateCorporate);
         corporateRepository.save(corporateEntity);
     }
@@ -64,8 +58,7 @@ public class CorporateServiceImpl implements CorporateService{
      */
     @Override
     public CorporateDto.READ_CORPORATE getCorporate() {
-
-        QueryDto.CORPORATE_INFO corporateInfo = corporateRepository.findDtoByCorporateInfo(MemberThreadLocal.get())
+        QueryDto.CORPORATE_INFO corporateInfo = corporateRepository.findDtoByCorporateInfo(memberService.getThreadLocal())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.WRONG_CORPORATE));
 
         return CorporateDto.READ_CORPORATE.builder()

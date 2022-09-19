@@ -1,11 +1,9 @@
 package kr.co.popool.bblmember.infra.security;
 
-import kr.co.popool.bblmember.infra.security.jwt.JwtAuthenticationFilter;
 import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -22,7 +19,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
     private final JwtProvider jwtProvider;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
@@ -48,13 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()  //기본 설정 disable 처리
                 .csrf().disable()       //csrf 보안 disable 처리
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 X
-                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //세션 사용 X
+
+        http
                     .authorizeRequests() //TODO : 시큐리티 요청
-                    .antMatchers( "/**").permitAll()
-                .and()
-                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, handlerExceptionResolver)
-                            , UsernamePasswordAuthenticationFilter.class);
+                    .antMatchers( "/**").permitAll();
     }
 
     @Override

@@ -40,27 +40,20 @@ public class OauthServiceImpl implements OauthService{
 
     @Override
     public void saveAdditionalMemberInfo(OauthDto.CREATE create) {
-        memberService.checkSignUp(create);
-
+        memberService.checkOauthSignUp(create);
         MemberEntity memberEntity = MemberEntity.of(create, passwordEncoder, null);
-
         memberEntity.saveOauth(create.getEmail(), create.getProvider(), create.getName());
-
         memberRepository.save(memberEntity);
     }
 
     @Override
     public void saveAdditionalCorporateInfo(OauthDto.CREATE_CORPORATE create) {
-        memberService.checkSignUp(create.getCreate());
-
+        memberService.checkOauthSignUp(create.getCreate());
         CorporateEntity corporateEntity = CorporateEntity.of(create);
-
         MemberEntity memberEntity = MemberEntity.of(create.getCreate(), passwordEncoder, corporateEntity);
-
         memberEntity.saveOauth(create.getCreate().getEmail(),
                 create.getCreate().getProvider(),
                 create.getCreate().getName());
-
         memberRepository.save(memberEntity);
     }
 
@@ -70,23 +63,20 @@ public class OauthServiceImpl implements OauthService{
     public OauthDto.TOKEN_READ login(OauthDto.LOGIN login) {
         OauthDto.TOKEN_INFO token_info = getAccessToken(login);
         OauthDto.PROFILE profile = getProfile(token_info.getAccessToken(), login.getProvider());
-
         Optional<MemberEntity> memberEntity = memberRepository.findByEmailAndProviderAndName(profile.getEmail(), login.getProvider(), profile.getName());
 
         if (memberEntity.isPresent()) {
             MemberEntity member = memberEntity.get();
-
             OauthDto.TOKEN_READ token_read = generateToken(member.getIdentity(), member.getName(), false);
-
             redisService.createData(member.getIdentity(), token_read.getRefreshToken(), jwtProvider.getRefreshExpire());
             memberRepository.save(member);
 
             return token_read;
-        } else {
-            return OauthDto.TOKEN_READ.builder()
-                    .isFirst(true)
-                    .build();
         }
+
+        return OauthDto.TOKEN_READ.builder()
+                .isFirst(true)
+                .build();
     }
 
     private OauthDto.TOKEN_READ generateToken(String identity, String name, boolean isFirst) {
@@ -109,19 +99,16 @@ public class OauthServiceImpl implements OauthService{
     @Override
     public OauthDto.TOKEN_INFO getAccessToken(OauthDto.LOGIN login) {
         HttpHeaders httpHeaders = setHeaders();
-
         OauthRequest oauthRequest = oauthRequestFactory.getRequest(login.getCode(), login.getProvider());
         HttpEntity<LinkedMultiValueMap<String, String>> request = new HttpEntity<>(oauthRequest.getMap(), httpHeaders);
         ResponseEntity<String> response = restTemplate.postForEntity(oauthRequest.getUrl(), request, String.class);
 
         try {
-            if (response.getStatusCode() == HttpStatus.OK) {
+            if (response.getStatusCode() == HttpStatus.OK)
                 return gson.fromJson(response.getBody(), OauthDto.TOKEN_INFO.class);
-            }
         } catch (Exception e) {
             throw new BadRequestException("토큰을 가져올 수 없습니다.");
         }
-
         throw new BadRequestException("토큰을 가져올 수 없습니다.");
     }
 
@@ -135,9 +122,8 @@ public class OauthServiceImpl implements OauthService{
         ResponseEntity<String> response = restTemplate.postForEntity(profileUrl, request, String.class);
 
         try {
-            if(response.getStatusCode() == HttpStatus.OK){
+            if(response.getStatusCode() == HttpStatus.OK)
                 return checkProfile(response, provider);
-            }
         }catch (HttpClientErrorException | HttpServerErrorException e){
             throw new BadRequestException("프로필을 가져올 수 없습니다.");
         }
