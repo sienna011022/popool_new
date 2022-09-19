@@ -1,49 +1,12 @@
-##원희 워니
-##member module 의 키와 동일
+server:
+  port: 8000
+
 jwt:
   secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
 
-server:
-  port: 8010
-
-spring:
-  application:
-    name: bbl-gateway
-  cloud:
-    gateway:
-      default-filters:  # spring cloud gateway 공통 filter
-        - name: GlobalFilter
-          args:
-           baseMessage: Spring Cloud Gateway GlobalFilter
-           preLogger: true
-           postLogger: true
-    # MSA 라우팅 정의
-      routes:
-        - id: bbl-career
-          uri: http://localhost:8011
-          predicates:   # 조건부 집합 Header나 Parameter같은 HTTP 요청의 모든 항목 비교
-           - Path=/careers/**
-          filters:
-           - name: CareerFilter
-             args:
-               baseMessage: CareerFilter
-               preLogger: true
-               postLogger: true
-      #TODO common controller
-        - id: bbl-memer
-          uri: http://localhost:8013
-            predicates:
-              - Path=/members/**,/oauth/**
-            filters:
-              - name: MemberFilter
-                args:
-                  baseMessage: MemberFilter
-                  preLogger: true
-                  postLogger: true
-      #TODO payment controller
-
 eureka:
   instance:
+    prefer-ip-address: true
     hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
@@ -51,7 +14,64 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}/eureka
 
-#localhost:8080/member/ 주소로 서비스가 유입되면 member_service 호출 > localhost:8081/user로 라우팅 된다. *과정에서 globalfilter를 거침
+spring:
+  application:
+    name: bbl-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+           baseMessage: Spring Cloud Gateway GlobalFilter
+           preLogger: true
+           postLogger: true
+      routes:
 
-#predicates:
-#  - Cookie=name, regexp   (- Cookie=valid, kakao)
+        - id: bbl-career
+          uri: lb://BBL-CAREER
+          predicates:
+           - Path=/bbl-career/careers/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - CustomFilter
+
+        - id: bbl-member
+          uri: lb://BBL-MEMBER
+            predicates:
+              - Path=/bbl-member/members/login
+              - Method=POST
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+              - MemberFilter
+
+        - id: bbl-member
+          uri: lb://BBL-MEMBER
+            predicates:
+              - Path=/bbl-member/members/signUp
+              - Method=POST
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+              - MemberFilter
+
+        - id: bbl-member
+          uri: lb://BBL-MEMBER
+            predicates:
+              - Path=/bbl-member/members/**
+              - Method=GET
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+              - name: MemberFilter
+              - name: JwtAuthorizationHeaderFilter
+
+        - id: bbl-payment
+          uri: lb://BBL-PAYMENT
+          predicates:
+            - Path=/bbl-payment/payments/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - CustomFilter
