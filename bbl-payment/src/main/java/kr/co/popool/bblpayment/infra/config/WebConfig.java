@@ -12,6 +12,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private static final long MAX_AGE_SECOND = 3600;
+    private static final String[] AUTH_ARR = {
+            "/swagger/**",
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "favicon.ico"
+    };
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -27,7 +38,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/members/login");
+                .excludePathPatterns("/members/login")
+                .excludePathPatterns("/members/signUp")
+                .excludePathPatterns(AUTH_ARR);
     }
 
     @Bean
