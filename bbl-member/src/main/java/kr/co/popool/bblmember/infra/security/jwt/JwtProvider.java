@@ -9,6 +9,7 @@ import kr.co.popool.bblcommon.jwt.JwtProviderCommon;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.enums.MemberRole;
 import kr.co.popool.bblmember.repository.MemberRepository;
+import kr.co.popool.bblmember.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class JwtProvider {
 
     private final MemberRepository memberRepository;
     private final JwtProviderCommon jwtProviderCommon;
+    private final RedisService redisService;
 
     public long getRefreshExpire() {
         return REFRESH_EXPIRE;
@@ -127,6 +129,7 @@ public class JwtProvider {
      */
     public String reCreateAccessToken(String refreshToken){
         MemberEntity member = findMemberByToken(refreshToken);
+        redisService.checkValue(refreshToken, redisService.getValue(member.getIdentity()));
 
         return createAccessToken(member.getIdentity(), member.getMemberRole(), member.getName());
     }

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
 import kr.co.popool.bblmember.domain.shared.Phone;
+import kr.co.popool.bblmember.infra.security.jwt.JwtProvider;
 import kr.co.popool.bblmember.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
     @ApiOperation("로그인")
     @PostMapping("/login")
@@ -106,7 +108,7 @@ public class MemberController {
     @ApiOperation("아이디 중복 체크")
     @PostMapping("/{rank}/signUp/check")
     public ResponseFormat checkIdentity(@PathVariable("rank") String rank,
-                                                 @RequestParam("identity") String identity) {
+                                        @RequestParam("identity") String identity) {
         memberService.checkIdentity(identity);
         return ResponseFormat.ok();
     }
@@ -128,8 +130,8 @@ public class MemberController {
     
     @ApiOperation("AccessToken 재발급")
     @GetMapping("/refresh")
-    public ResponseFormat<MemberDto.TOKEN> resetRefreshToken(@RequestHeader("token") String refreshToken){
-        return ResponseFormat.ok(memberService.reCreateAccessToken(refreshToken));
+    public ResponseFormat<String> resetRefreshToken(@RequestHeader("refreshToken") String refreshToken){
+        return ResponseFormat.ok(jwtProvider.reCreateAccessToken(refreshToken));
     }
 
     @ApiOperation("Redis Data 삭제")

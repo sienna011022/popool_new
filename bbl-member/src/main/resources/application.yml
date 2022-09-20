@@ -8,6 +8,10 @@ spring:
   application:
     name: bbl-member
 
+  redis:
+    host: localhost
+    port: 6379  #redis base port number
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
