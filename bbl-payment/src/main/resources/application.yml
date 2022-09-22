@@ -18,6 +18,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      names: ${job.name:NONE}
+
 logging:
   level:
     org.hibernate.SQL: debug

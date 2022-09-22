@@ -29,19 +29,25 @@ jar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation project(path: ":bbl-common")
+
+    //h2
+    implementation 'com.h2database:h2'
 
     //feign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
+    //mysql
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    runtimeOnly 'mysql:mysql-connector-java'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.h2database:h2'
-
-    runtimeOnly 'mysql:mysql-connector-java'
+    //spring batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    testImplementation 'org.springframework.batch:spring-batch-test'
 }
 
 dependencyManagement {
