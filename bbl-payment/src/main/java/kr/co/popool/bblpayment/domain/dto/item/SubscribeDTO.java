@@ -15,7 +15,7 @@ public class SubscribeDTO {
 
         private int price;
         private String name;
-        private LocalDate payDatePerMonth;
+        private String payDatePerMonth;
 
     }
 
@@ -27,7 +27,7 @@ public class SubscribeDTO {
         private Long subscribeId;
         private int price;
         private String name;
-        private LocalDate payDatePerMonth;
+        private String payDatePerMonth;
     }
 
     @Builder
@@ -38,7 +38,7 @@ public class SubscribeDTO {
         private Long subscribeId;
         private int price;
         private String name;
-        private LocalDate payDatePerMonth;
+        private String payDatePerMonth;
 
     }
 
@@ -50,7 +50,7 @@ public class SubscribeDTO {
         private Long subscribeId;
         private int price;
         private String name;
-        private LocalDate payDatePerMonth;
+        private String payDatePerMonth;
 
     }
 }

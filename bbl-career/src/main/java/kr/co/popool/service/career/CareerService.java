@@ -21,9 +21,9 @@ public interface CareerService {
 
   void update(CareerDto.UPDATE careerDto);
 
-  CAREERINFO checkGrade(CareerEntity careerEntity);
-
   CareerEntity findCareerEntity(String memberIdentity);
+
+  CAREERINFO checkGrade(CareerEntity careerEntity);
 
   void saveGrade(String memberIdentity, GradeEntity gradeEntity);
 

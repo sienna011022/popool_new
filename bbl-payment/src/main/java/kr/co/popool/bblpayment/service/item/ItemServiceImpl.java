@@ -39,4 +39,9 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Long itemId) {
 
     }
+
+    @Override
+    public int getItemPrice(Long itemId) {
+        return 0;
+    }
 }

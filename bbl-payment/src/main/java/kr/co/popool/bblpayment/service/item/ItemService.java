@@ -11,4 +11,5 @@ public interface ItemService {
     public ItemDto.DETAIL findItemDetail(Long itemId);
     public void updateItem(Long itemId);
     public void deleteItem(Long itemId);
+    public int getItemPrice(Long itemId);
 }

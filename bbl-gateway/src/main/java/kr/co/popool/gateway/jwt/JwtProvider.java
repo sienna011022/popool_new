@@ -58,17 +58,4 @@ public class JwtProvider {
             throw new JwtTokenInvalidException("Empty JWT Claims");
         }
     }
-
-    /**
-     * 토큰을 이용하여 사용자 아이디를 찾는 메서드
-     * @param token 토큰
-     * @return 사용자의 아이디
-     */
-    public String findIdentityByToken(String token){
-        return (String) Jwts.parser()
-                .setSigningKey(generateKey())
-                .parseClaimsJws(token)
-                .getBody()
-                .get("identity");
-    }
 }

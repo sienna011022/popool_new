@@ -1,24 +1,23 @@
 package kr.co.popool.service.career;
 
-import static kr.co.popool.bblcommon.error.model.ErrorCode.DUPLICATED_MEMBERIDENTITY;
 
 import java.util.ArrayList;
 import java.util.List;
-import kr.co.popool.bblcommon.error.exception.BadRequestException;
-import kr.co.popool.bblcommon.error.exception.DuplicatedException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
 import kr.co.popool.domain.dto.career.CareerDto.DELETE;
+import kr.co.popool.domain.dto.career.FileDto;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
+import kr.co.popool.infra.config.MemberFeignCommunicator;
 import kr.co.popool.repository.career.CareerRepository;
 import kr.co.popool.service.score.ScoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +31,10 @@ public class CareerServiceImpl implements CareerService {
   private final CareerRepository careerRepository;
 
   private final FileUploadService fileUploadService;
+
   private final ScoreService scoreService;
+
+  private final MemberFeignCommunicator feign;
 
   /**
    * 전체 인사 내역 조회
@@ -62,11 +64,26 @@ public class CareerServiceImpl implements CareerService {
   public CareerDto.CAREERINFO show(String memberIdentity) {
 
     CareerEntity careerEntity = findCareerEntity(memberIdentity);
-
     return checkGrade(careerEntity);
+
 
   }
 
+
+  /**
+   * 인사 내역에 첨부된 파일 조회
+   *
+   * @param memberIdentity : 인사 아이디
+   * @return : ResponseEntity<byte[]>
+   *
+   */
+
+  public ResponseEntity<byte[]> showFile(String memberIdentity) {
+
+    CareerEntity careerEntity = findCareerEntity(memberIdentity);
+    return fileUploadService.getFile(careerEntity.getFilePath());
+
+  }
   /**
    * 인사 내역 등록
    *
@@ -77,27 +94,19 @@ public class CareerServiceImpl implements CareerService {
 
   @Override
   @Transactional
-  //TODO : 예외 처리 세분화
   public void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile) {
 
     CareerEntity careerEntity = CareerEntity.of(newCareer);
+    if (multipartFile != null) {
 
-    try {
+      FileDto filePath = fileUploadService.save(multipartFile);
+      careerEntity.updateFile(filePath.getPath());
       careerRepository.save(careerEntity);
-      fileUploadService.save(multipartFile);
-    } catch (DataIntegrityViolationException e) {
-      throw new DuplicatedException(DUPLICATED_MEMBERIDENTITY);
 
     }
+    careerRepository.save(careerEntity);
 
   }
-
-  /**
-   * 개인 인사 내역 수정
-   *
-   * @param careerDto : 수정한 정보를 담은 DTO 객체
-   * @return : void
-   **/
 
   @Override
   @Transactional
@@ -199,16 +208,25 @@ public class CareerServiceImpl implements CareerService {
   @Override
   public CareerEntity findCareerEntity(String memberIdentity) {
 
-    //TODO:feign 검증?
-
     CareerEntity careerEntity = careerRepository.findByMemberIdentity(memberIdentity)
         .orElseThrow(() -> new NotFoundException(memberIdentity));
 
-    if (checkDelete(careerEntity)) {
-      throw new BadRequestException("탈퇴한 회원입니다.");
+    try {
+      //checkMember(memberIdentity);
+      checkDelete(careerEntity);
+    } catch (Exception e) {
+      throw e;
     }
-
     return careerEntity;
+  }
+
+
+  public boolean checkMember(String memberIdentity) {
+    String feignMemberIdentity = String.valueOf(feign.getMemberIdentity().getData());
+    if (feignMemberIdentity == memberIdentity) {
+      return true;
+    }
+    return false;
   }
 
 }

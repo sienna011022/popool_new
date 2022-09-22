@@ -35,15 +35,19 @@ public class CareerEntity extends BaseEntity {
   @Column(name = "history_id", nullable = true, length = 100)
   private String historyId;
 
+  @Column(name = "file_path", nullable = true, length = 100)
+  private String filePath;
+
   @Builder
   public CareerEntity(String memberIdentity, GradeEntity gradeEntity, String name, String period,
-      String context, String historyId) {
+      String context, String historyId,String filePath) {
     this.memberIdentity = memberIdentity;
     this.gradeEntity = gradeEntity;
     this.name = name;
     this.period = period;
     this.historyId = historyId;
     this.context = context;
+    this.filePath = filePath;
 
   }
 
@@ -68,4 +72,8 @@ public class CareerEntity extends BaseEntity {
     this.gradeEntity = gradeEntity;
   }
 
+  public void updateFile(String filePath) {
+
+    this.filePath = filePath;
+  }
 }
