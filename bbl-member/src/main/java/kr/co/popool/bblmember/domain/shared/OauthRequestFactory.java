@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class OauthRequestFactory {
 
