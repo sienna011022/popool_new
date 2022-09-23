@@ -24,8 +24,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
-@Slf4j
-@Service
+//@Slf4j
+//@Service
 @RequiredArgsConstructor
 public class OauthServiceImpl implements OauthService{
 

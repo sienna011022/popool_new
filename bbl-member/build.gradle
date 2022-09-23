@@ -19,7 +19,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'javax.xml.bind', name: 'jaxb-api'
-    implementation group: 'com.google.code.gson', name: 'gson'
     implementation project(path: ":bbl-common")
 
     compileOnly 'org.projectlombok:lombok'
@@ -54,7 +53,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //Oauth2
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+//    implementation group: 'com.google.code.gson', name: 'gson'
+//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
