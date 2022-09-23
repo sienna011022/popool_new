@@ -1,6 +1,5 @@
 package kr.co.popool.gateway.filters;
 
-
 import kr.co.popool.gateway.config.dto.FilterConfigDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -12,27 +11,23 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
-public class GlobalFilter extends AbstractGatewayFilterFactory<FilterConfigDto> {
+public class CustomFilter extends AbstractGatewayFilterFactory<FilterConfigDto> {
 
-    public GlobalFilter(){
+    public  CustomFilter(){
         super(FilterConfigDto.class);
     }
 
     @Override
-    public GatewayFilter apply(final FilterConfigDto configDto) {
-        return (exchange,chain) ->{
+    public GatewayFilter apply(FilterConfigDto config) {
+
+        return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("GlobalFilter baseMessage: {}", configDto.getBaseMessage());
-            if(configDto.isPreLogger()) {
-                log.info("GlobalFilter Start: {}", request.getId());
-            }
+            log.info("Custom Pre Filter: request uri -> {}", request.getId());
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                if(configDto.isPostLogger()) {
-                    log.info("GlobalFilter End:{}", response.getStatusCode());
-                }
+                log.info("Custom Post Filter: response code -> {}", response.getStatusCode());
             }));
         };
     }

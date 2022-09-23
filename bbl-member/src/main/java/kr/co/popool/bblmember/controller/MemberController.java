@@ -105,33 +105,25 @@ public class MemberController {
 
     @ApiOperation("아이디 중복 체크")
     @PostMapping("/{rank}/signUp/check")
-    public ResponseFormat<Boolean> checkIdentity(
-            @PathVariable("rank") String rank,
-            @RequestParam("identity") String identity
-    ) {
-        return ResponseFormat.ok(memberService.checkIdentity(identity));
+    public ResponseFormat checkIdentity(@PathVariable("rank") String rank,
+                                                 @RequestParam("identity") String identity) {
+        memberService.checkIdentity(identity);
+        return ResponseFormat.ok();
     }
 
     @ApiOperation("이메일 중복 체크")
     @PostMapping("/update/check")
-    public ResponseFormat<Boolean> checkEmail(@RequestParam("email") String email) {
-        return ResponseFormat.ok(memberService.checkEmail(email));
+    public ResponseFormat checkEmail(@RequestParam("email") String email) {
+        memberService.checkEmail(email);
+        return ResponseFormat.ok();
     }
 
     @ApiOperation("전화번호 중복 체크, {api} => signUp or update")
     @PostMapping("/{api}/check")
-    public ResponseFormat<Boolean> checkPhone(
-            @PathVariable("api") String api,
-            @RequestParam("phone") String phone
-    ) {
-        return ResponseFormat.ok(memberService.checkPhone(new Phone(phone)));
-    }
-
-
-    @ApiOperation("로그인 정보 호출")
-    @PostMapping("/identity/info")
-    public ResponseFormat<String> loginInfo(){
-        return ResponseFormat.ok(memberService.getLoginInfo());
+    public ResponseFormat checkPhone(@PathVariable("api") String api,
+                                     @RequestParam("phone") String phone) {
+        memberService.checkPhone(new Phone(phone));
+        return ResponseFormat.ok();
     }
     
     @ApiOperation("AccessToken 재발급")

@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(of = "id", callSuper = false)
 @Getter
-
 public class BaseEntity {
 
   @Id
@@ -35,7 +34,7 @@ public class BaseEntity {
 
   @LastModifiedBy
   @Column(name = "use_career")
-  protected Long use_Cember = null;
+  protected String use_Cember = null;
 
   public void deleted() {
     this.del_yn = "Y";

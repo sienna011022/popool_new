@@ -27,6 +27,7 @@ public interface MemberService {
     String findIdentity(MemberDto.READ_ID readId);
     boolean getAddress();
     boolean getPaymentAgree();
+    MemberEntity getThreadLocal();
 
     //delete
     void delete(String password);
@@ -34,14 +35,16 @@ public interface MemberService {
     void deleteRefreshToken(String identity);
 
     //common
-    boolean checkIdentity(String identity);
-    boolean checkEmail(String email);
-    boolean checkPhone(Phone phone);
-    boolean checkPhone(Phone phone, Phone oldPhone);
-    boolean checkPassword(MemberDto.CHECK_PW checkPw);
-    boolean checkPassword(String password, String oldPasword);
+    void checkIdentity(String identity);
+    void checkEmail(String email);
+    void checkPhone(Phone phone);
+    void checkUpdatePhone(Phone phone, Phone checkPhone);
+
+    void checkPassword(String password, String checkPassword);
+    void checkEncodePassword(String password, String encodePassword);
+
     boolean checkDelete(MemberEntity memberEntity);
     void checkSignUp(MemberDto.CREATE create);
-    void checkSignUp(OauthDto.CREATE create);
-    void checkSignUp(CorporateDto.CREATE_CORPORATE create);
+    void checkOauthSignUp(OauthDto.CREATE create);
+    void checkCorporateSignUp(CorporateDto.CREATE_CORPORATE create);
 }

@@ -1,38 +1,43 @@
 package kr.co.popool.gateway.filters;
 
-import kr.co.popool.gateway.config.FilterConfig;
-import kr.co.popool.gateway.jwt.JwtProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import kr.co.popool.bblcommon.error.exception.UnauthorizedException;
+import kr.co.popool.gateway.config.dto.FilterConfigDto;
+import kr.co.popool.gateway.jwt.JwtProviderGateway;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
+@Slf4j
 @Component
-public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<FilterConfig> {
+public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<FilterConfigDto> {
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProviderGateway jwtProvider;
 
-    final Logger logger = LoggerFactory.getLogger(JwtAuthorizationHeaderFilter.class);
-
-    public JwtAuthorizationHeaderFilter(){
-        super(FilterConfig.class);
+    public JwtAuthorizationHeaderFilter(JwtProviderGateway jwtProvider) {
+        super(FilterConfigDto.class);
+        this.jwtProvider = jwtProvider;
     }
 
+    /**
+     * 사용자 Login 요청 -> Token 반
+     * 사용자가 Token 과 함께 서비스 요청 -> Header (Include Token)
+     * @param configDto
+     * @return
+     */
     @Override
-    public GatewayFilter apply(FilterConfig config) {
+    public GatewayFilter apply(FilterConfigDto configDto) {
         return ((exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
 
-            //인가 처리 여기서 실패하면 예외를 반환
-            final Optional<String> token
-                    = Optional.of(exchange.getRequest()
-                    .getHeaders().get("Authorization").get(0)
-                    .replace("Bearer", "").trim());
-            jwtProvider.isUsable(token.get());
+            jwtProvider.isRequestHeaders(request);
+            String token = jwtProvider.resolveToken(request)
+                    .orElseThrow(() -> new UnauthorizedException());
+
+            jwtProvider.isUsable(token);
 
             return chain.filter(exchange);
         });

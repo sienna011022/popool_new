@@ -80,14 +80,6 @@ public class MemberDto {
         private String memberRank;
     }
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class CHECK_PW {
-        private String password;
-        private String checkPassword;
-    }
-
     @Builder
     @Getter
     @AllArgsConstructor

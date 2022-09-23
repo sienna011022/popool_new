@@ -18,26 +18,29 @@ spring.jpa.hibernate.ddl-auto: update
 
 
 server:
-  port: 8011
+  port: 0 #gateway random Port - Hong HyuckJune
 
 
 spring:
+  application:
+    name: bbl-career
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  application:
-    name: bbl-career
   profiles:
     active:
       default
+
   jackson:
     serialization:
       fail-on-empty-beans: false
 
 
-eureka:
+eureka: #eureka Load Balancer Add - Hong HyuckJune
   instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true

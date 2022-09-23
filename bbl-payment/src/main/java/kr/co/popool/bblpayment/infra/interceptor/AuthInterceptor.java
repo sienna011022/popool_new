@@ -1,5 +1,6 @@
-package kr.co.popool.bblmember.infra.interceptor;
+package kr.co.popool.bblpayment.infra.interceptor;
 
+import com.sun.istack.NotNull;
 import kr.co.popool.bblcommon.jwt.JwtProviderCommon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -8,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {

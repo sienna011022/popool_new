@@ -1,6 +1,7 @@
 package kr.co.popool.gateway.filters;
 
-import kr.co.popool.gateway.config.FilterConfig;
+
+import kr.co.popool.gateway.config.dto.FilterConfigDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -11,29 +12,30 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class MemberFilter extends AbstractGatewayFilterFactory<FilterConfig> {
+public class MemberFilter extends AbstractGatewayFilterFactory<FilterConfigDto> {
 
-    public MemberFilter(){
-        super(FilterConfig.class);
+    public MemberFilter() {
+        super(FilterConfigDto.class);
     }
 
     @Override
-    public GatewayFilter apply(final FilterConfig filterConfig){
-        return ((exchange,chain) ->{
+    public GatewayFilter apply(final FilterConfigDto configDto) {
+        return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("MemberFilter baseMessage: {}", filterConfig.getBaseMessage());
+            log.info("MemberFilter baseMessage: {}", configDto.getBaseMessage());
 
-            if(filterConfig.isPreLogger()) {
+            if(configDto.isPreLogger()){
                 log.info("MemberFilter Start: {}", request.getId());
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                if(filterConfig.isPostLogger()) {
-                    log.info("MemberFilter End:{}", response.getStatusCode());
+                if(configDto.isPostLogger()){
+                    log.info("MemberFilter End: {}", response.getStatusCode());
                 }
             }));
+
         });
     }
 }

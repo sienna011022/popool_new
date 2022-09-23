@@ -1,7 +1,7 @@
-package kr.co.popool.bblmember.infra.config;
+package kr.co.popool.infra.config;
 
 import kr.co.popool.bblcommon.jwt.JwtProviderCommon;
-import kr.co.popool.bblmember.infra.interceptor.AuthInterceptor;
+import kr.co.popool.infra.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -39,5 +39,4 @@ public class WebConfig implements WebMvcConfigurer {
     public JwtProviderCommon jwtProviderCommon(){
         return new JwtProviderCommon();
     }
-
 }

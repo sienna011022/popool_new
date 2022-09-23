@@ -1,12 +1,10 @@
-package kr.co.popool.bblmember.domain.shared;
+package kr.co.popool.bblpayment.domain.shared;
 
-import kr.co.popool.bblmember.infra.interceptor.MemberThreadLocal;
-import lombok.RequiredArgsConstructor;
+import kr.co.popool.bblpayment.infra.interceptor.MemberThreadLocal;
 import org.springframework.data.domain.AuditorAware;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override

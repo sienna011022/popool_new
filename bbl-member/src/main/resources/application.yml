@@ -2,15 +2,21 @@ jwt:
   secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
 
 server:
-  port: 8001
+  port: 0
 
 spring:
   application:
     name: bbl-member
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 eureka:
   instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+
   client:
     register-with-eureka: true
     fetch-registry: true

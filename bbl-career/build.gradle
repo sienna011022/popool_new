@@ -1,22 +1,8 @@
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
-
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-}
-
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-repositories {
-	mavenCentral()
 }
 
 ext {
@@ -39,20 +25,26 @@ dependencies {
 	implementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	runtimeOnly 'mysql:mysql-connector-java'
 
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	//qureydsl
+	implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
+	implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
+	implementation group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
+	//querydsl JPAAnnotationProcessor 사용 지정
+	// java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+	// java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+	annotationProcessor(
+			"javax.persistence:javax.persistence-api",
+			"javax.annotation:javax.annotation-api",
+	)
 
 	implementation project(path: ":bbl-common")
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
-
 }
 
 tasks.named('test') {
@@ -79,4 +71,10 @@ configurations {
 
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
+	if (file(querydslDir).exists()) {
+		delete(file(querydslDir))
+	}
+}
+clean.doLast {
+	delete file(querydslDir)
 }
