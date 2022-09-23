@@ -32,4 +32,8 @@ public interface KakaoPayClient {
             @RequestHeader("Authorization") String adminKey,
             @RequestBody KakaoSubscribeDTO.FIRST_APPROVAL_REQUEST request);
 
+    @PostMapping(value = "/v1/payment/approve", consumes = "application/x-www-form-urlencoded;charset=utf-8")
+    KakaoSubscribeDTO.SUBSCRIPTION_PAYMENT_RESPONSE requestSubscriptionPayment(
+            @RequestHeader("Authorization") String adminKey,
+            @RequestBody KakaoSubscribeDTO.SUBSCRIPTION_PAYMENT_REQUEST request);
 }
