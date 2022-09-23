@@ -13,7 +13,6 @@ public interface MemberService {
 
     //create
     void signUp(MemberDto.CREATE create);
-    MemberDto.TOKEN reCreateAccessToken(String refreshToken);
 
     //update
     void update(MemberDto.UPDATE update);

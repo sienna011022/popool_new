@@ -59,14 +59,6 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
     }
 
-    @Override
-    public MemberDto.TOKEN reCreateAccessToken(String refreshToken) {
-        MemberEntity memberEntity = getThreadLocal();
-        redisService.checkValue(refreshToken, redisService.getValue(memberEntity.getIdentity()));
-        String[] tokens = generateToken(memberEntity);
-        return new MemberDto.TOKEN(tokens[0], tokens[1]);
-    }
-
     /**
      * 개인 정보 수정
      * @param update : 변경할 데이터
