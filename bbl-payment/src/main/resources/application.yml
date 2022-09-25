@@ -44,6 +44,12 @@ spring:
 #    org.hibernate.SQL: debug
 #    root: debug
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      names: ${job.name:NONE}
+
 #feign client 로그보기
 feign:
   client:
