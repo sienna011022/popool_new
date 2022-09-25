@@ -29,7 +29,7 @@ public class BaseEntity {
     protected LocalDateTime created_at = null;
 
     @LastModifiedDate       //마지막 수정 시간
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     protected LocalDateTime updated_at = null;
 
     @LastModifiedBy
