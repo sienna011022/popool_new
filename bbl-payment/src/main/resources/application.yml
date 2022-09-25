@@ -3,7 +3,7 @@ server:
 
 eureka: #eureka add - Hong HyuckJune
   instance:
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
   client:
@@ -13,6 +13,10 @@ eureka: #eureka add - Hong HyuckJune
       defaultZone: http://127.0.0.1:8761/eureka
 
 spring:
+
+  main:
+    allow-bean-definition-overriding: true
+
   application:
     name: bbl-payment #gateway service name - Hong HyuckJune
 
@@ -24,9 +28,9 @@ spring:
 #      username: sa
 #      password:
 #      driver-class-name: org.h2.Driver
-    url: jdbc:mysql://localhost:3306/paymentdb?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/bbl-payment?serverTimezone=Asia/Seoul
     username: root
-    password: root
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -35,17 +39,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    root: debug
 
   batch:
     jdbc:
       initialize-schema: always
     job:
       names: ${job.name:NONE}
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    root: debug
 
 #feign client 로그보기
 feign:
