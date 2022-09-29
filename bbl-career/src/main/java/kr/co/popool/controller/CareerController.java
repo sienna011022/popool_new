@@ -25,6 +25,11 @@ public class CareerController {
 
   private final FileUploadService fileUploadService;
 
+  @GetMapping("/test")
+  public String getTest(){
+    return "test careers";
+  }
+
   @ApiOperation("전체 인사 내역 조회")
   @GetMapping("/all")
   public List<CareerDto.CAREERINFO> showAll() {
