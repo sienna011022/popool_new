@@ -7,7 +7,7 @@ jwt:
 eureka:
   instance:
     prefer-ip-address: true
-    #hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
@@ -32,7 +32,7 @@ spring:
             - Path=/bbl-career/careers/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-career/(?<segment>.*), /$\{segment}
             - CustomFilter
 
         - id: bbl-member
@@ -42,7 +42,7 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
             - MemberFilter
 
         - id: bbl-member
@@ -52,7 +52,7 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
             - MemberFilter
 
         - id: bbl-member
@@ -62,7 +62,7 @@ spring:
             - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
             - name: MemberFilter
             - name: JwtAuthorizationHeaderFilter
 
@@ -72,5 +72,5 @@ spring:
             - Path=/bbl-payment/payments/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
             - CustomFilter
