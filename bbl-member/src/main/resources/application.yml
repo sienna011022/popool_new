@@ -6,39 +6,23 @@ server:
 
 spring:
   application:
-    name: owo-member
+    name: bbl-member
 
   redis:
     host: localhost
     port: 6379  #redis base port number
 
-  mvc: #swagger ?? ??
+  mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/owo_member?useSSL=false&verifyServerCertificate=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
-    username: root
-    password: password
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    show-sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      format_sql: true
-eureka:
+eureka: #eureka Load Balancer Add - Hong HyuckJune
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
-
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
+      defaultZone: http://${eureka.instance.hostname}/eureka/

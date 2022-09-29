@@ -30,7 +30,6 @@ dependencies {
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation group: 'javax.xml.bind', name: 'jaxb-api'
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -39,8 +38,11 @@ dependencies {
     //gateway
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     //eureka
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
 }
 
 tasks.named('test') {

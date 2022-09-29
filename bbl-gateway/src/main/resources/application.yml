@@ -26,7 +26,6 @@ spring:
            preLogger: true
            postLogger: true
       routes:
-
         - id: bbl-career
           uri: lb://BBL-CAREER
           predicates:

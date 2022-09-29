@@ -12,7 +12,6 @@ import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
-import kr.co.popool.infra.config.MemberFeignCommunicator;
 import kr.co.popool.repository.career.CareerRepository;
 import kr.co.popool.service.score.ScoreService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,6 @@ public class CareerServiceImpl implements CareerService {
 
   private final ScoreService scoreService;
 
-  private final MemberFeignCommunicator feign;
 
   /**
    * 전체 인사 내역 조회
@@ -110,7 +108,6 @@ public class CareerServiceImpl implements CareerService {
 
   @Override
   @Transactional
-  //TODO:수정 예외 처리
   public void update(CareerDto.UPDATE careerDto) {
 
     CareerEntity careerEntity = findCareerEntity(careerDto.getMemberIdentity());
@@ -212,21 +209,11 @@ public class CareerServiceImpl implements CareerService {
         .orElseThrow(() -> new NotFoundException(memberIdentity));
 
     try {
-      //checkMember(memberIdentity);
       checkDelete(careerEntity);
     } catch (Exception e) {
       throw e;
     }
     return careerEntity;
-  }
-
-
-  public boolean checkMember(String memberIdentity) {
-    String feignMemberIdentity = String.valueOf(feign.getMemberIdentity().getData());
-    if (feignMemberIdentity == memberIdentity) {
-      return true;
-    }
-    return false;
   }
 
 }

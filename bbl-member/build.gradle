@@ -54,7 +54,7 @@ dependencies {
 
     //Oauth2
     implementation group: 'com.google.code.gson', name: 'gson'
-//    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
