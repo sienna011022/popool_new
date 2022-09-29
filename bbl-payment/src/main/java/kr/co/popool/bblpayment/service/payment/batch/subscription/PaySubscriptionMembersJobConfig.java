@@ -14,7 +14,9 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaCursorItemReader;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
+import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,6 +49,7 @@ public class PaySubscriptionMembersJobConfig {
                 .<KakaoSubscribeDTO.SUBSCRIPTION_PAYMENT_REQUEST, KakaoPayLogEntity> chunk(chunkSize)
                 .reader(paySubscriptionMembersReader())
                 .processor(paySubscriptionMembersProcessor())
+                .writer(paySubscriptionMembersWriter())
                 .build();
     }
 
@@ -88,5 +91,12 @@ public class PaySubscriptionMembersJobConfig {
 
             return savedKakaoPayLog;
         };
+    }
+
+    @Bean
+    public JpaItemWriter<KakaoPayLogEntity> paySubscriptionMembersWriter() {
+        return new JpaItemWriterBuilder<KakaoPayLogEntity>()
+                .entityManagerFactory(entityManagerFactory)
+                .build();
     }
 }

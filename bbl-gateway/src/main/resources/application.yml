@@ -7,12 +7,12 @@ jwt:
 eureka:
   instance:
     prefer-ip-address: true
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    #hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${eureka.instance.hostname}/eureka
+      defaultZone: http://127.0.0.1:8761/eureka
 
 spring:
   application:
@@ -29,7 +29,7 @@ spring:
         - id: bbl-career
           uri: lb://BBL-CAREER
           predicates:
-           - Path=/bbl-career/careers/**
+            - Path=/bbl-career/careers/**
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
@@ -38,8 +38,8 @@ spring:
         - id: bbl-member
           uri: lb://BBL-MEMBER
           predicates:
-              - Path=/bbl-member/members/login
-              - Method=POST
+            - Path=/bbl-member/members/login
+            - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
