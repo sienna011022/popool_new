@@ -9,16 +9,14 @@ import kr.co.popool.service.grade.CalculateGradeService;
 import kr.co.popool.service.grade.GradeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Slf4j //로깅을 위함
+@Slf4j
 @RequiredArgsConstructor
-@PropertySource("classpath:/application.properties")
 @RequestMapping(value = "/careers/{memberIdentity}/scores/grade")
 public class GradeController {
 
@@ -37,7 +35,7 @@ public class GradeController {
     return ResponseFormat.ok(gradeService.showGradeDetail(memberIdentity));
   }
 
-  @ApiOperation("등급 테이블 생성")
+
   public ResponseFormat createGrade(ScoreDto.SCOREINFO newScoreDto) {
 
     GRADEDETAIL gradedetail = calculateService.calculateGradeDto(newScoreDto);
@@ -47,7 +45,6 @@ public class GradeController {
 
   }
 
-  @ApiOperation("등급 업데이트 - 평가 삭제시")
   public ResponseFormat updateGrade(DELETE deleteDto) {
 
     GRADEDETAIL gradedetail = calculateService.updateGradeDto(deleteDto);

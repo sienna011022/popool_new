@@ -1,5 +1,6 @@
 package kr.co.popool.bblpayment.service.payment.batch.subscription;
 
+import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.bblpayment.domain.dto.payment.KakaoSubscribeDTO;
 import kr.co.popool.bblpayment.domain.entity.item.ItemMstEntity;
 import kr.co.popool.bblpayment.domain.entity.payment.KakaoPayLogEntity;

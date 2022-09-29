@@ -30,6 +30,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	runtimeOnly 'mysql:mysql-connector-java'
 
+
 	//qureydsl
 	implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
 	implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'

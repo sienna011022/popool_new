@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CareerController {
 
   //TODO:memberIdentiy가 있는 멤버인지 조회 후 memberIdentity 파라미터 전달 feign적용
+
   private final CareerServiceImpl careerService;
 
   private final FileUploadService fileUploadService;
@@ -42,7 +43,6 @@ public class CareerController {
     return careerService.showFile(memberIdentity);
 
   }
-
 
   @ApiOperation("개인 인사 내역 등록")
   @PostMapping(value = "/create",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

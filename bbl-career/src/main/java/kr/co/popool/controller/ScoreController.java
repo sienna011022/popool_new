@@ -3,22 +3,18 @@ package kr.co.popool.controller;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.domain.dto.career.CareerDto;
-import kr.co.popool.domain.dto.score.QQueryScoreDto_SHOWSCORE_DELETE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.service.score.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@PropertySource("classpath:/application.properties")
 @RequestMapping(value = "/careers/{memberIdentity}/scores")
 public class ScoreController {
 
@@ -33,7 +29,7 @@ public class ScoreController {
   }
 
   @ApiOperation("평가 내역 등록")
-  @PostMapping()
+  @PostMapping("/create")
   public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
     scoreService.createScore(newScoreDto);
     gradeController.createGrade(newScoreDto);

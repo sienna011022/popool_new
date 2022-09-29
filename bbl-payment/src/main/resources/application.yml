@@ -15,7 +15,8 @@ eureka: #eureka add - Hong HyuckJune
 spring:
   application:
     name: bbl-payment #gateway service name - Hong HyuckJune
-
+  main:
+    allow-bean-definition-overriding: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

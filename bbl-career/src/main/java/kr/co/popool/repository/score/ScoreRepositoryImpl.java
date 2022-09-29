@@ -41,7 +41,6 @@ public class ScoreRepositoryImpl implements ScoreRepositoryCustom {
         .from(qScoreEntity)
         .where(qScoreEntity.del_yn.eq("N"))
         .join(qScoreEntity.careerEntity, qCareerEntity)
-        .join(qScoreEntity.careerEntity, qCareerEntity)
         .where(qCareerEntity.memberIdentity.eq(memberIdentity))
         .limit(1000)
         .fetch());

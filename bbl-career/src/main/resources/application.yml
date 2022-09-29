@@ -20,11 +20,13 @@ spring.jpa.hibernate.ddl-auto: update
 server:
   port: 0 #gateway random Port - Hong HyuckJune
 
-
+jwt:
+  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
 spring:
   application:
-    name: bbl-career
-
+    name: bbl-career #gateway service name - Hong HyuckJune
+  main:
+    allow-bean-definition-overriding: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
