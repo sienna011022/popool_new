@@ -32,7 +32,6 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public void checkValue(String refreshToken, String redisToken) {
-        if(!refreshToken.equals(redisToken))
-            throw new JwtTokenExpiredException();
+        if(!refreshToken.equals(redisToken)) throw new JwtTokenExpiredException();
     }
 }

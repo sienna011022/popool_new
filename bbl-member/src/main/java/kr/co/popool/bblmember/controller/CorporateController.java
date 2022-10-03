@@ -24,7 +24,7 @@ public class CorporateController {
     }
 
     @ApiOperation("기업 정보 수정")
-    @PutMapping("/update/corporate")
+    @PutMapping("/corporate")
     public ResponseFormat corporateUpdate(@RequestBody @Valid CorporateDto.UPDATE_CORPORATE update_corporate){
         corporateService.corporateUpdate(update_corporate);
         return ResponseFormat.ok();

@@ -2,7 +2,6 @@ package kr.co.popool.bblmember.service;
 
 import kr.co.popool.bblmember.domain.dto.CorporateDto;
 import kr.co.popool.bblmember.domain.dto.MemberDto;
-import kr.co.popool.bblmember.domain.dto.OauthDto;
 import kr.co.popool.bblmember.domain.entity.MemberEntity;
 import kr.co.popool.bblmember.domain.shared.Phone;
 
@@ -44,6 +43,5 @@ public interface MemberService {
 
     boolean checkDelete(MemberEntity memberEntity);
     void checkSignUp(MemberDto.CREATE create);
-    void checkOauthSignUp(OauthDto.CREATE create);
     void checkCorporateSignUp(CorporateDto.CREATE_CORPORATE create);
 }
