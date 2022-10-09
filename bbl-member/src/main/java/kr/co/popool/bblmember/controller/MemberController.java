@@ -26,42 +26,62 @@ public class MemberController {
     }
 
     @ApiOperation("일반 회원가입")
-    @PostMapping("/normal/signUp")
+    @PostMapping("/signUp")
     public ResponseFormat signUp(@RequestBody @Valid MemberDto.CREATE create){
         memberService.signUp(create);
         return ResponseFormat.ok();
     }
 
+    @ApiOperation("아이디 찾기")
+    @PostMapping("/identity")
+    public ResponseFormat<String> findIdentity(@RequestBody @Valid MemberDto.READ_ID read_id){
+        return ResponseFormat.ok(memberService.findIdentity(read_id));
+    }
+
+    @ApiOperation("회원 정보 복구")
+    @PostMapping("/reCreate")
+    public ResponseFormat reCreate(@RequestBody @Valid MemberDto.RE_CREATE re_create){
+        memberService.reCreate(re_create);
+        return ResponseFormat.ok();
+    }
+
+    @ApiOperation("아이디 중복 체크")
+    @PostMapping("/signUp/check")
+    public ResponseFormat checkIdentity(@RequestParam("identity") String identity) {
+        memberService.checkIdentity(identity);
+        return ResponseFormat.ok();
+    }
+
     @ApiOperation("회원 정보 수정")
-    @PutMapping("/update")
+    @PutMapping
     public ResponseFormat update(@RequestBody @Valid MemberDto.UPDATE update){
         memberService.update(update);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("비밀번호 수정")
-    @PutMapping("/update/password")
+    @PutMapping("/password")
     public ResponseFormat updatePassword(@RequestBody @Valid MemberDto.UPDATE_PASSWORD update){
         memberService.updatePassword(update);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("주소 수정")
-    @PutMapping("/update/address")
+    @PutMapping("/address")
     public ResponseFormat updateAddress(@RequestBody @Valid MemberDto.UPDATE_ADDRESS update){
         memberService.updateAddress(update);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("전화번호 수정")
-    @PutMapping("/update/phone")
+    @PutMapping("/phone")
     public ResponseFormat updatePhone(@RequestBody @Valid MemberDto.UPDATE_PHONE update){
         memberService.updatePhone(update);
         return ResponseFormat.ok();
     }
 
     @ApiOperation("회원 자동 결제 여부 수정")
-    @PutMapping("/update/payment")
+    @PutMapping("/payment")
     public ResponseFormat paymentAgreeUpdate(){
         memberService.paymentAgreeUpdate();
         return ResponseFormat.ok();
@@ -73,11 +93,6 @@ public class MemberController {
         return ResponseFormat.ok(memberService.get());
     }
 
-    @ApiOperation("아이디 찾기")
-    @PostMapping("/identity")
-    public ResponseFormat<String> findIdentity(@RequestBody @Valid MemberDto.READ_ID read_id){
-        return ResponseFormat.ok(memberService.findIdentity(read_id));
-    }
 
     @ApiOperation("주소 등록 여부 조회")
     @GetMapping("/address")
@@ -92,26 +107,12 @@ public class MemberController {
     }
 
     @ApiOperation("회원 탈퇴")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseFormat delete(@RequestParam("password") String password){
         memberService.delete(password);
         return ResponseFormat.ok();
     }
 
-    @ApiOperation("회원 정보 복구")
-    @PostMapping("/reCreate")
-    public ResponseFormat reCreate(@RequestBody @Valid MemberDto.RE_CREATE re_create){
-        memberService.reCreate(re_create);
-        return ResponseFormat.ok();
-    }
-
-    @ApiOperation("아이디 중복 체크")
-    @PostMapping("/{rank}/signUp/check")
-    public ResponseFormat checkIdentity(@PathVariable("rank") String rank,
-                                        @RequestParam("identity") String identity) {
-        memberService.checkIdentity(identity);
-        return ResponseFormat.ok();
-    }
 
     @ApiOperation("이메일 중복 체크")
     @PostMapping("/update/check")
