@@ -5,12 +5,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, info
+        include: refresh, health, beans, info, httptrace, busrefresh
 
 eureka:
   instance:
     prefer-ip-address: true
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
@@ -31,9 +31,15 @@ spring:
   config:
     import: optional:configserver:http://127.0.0.1:8888
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
   cloud:
     config:
-      name: ecommerce
+      name: application
 
     gateway:
       default-filters:
@@ -90,16 +96,18 @@ spring:
             - Method=POST,GET
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
+            - name: MemberFilter
 
         - id: bbl-member
           uri: lb://BBL-MEMBER
           predicates:
-            - Path=/bbl-member/test/**
+            - Path=/bbl-member/tests/**
             - Method=GET,POST
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/owo-member/(?<segment>.*), /$\{segment}
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
+            - name: MemberFilter
 
         - id: bbl-payment
           uri: lb://BBL-PAYMENT

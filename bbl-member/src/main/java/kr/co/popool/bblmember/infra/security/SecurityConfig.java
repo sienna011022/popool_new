@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                     .authorizeRequests() //TODO : 시큐리티 요청
-                    .antMatchers( "/**").permitAll();
+                    .antMatchers("/**").permitAll()
+                    .antMatchers("/actuator").permitAll();
     }
 
     @Override

@@ -8,7 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
@@ -19,12 +21,14 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              @NotNull HttpServletResponse response,
                              @NotNull Object handler){
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION)
-                .replace("Bearer", "").trim();
+        Optional<String> isToken = Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION)
+                .replace("Bearer", "").trim());
 
-        if(token==null){
+        if(!isToken.isPresent()){
             return true;
         }
+
+        String token = isToken.get();
 
         String identity = jwtProviderCommon.findIdentityByToken(token);
         MemberThreadLocal.set(identity);

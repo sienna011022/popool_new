@@ -5,18 +5,27 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, info
+        include: refresh, health, beans, info, busrefresh
 
 spring:
   application:
     name: bbl-member
+
+  profiles:
+    active: local
 
   cloud:
     config:
       name: application
 
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://127.0.0.1:8888
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
   redis:
     host: localhost
@@ -30,7 +39,7 @@ spring:
 eureka: #eureka Load Balancer Add - Hong HyuckJune
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
