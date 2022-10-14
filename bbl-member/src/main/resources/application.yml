@@ -1,28 +1,22 @@
-jwt:
-  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
-
 server:
   port: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, info
 
 spring:
   application:
     name: bbl-member
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bbl_member?useSSL=false&verifyServerCertificate=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
-    username: root
-    password: password
+  cloud:
+    config:
+      name: application
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    show-sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      format_sql: true
+  config:
+    import: optional:configserver:http://localhost:8888
 
   redis:
     host: localhost
