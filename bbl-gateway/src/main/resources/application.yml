@@ -10,7 +10,7 @@ management:
 eureka:
   instance:
     prefer-ip-address: true
-#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true

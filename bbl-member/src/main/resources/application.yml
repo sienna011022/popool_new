@@ -12,7 +12,7 @@ spring:
     name: bbl-member
 
   profiles:
-    active: local
+    active: dev
 
   cloud:
     config:
@@ -39,7 +39,7 @@ spring:
 eureka: #eureka Load Balancer Add - Hong HyuckJune
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
