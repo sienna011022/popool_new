@@ -1,8 +1,11 @@
 server:
   port: 8000
 
-jwt:
-  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, info, httptrace, busrefresh
 
 eureka:
   instance:
@@ -17,7 +20,27 @@ eureka:
 spring:
   application:
     name: bbl-gateway
+
+  profiles:
+    active: local
+
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+
+  config:
+    import: optional:configserver:http://127.0.0.1:8888
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
   cloud:
+    config:
+      name: application
+
     gateway:
       default-filters:
         - name: GlobalFilter
@@ -65,6 +88,26 @@ spring:
             - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
             - name: MemberFilter
             - name: JwtAuthorizationHeaderFilter
+
+        - id: bbl-member
+          uri: lb://BBL-MEMBER
+          predicates:
+            - Path=/bbl-member/actuator/**
+            - Method=POST,GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
+            - name: MemberFilter
+
+        - id: bbl-member
+          uri: lb://BBL-MEMBER
+          predicates:
+            - Path=/bbl-member/tests/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
+            - name: MemberFilter
 
         - id: bbl-payment
           uri: lb://BBL-PAYMENT
