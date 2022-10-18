@@ -112,5 +112,3 @@ compileQuerydsl {
 clean.doLast {
     delete file(querydslDir)
 }
-
-
