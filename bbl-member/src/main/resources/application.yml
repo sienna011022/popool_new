@@ -29,7 +29,7 @@ spring:
 
   redis:
     host: localhost
-    port: 6379  #redis base port number
+    port: 6379
 
   mvc:
     pathmatch:
