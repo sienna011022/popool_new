@@ -24,7 +24,7 @@ jobs:
        shell: bash
 
      - name: Build Career with Gradle
-       run: ./bbl-member/gradlew clean build --warning-mode all #setting
+       run: ./bbl-member/gradlew clean :bbl-member:build --exclude-task test --warning-mode all #setting
        shell: bash
 
      - name: Get current time
@@ -69,7 +69,7 @@ jobs:
        shell: bash
 
      - name: Build Gateway with Gradle
-       run: ./bbl-gateway/gradlew clean build --warning-mode all #setting
+       run: ./bbl-gateway/gradlew clean :bbl-gateway:build --exclude-task test --warning-mode all #setting
        shell: bash
 
      - name: Get current time
