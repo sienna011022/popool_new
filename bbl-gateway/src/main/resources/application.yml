@@ -46,7 +46,7 @@ spring:
            baseMessage: Spring Cloud Gateway GlobalFilter
            preLogger: true
            postLogger: true
-
+      routes:
         - id: bbl-member
           uri: lb://BBL-MEMBER
           predicates:
@@ -106,7 +106,7 @@ spring:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
 #            - CustomFilter
-#      routes:
+
 #        - id: bbl-career
 #          uri: lb://BBL-CAREER
 #          predicates:
