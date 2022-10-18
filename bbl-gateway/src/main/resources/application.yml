@@ -23,10 +23,6 @@ spring:
   profiles:
     active: dev
 
-  cloud:
-    config:
-      name: application
-
   main:
     allow-bean-definition-overriding: true
     web-application-type: reactive
@@ -39,6 +35,10 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+  cloud:
+    config:
+      name: application
 
     gateway:
       default-filters:
