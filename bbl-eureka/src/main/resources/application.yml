@@ -1,7 +1,7 @@
 server.port : 8761
 eureka:
   instance:
-    hostname: localhost
+    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: false
     fetch-registry: false
