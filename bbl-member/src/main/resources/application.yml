@@ -35,11 +35,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-
-eureka: #eureka Load Balancer Add - Hong HyuckJune
+eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka

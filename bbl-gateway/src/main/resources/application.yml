@@ -10,10 +10,11 @@ management:
 eureka:
   instance:
     prefer-ip-address: true
-    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
   client:
     register-with-eureka: true
     fetch-registry: true
+    service-url:
+      defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka
 
 spring:
   application:
