@@ -1,35 +1,63 @@
 server:
-  port: 0
+  port: 0 #gateway random Port - Hong HyuckJune
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, info, busrefresh
-
-spring:
-  application:
-    name: bbl-payment
-
-  profiles:
-    active: dev
-
-  cloud:
-    config:
-      name: application
-
-  config:
-    import: configserver:http://ec2-13-124-49-255.ap-northeast-2.compute.amazonaws.com:8888/
-
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
-eureka:
+eureka: #eureka add - Hong HyuckJune
   instance:
-    prefer-ip-address: true
+#    hostname: bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka
+      defaultZone: http://127.0.0.1:8761/eureka
+
+spring:
+
+  main:
+    allow-bean-definition-overriding: true
+
+  application:
+    name: bbl-payment #gateway service name - Hong HyuckJune
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+#      url: jdbc:h2:mem:test
+#      username: sa
+#      password:
+#      driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/paymentdb?serverTimezone=Asia/Seoul
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    root: debug
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      names: ${job.name:NONE}
+
+#feign client 로그보기
+feign:
+  client:
+    config:
+      default:
+        logger-level: full
+
+jwt:
+  secret: ADBF#!@$DAOGEB@N!%^#$%$#*@K@!GDS<M
+
