@@ -38,7 +38,7 @@ spring:
 
   cloud:
     config:
-      name: application
+      name: bbl-gateway
 
     gateway:
       default-filters:
