@@ -99,14 +99,14 @@ spring:
             - RewritePath=/bbl-member/(?<segment>.*), /$\{segment}
             - name: MemberFilter
 
-#        - id: bbl-payment
-#          uri: lb://BBL-PAYMENT
-#          predicates:
-#            - Path=/bbl-payment/payments/**
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
-#            - CustomFilter
+        - id: bbl-payment
+          uri: lb://BBL-PAYMENT
+          predicates:
+            - Path=/bbl-payment/payments/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
+            - CustomFilter
 
 #        - id: bbl-career
 #          uri: lb://BBL-CAREER
