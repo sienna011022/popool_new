@@ -43,6 +43,8 @@ dependencies {
 			"javax.annotation:javax.annotation-api",
 	)
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
 	implementation project(path: ":bbl-common")
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -68,6 +70,10 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	querydsl.extendsFrom compileClasspath
+}
+
+jar {
+	enabled = false
 }
 
 compileQuerydsl {
