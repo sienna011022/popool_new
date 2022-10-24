@@ -73,6 +73,10 @@ configurations {
 	querydsl.extendsFrom compileClasspath
 }
 
+jar {
+	enabled = false
+}
+
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 	if (file(querydslDir).exists()) {
