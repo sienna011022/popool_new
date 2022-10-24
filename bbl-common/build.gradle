@@ -20,9 +20,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation group: 'javax.xml.bind', name: 'jaxb-api'
     implementation group: 'org.springframework', name: 'spring-webflux', version: '5.3.23'
-    //security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
 
     //swagger validation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'

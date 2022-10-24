@@ -6,6 +6,7 @@ import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
 import kr.co.popool.domain.dto.score.ScoreDto;
+import kr.co.popool.service.grade.GradeServiceImpl;
 import kr.co.popool.service.score.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class ScoreController {
 
   private final ScoreServiceImpl scoreService;
-  private final GradeController gradeController;
 
   @ApiOperation("개인 평가 내역 조회")
   @GetMapping()
@@ -32,7 +32,7 @@ public class ScoreController {
   @PostMapping("/create")
   public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
     scoreService.createScore(newScoreDto);
-    gradeController.createGrade(newScoreDto);
+    //gradeServiceImpl.createGrade(newScoreDto);
     return ResponseFormat.ok();
   }
 
@@ -48,7 +48,7 @@ public class ScoreController {
   @DeleteMapping("/delete")
   public ResponseFormat delete(@RequestBody DELETE deleteDto){
     scoreService.delete(deleteDto);
-    gradeController.updateGrade(deleteDto);
+    //gradeServiceImpl.updateGrade(deleteDto);
     return ResponseFormat.ok();
   }
 

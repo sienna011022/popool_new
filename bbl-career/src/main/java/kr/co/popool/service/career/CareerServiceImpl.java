@@ -29,7 +29,7 @@ public class CareerServiceImpl implements CareerService {
 
   private final CareerRepository careerRepository;
 
-  private final FileUploadService fileUploadService;
+//  private final FileUploadService fileUploadService;
 
   private final ScoreService scoreService;
 
@@ -59,7 +59,7 @@ public class CareerServiceImpl implements CareerService {
    * @Exception NotFoundException : 아이디에 해당하는 인사 내역이 없을 경우
    */
 
-  public CareerDto.CAREERINFO show(String memberIdentity) {
+  public CAREERINFO show(String memberIdentity) {
 
     CareerEntity careerEntity = findCareerEntity(memberIdentity);
     return checkGrade(careerEntity);
@@ -76,12 +76,12 @@ public class CareerServiceImpl implements CareerService {
    *
    */
 
-  public ResponseEntity<byte[]> showFile(String memberIdentity) {
-
-    CareerEntity careerEntity = findCareerEntity(memberIdentity);
-    return fileUploadService.getFile(careerEntity.getFilePath());
-
-  }
+//  public ResponseEntity<byte[]> showFile(String memberIdentity) {
+//
+//    CareerEntity careerEntity = findCareerEntity(memberIdentity);
+//    return fileUploadService.getFile(careerEntity.getFilePath());
+//
+//  }
   /**
    * 인사 내역 등록
    *
@@ -90,21 +90,21 @@ public class CareerServiceImpl implements CareerService {
    * @Exception DuplicatedException : 인사 내역이 이미 등록된 경우
    */
 
-  @Override
-  @Transactional
-  public void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile) {
-
-    CareerEntity careerEntity = CareerEntity.of(newCareer);
-    if (multipartFile != null) {
-
-      FileDto filePath = fileUploadService.save(multipartFile);
-      careerEntity.updateFile(filePath.getPath());
-      careerRepository.save(careerEntity);
-
-    }
-    careerRepository.save(careerEntity);
-
-  }
+//  @Override
+//  @Transactional
+//  public void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile) {
+//
+//    CareerEntity careerEntity = CareerEntity.of(newCareer);
+//    if (multipartFile != null) {
+//
+//      FileDto filePath = fileUploadService.save(multipartFile);
+//      careerEntity.updateFile(filePath.getPath());
+//      careerRepository.save(careerEntity);
+//
+//    }
+//    careerRepository.save(careerEntity);
+//
+//  }
 
   @Override
   @Transactional
