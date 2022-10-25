@@ -17,7 +17,7 @@ public interface CareerService {
 
   CAREERINFO show(String memberIdentity);
 
-  //void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile);
+  void newCareer(CareerDto.CREATE newCareer);
 
   void update(CareerDto.UPDATE careerDto);
 

@@ -7,7 +7,6 @@ import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
 import kr.co.popool.domain.dto.career.CareerDto.DELETE;
-import kr.co.popool.domain.dto.career.FileDto;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
@@ -16,10 +15,8 @@ import kr.co.popool.repository.career.CareerRepository;
 import kr.co.popool.service.score.ScoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -28,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class CareerServiceImpl implements CareerService {
 
   private final CareerRepository careerRepository;
-
-//  private final FileUploadService fileUploadService;
 
   private final ScoreService scoreService;
 
@@ -67,21 +62,6 @@ public class CareerServiceImpl implements CareerService {
 
   }
 
-
-  /**
-   * 인사 내역에 첨부된 파일 조회
-   *
-   * @param memberIdentity : 인사 아이디
-   * @return : ResponseEntity<byte[]>
-   *
-   */
-
-//  public ResponseEntity<byte[]> showFile(String memberIdentity) {
-//
-//    CareerEntity careerEntity = findCareerEntity(memberIdentity);
-//    return fileUploadService.getFile(careerEntity.getFilePath());
-//
-//  }
   /**
    * 인사 내역 등록
    *
@@ -90,21 +70,14 @@ public class CareerServiceImpl implements CareerService {
    * @Exception DuplicatedException : 인사 내역이 이미 등록된 경우
    */
 
-//  @Override
-//  @Transactional
-//  public void newCareer(CareerDto.CREATE newCareer, MultipartFile multipartFile) {
-//
-//    CareerEntity careerEntity = CareerEntity.of(newCareer);
-//    if (multipartFile != null) {
-//
-//      FileDto filePath = fileUploadService.save(multipartFile);
-//      careerEntity.updateFile(filePath.getPath());
-//      careerRepository.save(careerEntity);
-//
-//    }
-//    careerRepository.save(careerEntity);
-//
-//  }
+  @Override
+  @Transactional
+  public void newCareer(CareerDto.CREATE newCareer) {
+
+    CareerEntity careerEntity = CareerEntity.of(newCareer);
+    careerRepository.save(careerEntity);
+
+  }
 
   @Override
   @Transactional
