@@ -108,11 +108,11 @@ spring:
             - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
             - CustomFilter
 
-#        - id: bbl-career
-#          uri: lb://BBL-CAREER
-#          predicates:
-#            - Path=/bbl-career/careers/**
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/bbl-career/(?<segment>.*), /$\{segment}
-#            - CustomFilter
+        - id: bbl-career
+          uri: lb://BBL-CAREER
+          predicates:
+            - Path=/bbl-career/careers/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/bbl-career/(?<segment>.*), /$\{segment}
+            - CustomFilter
