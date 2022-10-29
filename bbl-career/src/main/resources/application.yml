@@ -43,4 +43,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka
-
