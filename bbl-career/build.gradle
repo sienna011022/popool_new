@@ -38,8 +38,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bus-amqp'
+
 }
 
 tasks.named('test') {
