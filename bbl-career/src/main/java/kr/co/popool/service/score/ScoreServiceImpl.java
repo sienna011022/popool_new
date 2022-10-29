@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Slf4j //로깅을 위함
+@Slf4j
 @RequiredArgsConstructor
 public class ScoreServiceImpl implements ScoreService {
 
@@ -119,6 +119,5 @@ public class ScoreServiceImpl implements ScoreService {
   }
 
 }
-
 
 

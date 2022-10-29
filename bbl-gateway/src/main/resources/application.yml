@@ -106,7 +106,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/bbl-payment/(?<segment>.*), /$\{segment}
-            - CustomFilter
+            - name: CustomFilter
 
         - id: bbl-career
           uri: lb://BBL-CAREER

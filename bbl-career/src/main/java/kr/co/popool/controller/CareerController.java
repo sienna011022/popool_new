@@ -6,11 +6,8 @@ import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.service.career.CareerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @Slf4j
@@ -29,14 +26,14 @@ public class CareerController {
 	}
 
 	@ApiOperation("개인 인사 내역 조회")
-	@GetMapping()
+	@GetMapping("")
 	public CareerDto.CAREERINFO show(@RequestParam String memberIdentity) {
 		return careerService.show(memberIdentity);
 	}
 
 	@ApiOperation("개인 인사 내역 등록")
 	@PostMapping(value = "/create")
-	public ResponseFormat createCareer(CareerDto.CREATE careerDto) {
+	public ResponseFormat createCareer(@RequestPart(value = "createDto") CareerDto.CREATE careerDto) {
 		careerService.newCareer(careerDto);
 		return ResponseFormat.ok();
 	}
@@ -50,16 +47,10 @@ public class CareerController {
 	}
 
 	@ApiOperation("개인 인사 내역 삭제")
-	@DeleteMapping()
-	public ResponseFormat delete(@RequestBody CareerDto.DELETE careerDto) {
+	@DeleteMapping("/delete")
+	public ResponseFormat delete(@RequestBody CareerDto.DELETE careerDto){
 		careerService.delete(careerDto);
 		return ResponseFormat.ok();
 	}
 
-	@ApiOperation("테스트 API")
-	@GetMapping("/test")
-	public ResponseFormat showTest() {
-		return ResponseFormat.ok("test");
-	}
 }
-

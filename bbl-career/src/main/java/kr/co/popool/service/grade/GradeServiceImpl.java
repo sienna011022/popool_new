@@ -2,12 +2,10 @@ package kr.co.popool.service.grade;
 
 import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
-import kr.co.popool.bblcommon.error.model.ResponseFormat;
-import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
+import kr.co.popool.domain.dto.grade.GradeDto;
 import kr.co.popool.domain.dto.grade.GradeDto.ONLYGRADE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GETVALUE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
-import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.repository.grade.GradeRepository;
 import kr.co.popool.service.career.CareerService;
@@ -22,7 +20,6 @@ public class GradeServiceImpl implements GradeService {
   private final GradeRepository gradeRepository;
   private final CareerService careerService;
   private final ScoreService scoreService;
-
 
   /**
    * 등급 + 세부 내역 조회
@@ -49,7 +46,7 @@ public class GradeServiceImpl implements GradeService {
   public ONLYGRADE showGradeOnly(String memberIdentity) {
 
     GradeEntity gradeEntity = careerService.findCareerEntity(memberIdentity).getGradeEntity();
-    return ONLYGRADE.builder().grade(gradeEntity.getGrade())
+    return GradeDto.ONLYGRADE.builder().grade(gradeEntity.getGrade())
         .build();
 
   }
@@ -96,23 +93,5 @@ public class GradeServiceImpl implements GradeService {
     return gradeEntity;
 
   }
-
-//  public ResponseFormat createGrade(ScoreDto.SCOREINFO newScoreDto) {
-//
-//    GRADEDETAIL gradedetail = calculateService.calculateGradeDto(newScoreDto);
-//    calculateService.saveGradeEntity(gradedetail, newScoreDto.getMemberIdentity());
-//
-//    return ResponseFormat.ok();
-//
-//  }
-//
-//  public ResponseFormat updateGrade(DELETE deleteDto) {
-//
-//    GRADEDETAIL gradedetail = calculateService.updateGradeDto(deleteDto);
-//    calculateService.saveGradeEntity(gradedetail, deleteDto.getMemberIdentity());
-//
-//    return ResponseFormat.ok();
-//
-//  }
 
 }

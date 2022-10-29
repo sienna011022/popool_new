@@ -9,7 +9,6 @@ import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface CareerService {
 
