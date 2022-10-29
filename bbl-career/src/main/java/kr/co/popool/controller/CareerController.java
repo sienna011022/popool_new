@@ -33,7 +33,7 @@ public class CareerController {
 
 	@ApiOperation("개인 인사 내역 등록")
 	@PostMapping(value = "/create")
-	public ResponseFormat createCareer(@RequestPart(value = "createDto") CareerDto.CREATE careerDto) {
+	public ResponseFormat createCareer(@RequestBody CareerDto.CREATE careerDto) {
 		careerService.newCareer(careerDto);
 		return ResponseFormat.ok();
 	}
