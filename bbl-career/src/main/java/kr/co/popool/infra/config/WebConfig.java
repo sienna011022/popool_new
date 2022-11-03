@@ -34,19 +34,19 @@ public class WebConfig implements WebMvcConfigurer {
 			.maxAge(MAX_AGE_SECOND);
 	}
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInterceptor())
-			.addPathPatterns("/**")
-			.excludePathPatterns("/members/login")
-			.excludePathPatterns("/members/signUp")
-			.excludePathPatterns(AUTH_ARR);
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(authInterceptor())
+////			.addPathPatterns("/**")
+//			.excludePathPatterns("/members/login")
+//			.excludePathPatterns("/members/signUp")
+//			.excludePathPatterns(AUTH_ARR);
+//	}
 
-	@Bean
-	public AuthInterceptor authInterceptor() {
-		return new AuthInterceptor(jwtProviderCommon());
-	}
+//	@Bean
+//	public AuthInterceptor authInterceptor() {
+//		return new AuthInterceptor(jwtProviderCommon());
+//	}
 
 	@Bean
 	public JwtProviderCommon jwtProviderCommon() {

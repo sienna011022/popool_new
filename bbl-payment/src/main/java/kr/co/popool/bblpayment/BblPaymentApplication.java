@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableBatchProcessing
 @EnableFeignClients
-@EnableJpaAuditing
 @SpringBootApplication
 public class BblPaymentApplication {
 

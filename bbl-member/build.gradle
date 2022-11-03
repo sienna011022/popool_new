@@ -69,6 +69,10 @@ dependencyManagement {
     }
 }
 
+jar{
+    enabled = false
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
@@ -108,5 +112,3 @@ compileQuerydsl {
 clean.doLast {
     delete file(querydslDir)
 }
-
-

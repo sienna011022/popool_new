@@ -13,40 +13,40 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final long MAX_AGE_SECOND = 3600;
     private static final String[] AUTH_ARR = {
-            "/swagger/**",
-            "/v2/api-docs",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/swagger-ui/**",
-            "/webjars/**",
-            "favicon.ico"
+        "/swagger/**",
+        "/v2/api-docs",
+        "/configuration/ui",
+        "/swagger-resources/**",
+        "/configuration/security",
+        "/swagger-ui.html",
+        "/swagger-ui/**",
+        "/webjars/**",
+        "favicon.ico"
     };
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(MAX_AGE_SECOND);
+            .allowedOriginPatterns("*")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .allowCredentials(true)
+            .maxAge(MAX_AGE_SECOND);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/members/login")
-                .excludePathPatterns("/members/signUp")
-                .excludePathPatterns(AUTH_ARR);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(authInterceptor())
+////                .addPathPatterns("/**")
+//                .excludePathPatterns("/members/login")
+//                .excludePathPatterns("/members/signUp")
+//                .excludePathPatterns(AUTH_ARR);
+//    }
 
-    @Bean
-    public AuthInterceptor authInterceptor(){
-        return new AuthInterceptor(jwtProviderCommon());
-    }
+//    @Bean
+//    public AuthInterceptor authInterceptor(){
+//        return new AuthInterceptor(jwtProviderCommon());
+//    }
 
     @Bean
     public JwtProviderCommon jwtProviderCommon(){

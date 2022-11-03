@@ -24,6 +24,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation project(path: ":bbl-common")
 
+    //config
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    //Eureka
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
     //h2
     implementation 'com.h2database:h2'
 

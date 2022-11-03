@@ -16,36 +16,29 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 	implementation 'junit:junit:4.13.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	runtimeOnly 'mysql:mysql-connector-java'
 
-
-	//qureydsl
 	implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '5.0.0'
 	implementation group: 'com.querydsl', name: 'querydsl-core', version: '5.0.0'
 	implementation group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
-	//querydsl JPAAnnotationProcessor 사용 지정
-	// java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
-	// java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
-	annotationProcessor(
-			"javax.persistence:javax.persistence-api",
-			"javax.annotation:javax.annotation-api",
-	)
 
+	runtimeOnly 'mysql:mysql-connector-java'
 	implementation project(path: ":bbl-common")
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-config'
+
 }
 
 tasks.named('test') {
@@ -68,6 +61,10 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	querydsl.extendsFrom compileClasspath
+}
+
+jar {
+	enabled = false
 }
 
 compileQuerydsl {
