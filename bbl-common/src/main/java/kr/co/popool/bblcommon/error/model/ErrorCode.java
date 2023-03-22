@@ -19,7 +19,10 @@ public enum ErrorCode {
 
     //TODO : career, score 등등
 
-    DUPLICATED_MEMBERIDENTITY("이미 인사 내역이 등록된 아이디입니다",400);
+    DUPLICATED_MEMBERIDENTITY("이미 인사 내역이 등록된 아이디입니다",400),
+    NOT_FOUND_CAREER("아이디에 해당하는 인사 내역이 없습니다",404),
+
+    DELETED_CAREER( "삭제된 인사 내역입니다",404);
 
 
 

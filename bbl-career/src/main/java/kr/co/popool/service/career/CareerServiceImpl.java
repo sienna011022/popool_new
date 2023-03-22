@@ -3,6 +3,9 @@ package kr.co.popool.service.career;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kr.co.popool.bblcommon.error.exception.DeletedCareerException;
+import kr.co.popool.bblcommon.error.exception.NotFoundCareerException;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.domain.dto.career.CareerCreateRequest;
 import kr.co.popool.domain.dto.career.CareerDto;
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static kr.co.popool.domain.entity.Career.DELETED;
 
 @Service
 @Slf4j
@@ -55,14 +60,20 @@ public class CareerServiceImpl implements CareerService {
 	 * @Exception NotFoundException : 아이디에 해당하는 인사 내역이 없을 경우
 	 */
 
-	public CareerDto.CAREERINFO show(String memberIdentity) {
-
-		CareerEntity careerEntity = findCareerEntity(memberIdentity);
-		return checkGrade(careerEntity);
-
-
+	@Transactional
+	public Career showCareer(String memberId) {
+		return findCareer(memberId);
 	}
 
+	private Career findCareer(String memberId) {
+		Career career = careerRepository.findByMemberId(memberId)
+			.orElseThrow(NotFoundCareerException::new);
+
+		if (career.isDeleted(DELETED)) {
+			throw new DeletedCareerException();
+		}
+		return career;
+	}
 
 	/**
 	 * 인사 내역 등록

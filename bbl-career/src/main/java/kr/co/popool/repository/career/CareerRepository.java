@@ -10,4 +10,5 @@ public interface CareerRepository extends JpaRepository<Career, Long> {
   Optional<Career> findByMemberIdentity(String memberIdentity);
 
 
+    Optional<Career> findByMemberId(String memberId);
 }
