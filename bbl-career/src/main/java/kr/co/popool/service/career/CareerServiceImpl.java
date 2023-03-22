@@ -4,10 +4,12 @@ package kr.co.popool.service.career;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.popool.bblcommon.error.exception.NotFoundException;
+import kr.co.popool.domain.dto.career.CareerCreateRequest;
 import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
 import kr.co.popool.domain.dto.career.CareerDto.DELETE;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
+import kr.co.popool.domain.entity.Career;
 import kr.co.popool.domain.entity.CareerEntity;
 import kr.co.popool.domain.entity.GradeEntity;
 import kr.co.popool.domain.entity.ScoreEntity;
@@ -65,25 +67,23 @@ public class CareerServiceImpl implements CareerService {
 	/**
 	 * 인사 내역 등록
 	 *
-	 * @param newCareer : 새로운 인사 내역을 담은 DTO객체
+	 * @param request : 새로운 인사 내역을 담은 요청
 	 * @return : void
 	 * @Exception DuplicatedException : 인사 내역이 이미 등록된 경우
 	 */
 
 	@Override
 	@Transactional
-	public void newCareer(CareerDto.CREATE newCareer) {
-
-		CareerEntity careerEntity = CareerEntity.of(newCareer);
-		careerRepository.save(careerEntity);
-
+	public Career createCareer(CareerCreateRequest request) {
+		Career requestCareer = request.toCareer();
+		return careerRepository.save(requestCareer);
 	}
 
 	@Override
 	@Transactional
 	public void update(CareerDto.UPDATE careerDto) {
 
-		CareerEntity careerEntity = findCareerEntity(careerDto.getMemberIdentity());
+		Career careerEntity = findCareerEntity(careerDto.getMemberIdentity());
 
 		careerEntity.updateCareer(careerDto);
 		careerRepository.save(careerEntity);
@@ -97,7 +97,7 @@ public class CareerServiceImpl implements CareerService {
 	 * @return CAREERINFO : 인사 정보 DTO
 	 */
 	@Override
-	public CAREERINFO checkGrade(CareerEntity careerEntity) {
+	public CAREERINFO checkGrade(Career careerEntity) {
 
 		try {
 			return CareerDto.of(careerEntity);
