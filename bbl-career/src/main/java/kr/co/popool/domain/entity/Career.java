@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.springframework.util.Assert.hasText;
 
@@ -52,4 +53,16 @@ public class Career extends BaseEntity {
         selfDescription = request.getSelfDescription();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Career career = (Career) o;
+        return Objects.equals(memberId, career.memberId) && Objects.equals(name, career.name) && Objects.equals(email, career.email) && Objects.equals(period, career.period) && Objects.equals(selfDescription, career.selfDescription);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberId, name, email, period, selfDescription);
+    }
 }

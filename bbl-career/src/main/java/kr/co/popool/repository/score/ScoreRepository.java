@@ -1,15 +1,13 @@
 package kr.co.popool.repository.score;
 
-import kr.co.popool.domain.entity.ScoreEntity;
+import kr.co.popool.domain.entity.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface ScoreRepository extends JpaRepository<ScoreEntity, Long> , ScoreRepositoryCustom {
+public interface ScoreRepository extends JpaRepository<Score, Long> , ScoreCustomRepository {
 
-  Optional<ScoreEntity> findById(Long id);
-
-  Optional<ScoreEntity> findByEvaluatorIdentity(String evaluatorIdentity);
-
+  Optional<List<Score>> findByEvaluatorId(String evaluatorId);
 
 }

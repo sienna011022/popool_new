@@ -62,6 +62,4 @@ public class CareerController {
     public void deleteCareer(@RequestParam String memberId) {
         careerService.deleteCareer(memberId);
     }
-
-
 }

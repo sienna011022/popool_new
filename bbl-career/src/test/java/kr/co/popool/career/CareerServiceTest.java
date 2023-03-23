@@ -35,7 +35,7 @@ public class CareerServiceTest {
         List<Career> careers = Arrays.asList(createCareer(),createCareer(),createCareer());
         when(careerRepository.findAll()).thenReturn(
             careers);
-        assertThat(careerService.showAll()).hasSameSizeAs(3);
+        assertThat(careerService.showAll().size()).isEqualTo(3);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class CareerServiceTest {
             .thenReturn(of(createCareer()));
 
         assertThat(careerService.showCareer(MEMBER_ID))
-            .isEqualTo(createCareerInfo());
+            .isEqualTo(createCareer());
     }
 
     @Test

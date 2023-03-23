@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class GradeEntity extends BaseEntity {
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "grade_id", nullable = true)
-  private List<ScoreEntity> scores = new ArrayList<>();
+  private List<Score> scores = new ArrayList<>();
 
   @Column(name = "attendance_avg", nullable = false)
   private double attendanceAvg;
@@ -52,10 +52,10 @@ public class GradeEntity extends BaseEntity {
   private Long totalMember;
 
   @Builder
-  public GradeEntity(List<ScoreEntity> scores, double attendanceAvg,
-      double sincerityAvg,
-      double positivenessAvg, double cooperativeAvg, double technicalAvg, double totalAvg,
-      ScoreGrade grade, Long totalMember) {
+  public GradeEntity(List<Score> scores, double attendanceAvg,
+                     double sincerityAvg,
+                     double positivenessAvg, double cooperativeAvg, double technicalAvg, double totalAvg,
+                     ScoreGrade grade, Long totalMember) {
     this.scores = scores;
     this.attendanceAvg = attendanceAvg;
     this.sincerityAvg = sincerityAvg;
@@ -67,7 +67,7 @@ public class GradeEntity extends BaseEntity {
     this.totalMember = totalMember;
   }
 
-  public static GradeEntity of(List<ScoreEntity> scoreList, GRADEDETAIL gradedetail) {
+  public static GradeEntity of(List<Score> scoreList, GRADEDETAIL gradedetail) {
 
     GradeEntity gradeEntity = GradeEntity.builder()
         .scores(scoreList)
@@ -84,7 +84,7 @@ public class GradeEntity extends BaseEntity {
     return gradeEntity;
   }
 
-  public void updateGrade(List<ScoreEntity> scoreList, GRADEDETAIL gradeDto) {
+  public void updateGrade(List<Score> scoreList, GRADEDETAIL gradeDto) {
 
     this.scores = scoreList;
     this.attendanceAvg = gradeDto.getAttendanceAvg();

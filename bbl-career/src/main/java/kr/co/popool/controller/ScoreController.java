@@ -1,55 +1,59 @@
 package kr.co.popool.controller;
 
 import io.swagger.annotations.ApiOperation;
+
+import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import kr.co.popool.bblcommon.error.model.ResponseFormat;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE;
 import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
+import kr.co.popool.domain.dto.score.ScoreCreateRequest;
 import kr.co.popool.domain.dto.score.ScoreDto;
+import kr.co.popool.domain.dto.score.ScoreResponse;
+import kr.co.popool.domain.dto.score.ScoreResponses;
+import kr.co.popool.domain.entity.Score;
 import kr.co.popool.service.score.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static java.util.stream.Collectors.toList;
+import static kr.co.popool.domain.dto.score.ScoreResponses.of;
 
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/careers/{memberIdentity}/scores")
+@RequestMapping(value = "/careers/{memberId}/scores")
 public class ScoreController {
+    private final ScoreServiceImpl scoreService;
 
-  private final ScoreServiceImpl scoreService;
-  private final GradeController gradeController;
 
-  @ApiOperation("개인 평가 내역 조회")
-  @GetMapping()
-  public ResponseFormat show(@PathVariable String memberIdentity) {
-    List<SHOWSCORE> scoreDtoList = scoreService.showScores(memberIdentity);
-    return ResponseFormat.ok(scoreDtoList);
-  }
+    @ApiOperation("자신에게 평가된 모든 평가 내역 조회")
+    @GetMapping
+    public ResponseEntity showAll(@RequestParam String evaluatorId) {
+        List<Score> scores = scoreService.showScoreAllByEvaluator(evaluatorId);
+        ScoreResponses scoreResponses = of(scores.stream()
+            .map(ScoreResponse::of)
+            .collect(toList()));
+        return new ResponseEntity(scoreResponses, HttpStatus.OK);
+    }
 
-  @ApiOperation("평가 내역 등록")
-  @PostMapping("/create")
-  public ResponseFormat create(@RequestBody ScoreDto.SCOREINFO newScoreDto) {
-    scoreService.createScore(newScoreDto);
-    gradeController.createGrade(newScoreDto);
-    return ResponseFormat.ok();
-  }
+    @ApiOperation("자신이 등록한 모든 평가 내역 조회")
+    @GetMapping("/all")
+    public ResponseEntity<ScoreResponses> showAllMyScores(@RequestParam String memberId) {
+        return ResponseEntity.ok(scoreService.showMyAllScore(memberId));
+    }
 
-  @ApiOperation("평가 내역 수정")
-  @PatchMapping("/{evaluatorIdentity}")
-  public ResponseFormat update(@RequestBody ScoreDto.UPDATE updateScoreDto) {
-    scoreService.updateScore(updateScoreDto);
-    return ResponseFormat.ok();
-
-  }
-
-  @ApiOperation("평가 내역 삭제")
-  @DeleteMapping("/delete")
-  public ResponseFormat delete(@RequestBody DELETE deleteDto){
-    scoreService.delete(deleteDto);
-    gradeController.updateGrade(deleteDto);
-    return ResponseFormat.ok();
-  }
+    @ApiOperation("평가 내역 등록")
+    @PostMapping
+    public ResponseEntity<Void> newScore(@RequestBody ScoreCreateRequest request) {
+        ScoreResponse saved = ScoreResponse.of(scoreService.newScore(request));
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
 
 }

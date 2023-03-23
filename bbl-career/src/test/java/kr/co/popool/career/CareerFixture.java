@@ -44,8 +44,9 @@ public class CareerFixture {
     }
 
 
-    public static CareerResponse updateCareer() {
-        return CareerResponse.builder()
+    public static Career updateCareer() {
+        return Career.builder()
+            .memberId(MEMBER_ID)
             .name(NAME)
             .email(EMAIL)
             .period(PERIOD)
