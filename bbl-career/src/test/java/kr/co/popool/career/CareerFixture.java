@@ -1,6 +1,8 @@
 package kr.co.popool.career;
 
 
+import kr.co.popool.domain.dto.career.CareerResponse;
+import kr.co.popool.domain.dto.career.CareerUpdateRequest;
 import kr.co.popool.domain.entity.Career;
 
 public class CareerFixture {
@@ -20,6 +22,34 @@ public class CareerFixture {
             .email(EMAIL)
             .period(PERIOD)
             .selfDescription(SELF_DESCRIPTION)
+            .build();
+    }
+
+    public static CareerResponse createCareerInfo() {
+        return CareerResponse.builder()
+            .name(NAME)
+            .email(EMAIL)
+            .period(PERIOD)
+            .selfDescription(SELF_DESCRIPTION)
+            .build();
+    }
+
+    public static CareerUpdateRequest createUpdateRequest() {
+        return CareerUpdateRequest.builder()
+            .name(NAME)
+            .email(EMAIL)
+            .selfDescription(UPDATE_SELF_DESCRIPTION)
+            .period(PERIOD)
+            .build();
+    }
+
+
+    public static CareerResponse updateCareer() {
+        return CareerResponse.builder()
+            .name(NAME)
+            .email(EMAIL)
+            .period(PERIOD)
+            .selfDescription(UPDATE_SELF_DESCRIPTION)
             .build();
     }
 

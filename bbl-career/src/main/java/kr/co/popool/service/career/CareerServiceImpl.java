@@ -83,7 +83,6 @@ public class CareerServiceImpl implements CareerService {
 	 * @return : void
 	 * @Exception DuplicatedException : 인사 내역이 이미 등록된 경우
 	 */
-
 	@Override
 	@Transactional
 	public Career createCareer(CareerCreateRequest request) {

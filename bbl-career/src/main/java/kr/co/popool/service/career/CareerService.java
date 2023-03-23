@@ -11,8 +11,6 @@ import java.util.List;
 public interface CareerService {
 
 
-  List<CAREERINFO> showAll();
-
   @Transactional
   Career createCareer(CareerCreateRequest request);
 
