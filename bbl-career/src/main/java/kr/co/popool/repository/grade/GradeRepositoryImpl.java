@@ -1,13 +1,6 @@
 package kr.co.popool.repository.grade;
 
-import static kr.co.popool.domain.entity.QCareerEntity.careerEntity;
-import static kr.co.popool.domain.entity.QGradeEntity.*;
-import static kr.co.popool.domain.entity.QScoreEntity.scoreEntity;
-
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
-
 import kr.co.popool.domain.dto.grade.QQueryGradeDto_GETVALUE;
 import kr.co.popool.domain.dto.grade.QQueryGradeDto_GRADEDETAIL;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GETVALUE;
@@ -17,6 +10,11 @@ import kr.co.popool.domain.entity.QScoreEntity;
 import kr.co.popool.domain.shared.enums.ScoreGrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import static kr.co.popool.domain.entity.QCareerEntity.careerEntity;
+import static kr.co.popool.domain.entity.QScoreEntity.scoreEntity;
 
 @RequiredArgsConstructor
 @Transactional

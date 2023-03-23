@@ -12,6 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static java.util.Optional.of;
 import static kr.co.popool.career.CareerFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +28,15 @@ public class CareerServiceTest {
     CareerRepository careerRepository;
     @InjectMocks
     private CareerServiceImpl careerService;
+
+    @Test
+    @DisplayName("모든 인사 내역을 조회한다")
+    public void career_전체_조회(){
+        List<Career> careers = Arrays.asList(createCareer(),createCareer(),createCareer());
+        when(careerRepository.findAll()).thenReturn(
+            careers);
+        assertThat(careerService.showAll()).hasSameSizeAs(3);
+    }
 
     @Test
     @DisplayName("아이디로 인사 내역을 조회하고 인사 내역을 불러온다.")

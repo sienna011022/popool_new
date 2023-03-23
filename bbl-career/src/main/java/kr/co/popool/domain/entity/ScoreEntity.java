@@ -15,7 +15,7 @@ public class ScoreEntity extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "career_id")
-  private CareerEntity careerEntity;
+  private Career careerEntity;
 
   @Column(name = "evaluator_identity", nullable = false, length = 100)
   private String evaluatorIdentity;
@@ -36,7 +36,7 @@ public class ScoreEntity extends BaseEntity {
   private int cooperative;
 
   @Builder
-  public ScoreEntity(CareerEntity careerEntity, GradeEntity gradeEntity, String evaluatorIdentity,
+  public ScoreEntity(Career careerEntity, GradeEntity gradeEntity, String evaluatorIdentity,
       int attendance,
       int sincerity, int positiveness, int technical, int cooperative) {
     this.careerEntity = careerEntity;
@@ -48,7 +48,7 @@ public class ScoreEntity extends BaseEntity {
     this.cooperative = cooperative;
   }
 
-  public static ScoreEntity of(ScoreDto.SCOREINFO newScore, CareerEntity careerEntity) {
+  public static ScoreEntity of(ScoreDto.SCOREINFO newScore, Career careerEntity) {
     ScoreEntity scoreEntity = ScoreEntity.builder()
         .careerEntity(careerEntity)
         .evaluatorIdentity(newScore.getEvaluatorIdentity())

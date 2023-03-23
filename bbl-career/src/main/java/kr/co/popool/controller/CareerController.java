@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static kr.co.popool.domain.dto.career.CareerResponse.of;
 
 
@@ -38,9 +41,13 @@ public class CareerController {
     }
 
     @ApiOperation("전체 인사 내역 조회")
-    @GetMapping("/all")
-    public List<CareerDto.CAREERINFO> showAll() {
-        return careerService.showAll();
+    @GetMapping
+    public ResponseEntity showAll() {
+        List<CareerResponse> careers = careerService.showAll().stream()
+            .map(career -> of(career))
+            .collect(Collectors.toList());
+
+        return new ResponseEntity(careers, HttpStatus.OK);
     }
 
     @ApiOperation("개인 인사 내역 수정")
@@ -51,10 +58,10 @@ public class CareerController {
     }
 
     @ApiOperation("개인 인사 내역 삭제")
-    @DeleteMapping("/delete")
-    public ResponseFormat delete(@RequestBody CareerDto.DELETE careerDto) {
-        careerService.delete(careerDto);
-        return ResponseFormat.ok();
+    @DeleteMapping
+    public void deleteCareer(@RequestParam String memberId) {
+        careerService.deleteCareer(memberId);
     }
+
 
 }
