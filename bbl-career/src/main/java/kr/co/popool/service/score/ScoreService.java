@@ -13,7 +13,6 @@ import kr.co.popool.domain.entity.Score;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ScoreService {
-
   @Transactional
   Score newScore(ScoreCreateRequest request);
 

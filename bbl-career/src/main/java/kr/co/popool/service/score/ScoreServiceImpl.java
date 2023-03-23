@@ -53,10 +53,6 @@ public class ScoreServiceImpl implements ScoreService {
         return ScoreResponses.of(scoreResponses);
     }
 
-    private List<Score> findScore(String evaluatorId) {
-        return scoreRepository.findByEvaluatorId(evaluatorId)
-            .orElseThrow(NotFoundScoreException::new);
-    }
 
 }
 
