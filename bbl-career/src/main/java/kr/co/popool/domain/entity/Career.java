@@ -22,7 +22,7 @@ public class Career extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String email;
 
     @Column(length = 10)

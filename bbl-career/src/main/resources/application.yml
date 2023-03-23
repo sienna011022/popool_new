@@ -1,49 +1,68 @@
-server:
-  port: 0
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, info, busrefresh
-
-spring:
-  application:
-    name: bbl-career
-
-  profiles:
-    active: dev
-
-  config:
-    import: configserver:http://ec2-13-124-49-255.ap-northeast-2.compute.amazonaws.com:8888/
-
+#server:
+#  port: 0
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, info, busrefresh
+#
+#spring:
+#  application:
+#    name: bbl-career
+#
+#  profiles:
+#    active: dev
+#
+#  config:
+#    import: configserver:http://ec2-13-124-49-255.ap-northeast-2.compute.amazonaws.com:8888/
+#
 #  rabbitmq:
 #    host: 127.0.0.1
 #    port: 5672
 #    username: guest
 #    password: guest
-
+#
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+#  main:
+#    allow-bean-definition-overriding: true
+#  cloud:
+#    aws:
+#      region:
+#        static : ap-northeast-2
+#      stack:
+#        auto: false
+#
+#      instance:
+#        data:
+#          enabled: true
+#
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka
+spring:
+  jpa:
+    database: mysql
+    generate-ddl: true
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/msa-career?verifyServerCertificate=false&useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password: 1022
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  main:
-    allow-bean-definition-overriding: true
-  cloud:
-    aws:
-      region:
-        static : ap-northeast-2
-      stack:
-        auto: false
 
-      instance:
-        data:
-          enabled: true
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://bbleureka-env.eba-sk7czfia.ap-northeast-2.elasticbeanstalk.com/eureka
+
+
+
+
