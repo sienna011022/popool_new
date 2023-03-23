@@ -11,6 +11,7 @@ import kr.co.popool.domain.dto.career.CareerCreateRequest;
 import kr.co.popool.domain.dto.career.CareerDto;
 import kr.co.popool.domain.dto.career.CareerDto.CAREERINFO;
 import kr.co.popool.domain.dto.career.CareerDto.DELETE;
+import kr.co.popool.domain.dto.career.CareerUpdateRequest;
 import kr.co.popool.domain.dto.grade.QueryGradeDto.GRADEDETAIL;
 import kr.co.popool.domain.entity.Career;
 import kr.co.popool.domain.entity.CareerEntity;
@@ -90,16 +91,14 @@ public class CareerServiceImpl implements CareerService {
 		return careerRepository.save(requestCareer);
 	}
 
-	@Override
 	@Transactional
-	public void update(CareerDto.UPDATE careerDto) {
-
-		Career careerEntity = findCareerEntity(careerDto.getMemberIdentity());
-
-		careerEntity.updateCareer(careerDto);
-		careerRepository.save(careerEntity);
-
+	@Override
+	public Career updateCareer(String memberId, CareerUpdateRequest request) {
+		Career career = findCareer(memberId);
+		career.updateCareer(request);
+		return careerRepository.save(career);
 	}
+
 
 	/**
 	 * 매핑된 Grade 존재 여부 확인 후 Entity to DTO

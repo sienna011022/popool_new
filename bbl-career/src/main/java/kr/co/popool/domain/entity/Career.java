@@ -1,5 +1,6 @@
 package kr.co.popool.domain.entity;
 
+import kr.co.popool.domain.dto.career.CareerUpdateRequest;
 import kr.co.popool.domain.shared.BaseEntity;
 import lombok.*;
 
