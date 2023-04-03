@@ -23,11 +23,7 @@
 #    username: guest
 #    password: guest
 #
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher
-#  main:
-#    allow-bean-definition-overriding: true
+
 #  cloud:
 #    aws:
 #      region:
@@ -61,6 +57,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
+  main:
+    allow-bean-definition-overriding: true
+
+jwt:
+  secret: "236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492"
 
 
 

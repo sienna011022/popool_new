@@ -43,7 +43,8 @@ public class CareerController {
     @ApiOperation("전체 인사 내역 조회")
     @GetMapping
     public ResponseEntity showAll() {
-        List<CareerResponse> careers = careerService.showAll().stream()
+        List<CareerResponse> careers = careerService.showAll()
+            .stream()
             .map(career -> of(career))
             .collect(Collectors.toList());
 
@@ -51,15 +52,22 @@ public class CareerController {
     }
 
     @ApiOperation("개인 인사 내역 수정")
-    @PatchMapping
-    public ResponseEntity updateCareer(@RequestParam String memberId, @RequestBody CareerUpdateRequest request) {
+    @PatchMapping("/{member_id}")
+    public ResponseEntity updateCareer(@PathVariable(value = "member_id") String memberId,
+                                       @RequestBody CareerUpdateRequest request) {
         CareerResponse updated = of(careerService.updateCareer(memberId, request));
         return new ResponseEntity(updated, HttpStatus.CREATED);
     }
 
     @ApiOperation("개인 인사 내역 삭제")
-    @DeleteMapping
-    public void deleteCareer(@RequestParam String memberId) {
+    @DeleteMapping("/{member_id}")
+    public void deleteCareer(@PathVariable(value = "member_id") String memberId) {
         careerService.deleteCareer(memberId);
+    }
+
+    @ApiOperation("개인 등급 조회")
+    @GetMapping("/{member_id}/grade")
+    public ResponseEntity getGrade(@PathVariable(value = "member_id") String memberId){
+        return new ResponseEntity<>(careerService.getGrade(memberId),HttpStatus.OK);
     }
 }

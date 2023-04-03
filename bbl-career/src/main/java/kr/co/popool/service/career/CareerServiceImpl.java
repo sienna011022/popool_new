@@ -4,8 +4,11 @@ package kr.co.popool.service.career;
 import kr.co.popool.bblcommon.error.exception.NotFoundCareerException;
 import kr.co.popool.domain.dto.career.CareerCreateRequest;
 import kr.co.popool.domain.dto.career.CareerUpdateRequest;
+import kr.co.popool.domain.dto.score.ScoreAverage;
 import kr.co.popool.domain.entity.Career;
+import kr.co.popool.domain.entity.Grade;
 import kr.co.popool.repository.career.CareerRepository;
+import kr.co.popool.repository.score.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.List;
 public class CareerServiceImpl implements CareerService {
 
     private final CareerRepository careerRepository;
+    private final ScoreRepository scoreRepository;
 
     @Override
     @Transactional
@@ -47,11 +51,18 @@ public class CareerServiceImpl implements CareerService {
         career.updateCareer(request);
         return careerRepository.save(career);
     }
+
     @Override
     @Transactional
     public void deleteCareer(String memberId) {
         careerRepository.deleteByMemberId(memberId);
     }
+
+    @Override
+    public Grade getGrade(String memberId) {
+        return findCareer(memberId).getGrade();
+    }
+
 
     private Career findCareer(String memberId) {
         return careerRepository.findByMemberId(memberId)

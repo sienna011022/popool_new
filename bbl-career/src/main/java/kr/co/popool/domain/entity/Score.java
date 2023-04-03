@@ -1,8 +1,11 @@
 package kr.co.popool.domain.entity;
 
-import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.domain.shared.BaseEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;

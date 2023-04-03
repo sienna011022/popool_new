@@ -1,15 +1,13 @@
 package kr.co.popool.service.score;
 
-import kr.co.popool.bblcommon.error.exception.BadRequestException;
 import kr.co.popool.bblcommon.error.exception.NotFoundCareerException;
-import kr.co.popool.bblcommon.error.exception.NotFoundException;
 import kr.co.popool.bblcommon.error.exception.NotFoundScoreException;
-import kr.co.popool.domain.dto.score.QueryScoreDto.SHOWSCORE.DELETE;
+import kr.co.popool.domain.dto.score.ScoreAverage;
 import kr.co.popool.domain.dto.score.ScoreCreateRequest;
-import kr.co.popool.domain.dto.score.ScoreDto;
 import kr.co.popool.domain.dto.score.ScoreResponse;
 import kr.co.popool.domain.dto.score.ScoreResponses;
 import kr.co.popool.domain.entity.Career;
+import kr.co.popool.domain.entity.Grade;
 import kr.co.popool.domain.entity.Score;
 import kr.co.popool.repository.career.CareerRepository;
 import kr.co.popool.repository.score.ScoreRepository;
@@ -26,7 +24,6 @@ import java.util.List;
 public class ScoreServiceImpl implements ScoreService {
 
     private final ScoreRepository scoreRepository;
-
     private final CareerRepository careerRepository;
 
     @Transactional
@@ -34,9 +31,11 @@ public class ScoreServiceImpl implements ScoreService {
     public Score newScore(ScoreCreateRequest request) {
         Career career = careerRepository.findByMemberId(request.getMemberId())
             .orElseThrow(NotFoundCareerException::new);
-
         Score requestScore = request.toScore(career);
-        return scoreRepository.save(requestScore);
+        Score newScore = scoreRepository.save(requestScore);
+        career.updateGrade(getGrade(request.getMemberId()));
+        careerRepository.save(career);
+        return newScore;
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +52,12 @@ public class ScoreServiceImpl implements ScoreService {
         return ScoreResponses.of(scoreResponses);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Grade getGrade(String memberId) {
+        ScoreAverage averageInfo = scoreRepository.getAverage(memberId);
+        return Grade.getMedal(averageInfo.getAvg());
+    }
 
 }
 
